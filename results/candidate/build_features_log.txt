@@ -1,0 +1,25 @@
+﻿27000 official patches -> 67292 evaluation patches, 8 workers
+  5000/67292  26s
+  10000/67292  51s
+  15000/67292  83s
+  20000/67292  108s
+  25000/67292  136s
+  30000/67292  159s
+  35000/67292  188s
+  40000/67292  224s
+  45000/67292  250s
+  50000/67292  280s
+  55000/67292  301s
+  60000/67292  339s
+  65000/67292  370s
+wrote results\candidate\features.csv.gz: 67292 rows in 385s
+label                   authentic  ...  generated_inpainted
+set                                ...                     
+test_dev                     3340  ...                 1116
+test_dev_laundered           3340  ...                 1116
+test_heldout                 3306  ...                 1110
+test_heldout_laundered       3306  ...                 1110
+train                       16335  ...                 5530
+val                          4019  ...                 1297
+
+[6 rows x 4 columns]

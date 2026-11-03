@@ -1,0 +1,109 @@
+\section*{Abbreviations}\label{sec:abbr}
+\addcontentsline{toc}{section}{Abbreviations}
+{\small
+\begin{longtable}{|L{3.3cm}|L{12.0cm}|}
+\hline
+\textbf{Term} & \textbf{Meaning}\\
+\hline
+\endfirsthead
+\hline
+\textbf{Term} & \textbf{Meaning}\\
+\hline
+\endhead
+\multicolumn{2}{|l|}{\textit{Earth observation and imagery}}\\
+\hline
+EO & Earth observation\\
+\hline
+Sentinel-2 & the Copernicus optical satellite pair whose patches EuroSAT is built from\\
+\hline
+EuroSAT & the public dataset of 27,000 labelled Sentinel-2 patches (64$\times$64, 10 land-cover classes)\\
+\hline
+Patch / tile & a 64$\times$64 image; larger images are cut into tiles, never resized\\
+\hline
+Resampling & rescaling or rotating an image by interpolation; leaves periodic pixel correlations\\
+\hline
+Splicing & pasting a region from another image\\
+\hline
+Copy-move & duplicating a region inside the same image\\
+\hline
+Inpainting & erasing a region and filling it from its surroundings (classical or learned)\\
+\hline
+Laundering & post-processing (re-compression, blur, noise) that hides forensic traces\\
+\hline
+\multicolumn{2}{|l|}{\textit{Security and provenance}}\\
+\hline
+Digest & a SHA-256 fingerprint of the pixels; any pixel change alters it\\
+\hline
+Ed25519 & an elliptic-curve signature scheme with deterministic signatures\\
+\hline
+Claim / manifest & the signed statement of origin: source, sensor, capture date, digest\\
+\hline
+Processing chain & the signed, linked record of every processing step\\
+\hline
+Registry & the ground station's list of trusted public keys, with roles and revocation flags\\
+\hline
+Replay & re-sending a genuine, already delivered message\\
+\hline
+MITM & man-in-the-middle: an attacker on the path between sender and receiver\\
+\hline
+DNAT & destination network-address translation (the iptables rule of Lab D2)\\
+\hline
+PKCS\#11, HSM, TPM & interfaces and devices for hardware-backed keys (upgrade path of the trust anchor)\\
+\hline
+STRIDE & Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege\\
+\hline
+JWT & JSON Web Token (the sign-in tokens)\\
+\hline
+TLS & transport-layer security (not enabled in the isolated lab)\\
+\hline
+LSB & least-significant bit (hidden-data embedding)\\
+\hline
+\multicolumn{2}{|l|}{\textit{Detection and evaluation}}\\
+\hline
+GBM & gradient-boosted trees (\cd{HistGradientBoostingClassifier})\\
+\hline
+CNN & convolutional neural network (PixelNet)\\
+\hline
+SRM & spatial rich model: fixed high-pass kernels that expose sensor noise\\
+\hline
+TLU / truncation & clipping the residual to $\pm3$\\
+\hline
+DCT & discrete cosine transform (block matching for copy-move)\\
+\hline
+D4 & the eight rotations and reflections of a square\\
+\hline
+MAD & median absolute deviation (robust scale)\\
+\hline
+AUC-ROC, AUC-PR & area under the ROC or precision--recall curve\\
+\hline
+Detection rate & fraction of manipulated patches flagged\\
+\hline
+False-alarm rate & fraction of authentic patches wrongly flagged\\
+\hline
+Macro-F1 & F1 averaged over the four classes\\
+\hline
+IoU & intersection over union (heatmap versus true mask)\\
+\hline
+Seen / held-out & manipulation methods present in / absent from training\\
+\hline
+Frozen set & an evaluation set whose SHA-256 was recorded before the change it is used to measure\\
+\hline
+Re-encoding gate & a model estimating whether a patch was re-compressed, used to move the alarm threshold\\
+\hline
+Budget & the target false-alarm rate on clean validation authentics\\
+\hline
+\multicolumn{2}{|l|}{\textit{Organisations and challenge}}\\
+\hline
+TSYP14 & the 14th IEEE Tunisian Student and Young Professional Congress\\
+\hline
+BMC & Business Model Canvas\\
+\hline
+TUNSA & Tunisian Space Association\\
+\hline
+CRTEAN & Regional Center for Remote Sensing of North African States\\
+\hline
+CNCT & Centre national de la cartographie et de la t\'el\'ed\'etection (Tunisian national mapping and remote-sensing centre)\\
+\hline
+GRSS, SPS, CIS & the IEEE Geoscience and Remote Sensing, Signal Processing and Computational Intelligence Societies\\
+\hline
+\end{longtable}}

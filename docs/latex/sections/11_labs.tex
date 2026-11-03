@@ -1,0 +1,192 @@
+\section{Attack simulation and lab architectures}\label{sec:labs}
+\rubric{standard scenario \& evasion (20) and architecture (15)}{We deliver the same three programs deployed four ways, from an explicit relay through a real Kali VM to a transparent man-in-the-middle whose transparency is proven by the satellite's own packet capture. Evidence: \cd{results/docker_lab/}, \cd{results/docker_mitm/}, \cd{results/lab/}, \cd{docker-compose*.yml}, \cd{lab/}, \cd{vm/README.md}.}
+
+\subsection{The programs and the attacker's modes}
+\cd{satellite_node.py} signs each patch with the source key (\texttt{sat-01}), adds one signed processing step (\texttt{proc-01}), and posts it to its configured target. It keeps its sequence counter on disk, so a second run is not a replay. \cd{attacker.py} is a threaded HTTP server: for every message it decides (with probability \cd{--rate}) whether to attack, applies the chosen attack from \cd{pixelproof/integrity_attacks.py}, forwards the result to the ground station, and writes one line of ground truth (\cd{attack}, \cd{expected_integrity}, \cd{ground_integrity}, \cd{ground_verdict}).
+\begin{lstlisting}[style=py]
+choice = "passthrough"
+if a.mode != "passthrough" and rng.random() < a.rate:
+    choice = a.mode if a.mode != "random" else str(rng.choice(list(ATTACKS)))
+if choice in ("replay", "manifest_swap") and not hist:      # needs an earlier message
+    choice = "passthrough"
+...
+status, body = forward(a.ground.rstrip("/"), out)
+rec = {"product_id": ..., "attack": choice, "expected_integrity": ATTACKS[choice][1] if choice in ATTACKS
+       else "VERIFIED", "ground_verdict": res.get("verdict"), "ground_integrity": res["integrity"]["status"]}
+\end{lstlisting}
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{5.2cm}|Y|L{4.0cm}|}
+\hline
+\textbf{Mode} & \textbf{What the relay does} & \textbf{Expected ground status}\\
+\hline
+\cd{pixel_inpaint}, \cd{pixel_copy_move}, \cd{pixel_resample} & edits the pixels, keeps the manifest & \cd{PIXELS_ALTERED}\\
+\hline
+\cd{lsb_embed} & flips 512 invisible lowest bits & \cd{PIXELS_ALTERED}\\
+\hline
+\cd{manifest_swap} & valid manifest on the previous genuine image & \cd{PIXELS_ALTERED}\\
+\hline
+\cd{date_replace} & capture date $-$365 days, signature kept & \cd{BAD_SIGNATURE}\\
+\hline
+\cd{date_replace_resign} & changes the date and re-signs with its own key & \cd{UNKNOWN_KEY}\\
+\hline
+\cd{algorithm_downgrade} & edits pixels, claims md5 & \cd{WEAK_ALGORITHM}\\
+\hline
+\cd{forged_processing} & hides an edit behind a fake processing step & \cd{CHAIN_BROKEN}\\
+\hline
+\cd{replay} & re-sends an earlier genuine message & \cd{REPLAY}\\
+\hline
+\cd{strip_manifest} & edits and deletes the manifest & \cd{NO_PROVENANCE} (the detector decides)\\
+\hline
+\end{tabularx}
+\caption{The attacker's modes.}
+\end{table}
+
+\cd{score_demo.py} joins the relay's log with the ground station's answers and verifies the audit-log chain; a cryptographic attack counts as stopped only if the ground station returned exactly the expected status.
+
+\subsection{Lab W: Windows host + Kali Linux VM (explicit relay, run live)}\label{sec:labw}
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\scriptsize]
+  \node[bt,text width=38mm] (sat) at (0,2.2) {\textbf{satellite\_node.py}\\signs with sat-01 / proc-01\\\texttt{-{}-target http://KALI\_IP:8081}};
+  \node[bg,text width=38mm] (gs) at (0,0) {\textbf{ground station}\\uvicorn pixelproof.api:app\\\texttt{-{}-host 0.0.0.0 -{}-port 8000}\\audit log + dashboard};
+  \node[br,text width=44mm] (att) at (8.4,2.2) {\textbf{attacker.py (relay)}\\\texttt{-{}-listen 0.0.0.0:8081}\\\texttt{-{}-ground http://WINDOWS\_IP:8000}\\mode, rate, log};
+  \node[bg,text width=44mm] (sc) at (8.4,0) {\textbf{score\_demo.py}\\relay log (ground truth) versus ground answers};
+  \draw[arr] (sat)--node[above,lbl]{1. downlink}(att);
+  \draw[arr] (att.south west)--node[above,lbl,sloped,pos=0.5]{2. forwarded}(gs.north east);
+  \begin{scope}[on background layer]
+    \node[grp,fit=(sat)(gs),label={[font=\tiny,text=pxnavy!70]above:WINDOWS HOST}] {};
+    \node[grp,draw=pxred!60,fit=(att)(sc),label={[font=\tiny,text=pxred!80]above:VIRTUALBOX VM: KALI LINUX (host-only network)}] {};
+  \end{scope}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Lab W: satellite and ground station on the Windows host, the attacker in a Kali Linux VM on a VirtualBox host-only network.}
+\end{figure}
+
+The satellite and the ground station run directly on the Windows host; only the attacker runs in a VM (Kali Linux in VirtualBox). The satellite is pointed at the relay on purpose (\cd{--target http://KALI_IP:8081}); the relay forwards to \cd{http://WINDOWS_IP:8000}, so the ground station listens on \texttt{0.0.0.0}. This is an \textbf{explicit relay}, not a transparent attacker (that is Lab D2). The VM holds no private key: it can change messages but cannot sign as the satellite. One emulation shortcut: because both ends share the host, the satellite writes the public registry that the ground station reads; in a real deployment the fingerprints are compared out of band (Section~\ref{sec:trust}).
+\begin{lstlisting}[style=sh]
+# Kali VM
+python3 simulation/attacker.py --listen 0.0.0.0:8081 --ground http://WINDOWS_IP:8000 \
+    --mode date_replace --rate 1.0 --log runtime/attack_date_replace.jsonl
+
+# Windows host
+uvicorn pixelproof.api:app --host 0.0.0.0 --port 8000
+python simulation\satellite_node.py --target http://KALI_IP:8081 --n 5 --interval 1.5
+\end{lstlisting}
+
+\begin{warnbox}
+\textbf{Source of the Lab W figures.} The values below are typed in this document from the live session; the corresponding evidence folder is not among the result files this document is built from, so unlike every other number they are not regenerated by \cd{render_latex.py}.
+\end{warnbox}
+
+\textbf{Results.} The mixed run (\cd{--mode random}, \ext{20} messages) scored against the relay's own log: cryptographic attacks stopped with the expected status \ext{11/11}, genuine messages unharmed \ext{8/8}, \ext{1} provenance-stripped edit decided by the content detector (released as \cd{UNVERIFIED_NO_TRACES}), audit-log chain valid: \ext{True} (\ext{237} entries). Later sessions recorded by the ground station:
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|L{2.0cm}|L{4.4cm}|Y|}
+\hline
+\textbf{Session} & \textbf{Messages} & \textbf{Ground station's integrity statuses} & \textbf{Reading}\\
+\hline
+replay test & \ext{60} & \cd{REPLAY} \ext{11}, \cd{VERIFIED} \ext{49} & every resent product refused\\
+\hline
+date replacement & \ext{40} & \cd{BAD_SIGNATURE} \ext{20}, \cd{VERIFIED} \ext{20} & Ed25519 catches the re-dating\\
+\hline
+date replacement & \ext{60} & \cd{BAD_SIGNATURE} \ext{40}, \cd{VERIFIED} \ext{20} & same\\
+\hline
+date replacement & \ext{40} & \cd{BAD_SIGNATURE} \ext{20}, \cd{VERIFIED} \ext{20} & one genuine message \cd{SIGNED_BUT_SUSPICIOUS} (\ext{1}): a content false alarm\\
+\hline
+\end{tabularx}
+\caption{Later Lab W sessions as recorded by the ground station.}
+\end{table}
+For these later sessions the Kali-side logs were not copied, so the attack mode is inferred from the ground station's answers, not proven by the relay's log. \cd{algorithm_downgrade}, \cd{forged_processing} and \cd{manifest_swap} were not run on this setup (they are covered by the campaign, the Docker labs and the Attack lab).
+
+\subsection{Lab D1: Docker explicit relay}
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\scriptsize]
+  \node[bt,text width=36mm] (s) at (0,0) {\textbf{satellite}\\satellite\_node.py\\\texttt{-{}-target http://attacker:8081}\\keys: private volume};
+  \node[br,text width=36mm] (a) at (6.2,0) {\textbf{attacker}\\attacker.py :8081\\on BOTH networks\\ATTACK\_MODE, ATTACK\_RATE};
+  \node[bg,text width=36mm] (g) at (12.4,0) {\textbf{ground}\\uvicorn :8000\\registry (read-only)\\dashboard};
+  \draw[arr] (s)--node[above,lbl]{HTTP}(a); \draw[arr] (a)--node[above,lbl]{HTTP}(g);
+  \begin{scope}[on background layer]
+    \node[grp,fit=(s)(a.west),label={[font=\tiny,text=pxnavy!70]above:network spacelink}] {};
+    \node[grp,fit=(a.east)(g),label={[font=\tiny,text=pxnavy!70]above:network groundnet}] {};
+  \end{scope}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Lab D1: three containers on two networks; only the attacker is on both, so every message crosses it.}
+\end{figure}
+\cd{docker compose up --build} builds one image and starts three services. The satellite is only on \texttt{spacelink}, the ground station only on \texttt{groundnet}, the attacker on both; private keys live in a volume mounted only by the satellite, and the ground station receives the public registry read-only. \cd{ATTACK_MODE} and \cd{ATTACK_RATE} select the attack.
+
+\textbf{Result} (\cd{results/docker_lab/}): {{dk:/messages|int}} downlinks, {{dk:/crypto_attack_stopped|int}} of {{dk:/crypto_attack_messages|int}} cryptographic attacks stopped with the expected status, genuine messages unharmed {{dk:/passthrough_correct|int}}/{{dk:/passthrough_messages|int}}, {{dk:/provenance_stripped_messages|int}} manifest-stripped edit (released as \cd{UNVERIFIED_NO_TRACES}: {{dk:/provenance_stripped_verdicts/UNVERIFIED_NO_TRACES|int}}, i.e.\ the content detector did \textbf{not} notice it), audit-log chain valid: {{dk:/ledger_chain_valid|raw}} ({{dk:/ledger_entries|int}} entries).
+
+\subsection{Lab D2: Docker transparent man-in-the-middle}
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\scriptsize]
+  \node[bt,text width=38mm] (s) at (0,0) {\textbf{satellite} 172.28.1.10\\target = http://172.28.2.30:8000 only\\route to 172.28.2.0/24 via 172.28.1.1\\tcpdump $\to$ satellite.pcap};
+  \node[br,text width=40mm] (a) at (6.6,0) {\textbf{attacker = router}\\172.28.1.1 | 172.28.2.1\\\texttt{ip\_forward = 1}\\iptables DNAT :8000 $\to$ relay 172.28.2.1:8081};
+  \node[bg,text width=38mm] (g) at (13.2,0) {\textbf{ground} 172.28.2.30\\uvicorn :8000\\route to 172.28.1.0/24 via 172.28.2.1};
+  \draw[arr] (s)--(a); \draw[arr] (a)--(g);
+  \begin{scope}[on background layer]
+    \node[grp,fit=(s)(a.west),label={[font=\tiny,text=pxnavy!70]above:spacelink 172.28.1.0/24}] {};
+    \node[grp,fit=(a.east)(g),label={[font=\tiny,text=pxnavy!70]above:groundnet 172.28.2.0/24}] {};
+  \end{scope}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Lab D2: the attacker is the satellite's router and silently redirects ground-bound traffic with one iptables rule; neither bridge has an internet route.}
+\end{figure}
+The satellite is configured with \textbf{one} address, the ground station's (\cd{http://172.28.2.30:8000}); it has never heard of the attacker. Its only route to the ground subnet goes through the attacker container, which forwards packets and adds a standard destination-NAT rule that hands ground-bound traffic to its relay:
+\begin{lstlisting}[style=sh]
+attacker:
+  cap_add: [NET_ADMIN]
+  sysctls: { net.ipv4.ip_forward: "1" }
+  command: |
+    runuser -u app -- python simulation/attacker.py --listen 172.28.2.1:8081 \
+        --ground http://172.28.2.30:8000 --mode $${ATTACK_MODE} --rate $${ATTACK_RATE} ... &
+    iptables -t nat -A PREROUTING -p tcp -d 172.28.2.30 --dport 8000 \
+        -j DNAT --to-destination 172.28.2.1:8081
+\end{lstlisting}
+No ARP spoofing and no packet forging are involved; the reply is rewritten back, so it appears to come from the ground station. Both bridges have address translation switched off (no internet route), and \texttt{NET\_ADMIN} applies only inside each container's own network namespace. \textbf{Proof of transparency:} the satellite records its own traffic with \cd{tcpdump}; \cd{scripts/check_transparency.py} reads that capture.
+
+\textbf{Result} (\cd{results/docker_mitm/}): the satellite's capture holds {{tr:/ip_packets_captured_on_the_satellite|int}} IP packets, all with the ground station as peer (attacker address in any IP header: {{tr:/attacker_address_in_any_ip_header|raw}}); {{dm:/crypto_attack_stopped|int}} of {{dm:/crypto_attack_messages|int}} cryptographic attacks stopped, genuine messages unharmed {{dm:/passthrough_correct|int}}/{{dm:/passthrough_messages|int}}, audit-log chain valid: {{dm:/ledger_chain_valid|raw}}.
+
+\subsection{Network namespaces and the three-VM VirtualBox lab}
+\cd{lab/netns_lab.py} builds the same routed topology with Linux network namespaces (no containers, root needed); its recorded run caught tampering {{lab:/tampering_caught|raw}} (\cd{results/lab/}) and it has not been re-run on the Windows laptop.
+
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\scriptsize]
+  \node[bt,text width=36mm] (s) at (0,0) {\textbf{satellite VM} (Ubuntu)\\10.56.1.10\\downlink.sh, publish\_registry.sh\\private keys};
+  \node[br,text width=36mm] (a) at (6.2,0) {\textbf{attacker VM} (Kali)\\10.56.1.1 | 10.56.2.1\\relay.sh, transparent\_redirect.sh\\capture.sh};
+  \node[bg,text width=36mm] (g) at (12.4,0) {\textbf{ground VM} (Ubuntu)\\10.56.2.30\\pixelproof-ground service\\fetch\_registry.sh (fingerprint check)};
+  \draw[arr] (s)--node[above,lbl]{pxp-space}(a); \draw[arr] (a)--node[above,lbl]{pxp-ground}(g);
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Lab V: three VirtualBox VMs on internal networks, provisioned by Vagrant. Provided and syntax-checked, never booted by us.}
+\end{figure}
+\cd{lab/Vagrantfile} provisions three VMs (Ubuntu satellite and ground, Kali attacker) on VirtualBox internal networks with the same addresses as the routed design (\cd{10.56.1.0/24}, \cd{10.56.2.0/24}), a systemd ground service with \texttt{NoNewPrivileges} and a read-only system, and helper scripts for the out-of-band fingerprint check, the relay, the transparent redirect and packet capture. We did not boot it (no Vagrant on the build machine); it is \notmeas.
+
+\subsection{Which lab proves what}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{2.9cm}|L{2.7cm}|L{2.5cm}|L{2.5cm}|Y|}
+\hline
+\textbf{Lab} & \textbf{Attacker} & \textbf{Satellite aware of the attacker?} & \textbf{Status} & \textbf{What it proves}\\
+\hline
+W: Windows + Kali VM & explicit relay in a real VM & yes (it targets the relay) & \textbf{run} & the full chain across a VM boundary, live\\
+\hline
+D1: Docker relay & explicit relay & yes & \textbf{run} & isolated three-machine run, reproducible in one command\\
+\hline
+D2: Docker MITM & router + DNAT & \textbf{no} (proven by its pcap) & \textbf{run and verified} & an invisible attacker still cannot pass a forged product\\
+\hline
+N: namespaces & router + DNAT & no & run earlier & same, without containers\\
+\hline
+V: three VMs & Kali router & no & \textbf{not booted} & provided for Phase 2\\
+\hline
+\end{tabularx}
+\caption{Which lab proves what.}
+\end{table}

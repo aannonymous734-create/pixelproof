@@ -1,0 +1,16 @@
+[satellite] S2-River_1685-000081 (River) -> VERIFIED / VERIFIED
+[satellite] S2-Forest_1845-000082 (Forest) -> VERIFIED / VERIFIED
+[satellite] S2-HerbaceousVegetation_627-000083 (HerbaceousVegetation) -> VERIFIED / VERIFIED
+[satellite] S2-HerbaceousVegetation_2167-000084 (HerbaceousVegetation) -> ALTERED_AFTER_CAPTURE / PIXELS_ALTERED
+[satellite] S2-SeaLake_2422-000085 (SeaLake) -> VERIFIED / VERIFIED
+[satellite] S2-SeaLake_2409-000086 (SeaLake) -> VERIFIED / VERIFIED
+[satellite] S2-Residential_2771-000087 (Residential) -> ALTERED_AFTER_CAPTURE / PIXELS_ALTERED
+[satellite] S2-River_1560-000088 (River) -> VERIFIED / VERIFIED
+[satellite] S2-AnnualCrop_1799-000089 (AnnualCrop) -> ALTERED_AFTER_CAPTURE / UNKNOWN_KEY
+[satellite] S2-Industrial_1102-000090 (Industrial) -> ALTERED_AFTER_CAPTURE / PIXELS_ALTERED
+[satellite] S2-HerbaceousVegetation_1787-000091 (HerbaceousVegetation) -> VERIFIED / VERIFIED
+[satellite] S2-Highway_728-000092 (Highway) -> VERIFIED / VERIFIED
+[satellite] S2-Industrial_2203-000093 (Industrial) -> VERIFIED / VERIFIED
+[satellite] S2-Pasture_1048-000094 (Pasture) -> ALTERED_AFTER_CAPTURE / BAD_SIGNATURE
+[satellite] S2-HerbaceousVegetation_1569-000095 (HerbaceousVegetation) -> ALTERED_AFTER_CAPTURE / BAD_SIGNATURE
+[satellite] S2-River_52-000096 (River) -> ALTERED_AFTER_CAPTURE / PIXELS_ALTERED

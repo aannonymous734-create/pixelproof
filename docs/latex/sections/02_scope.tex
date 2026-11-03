@@ -1,0 +1,45 @@
+\section{Scope definition}\label{sec:scope}
+\begin{keybox}
+\textbf{Our scope in one sentence.} The imagery segment of the Earth-observation chain: from the moment a Sentinel-2 product leaves its trusted source to the moment an analyst uses a 64$\times$64 EuroSAT patch derived from it. For every patch, PixelProof answers two questions before anything is released: \emph{who signed it, and are the pixels unchanged?} and \emph{does the content show traces of manipulation?}
+\end{keybox}
+
+\subsection{Why this segment matters}
+Earth-observation products drive decisions in agriculture, insurance, water management and disaster response. A failure in this chain can be silent: the pipeline keeps running while a corrupted observation reaches the analyst. Radio-link attacks (Track~1) and sensor-level false-data injection (Track~2) are out of scope, which is our design choice, consistent with the track statement.
+
+\subsection{The real difficulty: two questions, not one}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{3.3cm}|Y|Y|}
+\hline
+\textbf{Question} & \textbf{What answers it} & \textbf{What it cannot say}\\
+\hline
+Provenance: who signed this claim, and when? & Ed25519 signature checked against a trusted public-key registry & Whether the picture is true\\
+\hline
+Integrity: are these exactly the pixels that were signed? & SHA-256 digest over the pixels and a signed processing chain & Whether the content was faked before signing\\
+\hline
+Visual authenticity: does the picture show what really happened? & Statistical content detector (features + CNN) & Anything with certainty: the output is ``no traces found'', never ``authentic''\\
+\hline
+\end{tabularx}
+\caption{The three things an analyst needs to know, and which component answers each.}
+\end{table}
+
+\subsection{Boundaries}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{2.6cm}|Y|}
+\hline
+ & \textbf{Details}\\
+\hline
+In scope & Signed origin and processing chain; replay and downgrade protection; hash-chained audit log; forensic detection of resampling/splicing, copy-move and generated/inpainted regions; operator dashboard with optional sign-in; attack labs\\
+\hline
+Out of scope & Radio-link attacks (Track~1); sensor-level false-data injection (Track~2); volumetric denial of service; fully generated GAN or diffusion patches (none exist in the official data)\\
+\hline
+Users & Analyst (verdict, release of quarantined data), ground-station operator (dashboard, keys), jury (CLI \cd{detect} on held-out patches)\\
+\hline
+Data & EuroSAT RGB (Sentinel-2, 27,000 patches of 64$\times$64, 10 land-cover classes), MIT licence\\
+\hline
+Scaling & One ground station verifies every product of one source; additional sources only need a registered public key\\
+\hline
+\end{tabularx}
+\caption{Scope boundaries.}
+\end{table}

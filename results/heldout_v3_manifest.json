@@ -1,0 +1,20 @@
+{
+  "description": "held-out v3: thin-strip shapes and methods absent from training (dev, dev_plus) and from held-out v1 and v2 (see pixelproof/heldout_v3.py)",
+  "source_split": "test_dev",
+  "methods": [
+    "fourier_anisotropic",
+    "strip_pyramid_blend",
+    "multi_strip_clone",
+    "push_pull_grain"
+  ],
+  "n_patches": 6680,
+  "sha256": "6384021722ac848b4b97874f9d1b4ec61015e268b105ec9311910e4c27f33d29",
+  "counts": {
+    "authentic": 3340,
+    "resample": 532,
+    "splice": 552,
+    "copy_move": 1090,
+    "inpaint": 1166
+  },
+  "frozen_before_candidate_training": true
+}

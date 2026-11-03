@@ -1,0 +1,136 @@
+\section{The ground-station dashboard}\label{sec:dash}
+\rubric{clarity (5) and architecture (15)}{We deliver an operator interface where every figure is read live from the API or the result files, with an optional sign-in server. Evidence: \cd{frontend/}, built into \cd{pixelproof/static/app}; \cd{backend/}.}
+
+\subsection{Pages and data sources}
+The dashboard is a React 18 + TypeScript application built with Vite into static files that the ground station serves itself, so the jury needs only Python. It works offline (fonts and 3-D scene bundled, no CDN), falls back to a 2-D diagram without WebGL, and enforces a strict Content-Security-Policy. A grouped sidebar (Monitor, Verify, Validate, Docs) becomes a slide-in menu on phones, and a 14-step guided tour opens each page and spotlights the real panel. Nothing on a page is typed by hand: counters come from the audit log, headline figures from the result files.
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{3.3cm}|Y|L{4.6cm}|}
+\hline
+\textbf{Page} & \textbf{Question it answers} & \textbf{Data source}\\
+\hline
+Overview & what is the station doing, and how good is it? & \cd{/api/v1/results}, \cd{/stats}, \cd{/ledger}\\
+\hline
+Live link, Audit log & what arrived, what was decided, is the history intact? & \cd{/api/v1/ledger} (every 3~s)\\
+\hline
+Station & whom do we trust, and is the system healthy? & \cd{/api/v1/station}\\
+\hline
+Analyse, Provenance & can I trust this patch, and where did its proof break? & \cd{POST /api/v1/analyse}\\
+\hline
+Attack lab, Attack guide & does the defence hold against each attack? & \cd{/api/v1/lab/*} (lab mode only)\\
+\hline
+Results & the measured evidence & \cd{/api/v1/results}\\
+\hline
+\end{tabularx}
+\caption{Dashboard pages and where each reads its data.}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.94\textwidth]{dashboard.png}
+\caption{Overview: the headline figures are read from the result files, with the 3-D satellite $\to$ attacker $\to$ ground globe and the navigation. No number is typed by hand.}
+\end{figure}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.58\textwidth]{analyse.png}
+\caption{Analyse: a copy-move patch without provenance. Integrity says \texttt{NO\_PROVENANCE}, the detector says copy-move (score far above the threshold), the verdict is \texttt{SUSPICIOUS} and quarantined, and the heatmap marks both copies.}
+\end{figure}
+
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\scriptsize]
+  \tikzset{ok/.style={circle,draw=pxteal,fill=pxgreenbg,minimum size=5mm,inner sep=0pt},
+           no/.style={circle,draw=pxred,fill=pxredbg,minimum size=5mm,inner sep=0pt},
+           nc/.style={circle,draw=pxline,fill=pxgrey,minimum size=5mm,inner sep=0pt}}
+  \node[ok] (n0) at (0,0) {$\checkmark$};
+  \node[ok] (n1) at (0,-1.3) {$\checkmark$};
+  \node[ok] (n2) at (0,-2.6) {$\checkmark$};
+  \node[no] (n3) at (0,-3.9) {$\times$};
+  \node[nc] (n4) at (0,-5.2) {};
+  \draw[pxline,thick] (n0)--(n1)--(n2)--(n3); \draw[pxline,dashed] (n3)--(n4);
+  \node[anchor=west,align=left] at (0.6,0) {\textbf{Capture claim} (signed at source, key sat-01)};
+  \node[anchor=west,align=left] at (0.6,-1.3) {\textbf{Processing step 1:} eurosat\_patch\_export (proc-01)};
+  \node[anchor=west,align=left] at (0.6,-2.6) {\textbf{Processing step 2:} format\_conversion (proc-01)};
+  \node[anchor=west,align=left,text=pxred] at (0.6,-3.9) {\textbf{Processing step 3:} cloud\_mask --- not validly signed: \textbf{chain breaks here} (\texttt{CHAIN\_BROKEN})};
+  \node[anchor=west,align=left,text=gray] at (0.6,-5.2) {\textbf{Pixels received by the ground station:} not checked, verification stops at the first failure};
+\end{tikzpicture}
+\end{adjustbox}
+\caption{The Provenance page for a forged processing step: the claim and the two genuine steps are green, step 3 is where the chain breaks, and the received pixels are marked ``not checked''. (Redrawn from the page; the page itself is built from the verifier's reply.)}
+\end{figure}
+
+\subsection{Operator sign-in}\label{sec:auth}
+A ground station shared by several operators needs an access screen. An optional sign-in server (Laravel 12, \texttt{backend/}) provides it; when the server is not running, the dashboard opens in an explicitly labelled \emph{open access} mode (the Overview and Analyse screenshots above were taken in that mode, so they contain no user name). The sign-in protects the \emph{dashboard}; the ground-station ingest API is unauthenticated in the isolated lab (Section~\ref{sec:limits}).
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.86\textwidth]{signin.png}
+\caption{The sign-in screen: e-mail and password only; access is restricted to authorised operators.}
+\end{figure}
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{3.6cm}|Y|}
+\hline
+\textbf{Property} & \textbf{How it is provided}\\
+\hline
+Tokens & two JWTs \cite{rfc7519} signed HS256: a short-lived \textbf{access token} (15 minutes) and a \textbf{refresh token} (7 days) carrying a \texttt{refresh} claim\\
+\hline
+Storage in the browser & \textbf{\texttt{HttpOnly}} cookies \texttt{access\_token} and \texttt{refresh\_token}, \texttt{SameSite=Lax}, path \texttt{/}; page scripts cannot read them (Figure~\ref{fig:cookies})\\
+\hline
+Request authentication & a middleware copies the access cookie into the \texttt{Authorization: Bearer} header on the server side, so no script handles the token\\
+\hline
+Refresh and rotation & the refresh token is also stored server-side; using it deletes it and issues a new pair, so a stolen refresh token works once\\
+\hline
+Logout & the stored refresh token is deleted, the access token is put on the blacklist, and both cookies are expired\\
+\hline
+Account rules & passwords stored as bcrypt hashes; login requires a verified e-mail address and an active account; login, registration and refresh are rate-limited to 10 requests per minute\\
+\hline
+\end{tabularx}
+\caption{Properties of the operator sign-in, read from the backend code.}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\scriptsize]
+  \node[bg,text width=30mm] (b) at (0,0) {\textbf{browser}\\dashboard (React)};
+  \node[bt,text width=36mm] (l) at (6.2,0) {\textbf{sign-in server} :8001\\verifies password, e-mail, account\\issues access + refresh JWT};
+  \node[bg,text width=28mm] (d) at (12.0,0) {\textbf{database}\\users, refresh tokens};
+  \draw[arr] (b.north east) to[bend left=18] node[above,lbl]{POST /auth/login} (l.north west);
+  \draw[arr] (l.south west) to[bend left=18] node[below,lbl]{Set-Cookie: HttpOnly, SameSite=Lax} (b.south east);
+  \draw[arr] (l)--node[above,lbl]{store refresh}(d);
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Login flow: the tokens only ever travel in cookies that scripts cannot read; later calls (\texttt{/me}, \texttt{/auth/refresh}, \texttt{/logout}) carry the cookies automatically.}
+\end{figure}
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.30\textwidth}
+\centering\includegraphics[width=\textwidth]{mobile.png}
+\caption{Phone width (320 px).}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.66\textwidth}
+\centering\includegraphics[width=\textwidth]{cookies.png}
+\caption{Browser storage after sign-in: the \texttt{HttpOnly} column is checked for \texttt{access\_token} and \texttt{refresh\_token} (\texttt{SameSite} = \texttt{Lax}); the two \texttt{\_ga} cookies are not set by the PixelProof source code. The developer tools are in French.}
+\end{subfigure}
+\caption{The responsive layout and the cookie flags, captured in the browser's developer tools.}\label{fig:cookies}
+\end{figure}
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.40\textwidth}
+\centering\includegraphics[width=\textwidth]{tour_welcome.png}
+\caption{Step 1 of 14.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.54\textwidth}
+\centering\includegraphics[width=\textwidth]{tour_sections.png}
+\caption{Step 2 of 14: the sections, with the signed-in operator shown at the bottom of the sidebar.}
+\end{subfigure}
+\caption{The guided product tour: each step opens a page and spotlights its real panel.}
+\end{figure}
+
+\textbf{Known limits of this access layer.} The cookies are not flagged \texttt{Secure} in the current configuration (the lab serves plain HTTP on localhost); a deployment must serve both applications over TLS and set the flag. The sign-in server and the ground station are separate programs, so signing in does not authenticate calls made directly to the ground-station API.

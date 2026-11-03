@@ -1,0 +1,94 @@
+\section{Executive summary}\label{sec:summary}
+\begin{keybox}
+\textbf{The problem.} An analyst receives a satellite image patch and must know two different things: was it really produced by the stated source and left untouched since (\emph{integrity}), and does its content show signs of manipulation (\emph{semantic truth}). These are separate questions, because a perfectly signed image can still have been faked before signing. PixelProof answers them on \textbf{two independent axes} and keeps both answers.
+\end{keybox}
+
+\textbf{Our answer, in three points.}
+\begin{enumerate}
+  \item \hl{Integrity is proven, not guessed.} Each patch is bound at the source to a signed claim (an Ed25519 signature over a SHA-256 digest of the pixels, plus product id, source, sensor and capture date) and to a signed, linked record of every processing step. The ground station trusts only registered public keys and pinned algorithms, remembers what it received (replay protection) and logs every decision in a hash chain.
+  \item \hl{Content is assessed, honestly.} 48 explainable forensic features feed a gradient-boosted classifier, fused with a 74,116-parameter forensic CNN. The alarm threshold is calibrated on clean EuroSAT patches for a {{m:/target_fpr|pct0}} \targ{} false-alarm budget. The output is ``manipulated (type)'' or ``no traces found'', never ``authentic''.
+  \item \hl{The verdict keeps both answers} (\cd{VERIFIED}, \cd{SIGNED_BUT_SUSPICIOUS}, \cd{ALTERED_AFTER_CAPTURE}, \cd{SUSPICIOUS}, \cd{UNVERIFIED_NO_TRACES}), quarantines anything doubtful, and writes every decision to a hash-chained audit log.
+\end{enumerate}
+
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[node distance=6mm and 9mm]
+  \node[bt,text width=32mm] (src) {\textbf{Source} (emulated S-2)\\EuroSAT patch\\SHA-256 pixel digest\\signed claim};
+  \node[br,right=of src,text width=32mm] (ch) {\textbf{Untrusted channel}\\attacker VM / container\\edit, re-date, replay, strip, re-sign, md5 downgrade};
+  \node[bt,right=of ch,text width=32mm] (int) {\textbf{1. Integrity verifier}\\pinned sha256 + ed25519\\key registry\\signed chain, replay};
+  \node[bg,below=of int,text width=32mm] (cont) {\textbf{2. Content analysis}\\48 features $\to$ GBM\\SRM-front CNN\\fusion, $\le$5\% false alarms};
+  \node[bg,below=of src,text width=32mm] (an) {\textbf{Analyst / jury input}\\patches without provenance\\CLI \texttt{detect} or dashboard};
+  \node[bn,right=of int,text width=30mm,yshift=-12mm] (ver) {\textbf{3. Two-axis verdict}\\release or quarantine\\hash-chained log};
+  \draw[arr] (src)--(ch); \draw[arr] (ch)--(int); \draw[arr] (int)--(cont);
+  \draw[arr] (an)--(cont);
+  \draw[arr] (int)--node[above,lbl]{status}(ver);
+  \draw[arr] (cont)--node[below,lbl]{type, score}(ver);
+\end{tikzpicture}
+\end{adjustbox}
+\caption{System overview: two independent axes, a cryptographic trust layer and a forensic content detector, combined into one verdict and logged.}
+\end{figure}
+
+\subsection{Headline numbers}
+Shipped fused model; EuroSAT RGB; thresholds fixed on validation, never on test.
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|Y|>{\raggedright\arraybackslash}p{5.4cm}|>{\raggedright\arraybackslash}p{3.4cm}|}
+\hline
+\textbf{What we measured} & \textbf{Result} & \textbf{Source} \\
+\hline
+Manipulation variants \textbf{seen} in training & \textbf{{{m:/models/fused (w=0.4)/test_dev/detection_rate|pct1}}} detected at \textbf{{{m:/models/fused (w=0.4)/test_dev/false_alarm_rate|pct1}}} false alarms (AUC {{m:/models/fused (w=0.4)/test_dev/auc_roc|f3}}) & \cd{metrics.json}\\
+\hline
+\textbf{Held-out} variants never seen in training & \textbf{{{m:/models/fused (w=0.4)/test_heldout/detection_rate|pct1}}} at {{m:/models/fused (w=0.4)/test_heldout/false_alarm_rate|pct1}} false alarms (AUC {{m:/models/fused (w=0.4)/test_heldout/auc_roc|f3}}) & \cd{metrics.json}\\
+\hline
+\textbf{Frozen held-out v2} (methods fixed before any change) & \textbf{{{h:/models/fused/detection_rate|pct1}}} at {{h:/models/fused/false_alarm_rate|pct1}} false alarms (AUC {{h:/models/fused/auc_roc|f3}}) & \cd{heldout_v2_v2model.json}\\
+\hline
+Trust layer: 11 attack types + genuine, {{c:/n_products|int}} signed products each & every attack caught with its expected status (Section~\ref{sec:campaign}) & \cd{integrity_campaign.json}\\
+\hline
+Live lab: Windows host + Kali VM relay & \ext{11/11} cryptographic attacks stopped, \ext{8/8} genuine unharmed (Section~\ref{sec:labw}) & Section~\ref{sec:labw}\\
+\hline
+Transparent man-in-the-middle (Docker) & {{dm:/crypto_attack_stopped|int}}/{{dm:/crypto_attack_messages|int}} stopped; the satellite's own capture never shows the attacker (Section~\ref{sec:labs}) & \cd{docker_mitm/}\\
+\hline
+Cost (one CPU core) & {{m:/efficiency/analyse_ms_p50|ms1}} per patch; sign {{c:/overhead/sign_ms_p50|f2}}~ms, verify {{c:/overhead/verify_ms_p50|f2}}~ms & \cd{metrics.json}, \cd{integrity_campaign.json}\\
+\hline
+\end{tabularx}
+\caption{Headline numbers of the shipped detector and trust layer.}
+\end{table}
+
+\begin{warnbox}
+\textbf{Phase 2 work already measured (Section~\ref{sec:phase2}).} A retrained candidate detector, \emph{not shipped}, raises held-out v1 detection to \ext{75.2\%} and frozen held-out v2 to \ext{84.6\%} at similar false-alarm rates, at the cost of more false alarms on re-encoded images. It is reported separately; every headline number above stays the shipped model's.\\[3pt]
+\textbf{Main limitation.} Smoothing of authentic patches (Gaussian blur, JPEG 2000) still raises false alarms: we do not yet tell benign smoothing from a resampling attack, so such a patch is quarantined for an analyst's review rather than released (Sections~\ref{sec:robust} and~\ref{sec:limits}).
+\end{warnbox}
+
+\subsection{Where to find each rubric item}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{5.4cm}|L{2.6cm}|Y|}
+\hline
+\textbf{Rubric criterion (points)} & \textbf{Sections} & \textbf{Evidence in the repository}\\
+\hline
+Threat model \& relevance (15) & \ref{sec:threat} & \cd{docs/THREAT_MODEL.md}, \cd{docs/SECURITY_ANALYSIS.md}\\
+\hline
+Architecture \& trust mechanism (15) & \ref{sec:arch}, \ref{sec:trust}, \ref{sec:labs}, \ref{sec:dash} & \cd{pixelproof/provenance.py}, \cd{ledger.py}, \cd{service.py}, \cd{results/integrity_campaign.json}\\
+\hline
+Signal / image processing (15) & \ref{sec:signal} & \cd{pixelproof/features.py}, \cd{tests/test_content.py}\\
+\hline
+Detector design \& evaluation (20) & \ref{sec:data}, \ref{sec:detector}, \ref{sec:phase2} & \cd{pixelproof/detector.py}, \cd{cnn.py}, \cd{results/metrics.json}\\
+\hline
+Standard scenario \& evasion (20) & \ref{sec:scenario}, \ref{sec:labs} & \cd{results/heldout_v2_v2model.json}, \cd{results/robustness.json}, labs in \cd{results/}\\
+\hline
+Feasibility, affordability, local execution (10) & \ref{sec:feas}, \ref{sec:biz} & \cd{results/metrics.json}, \cd{Dockerfile}, \cd{requirements.txt}\\
+\hline
+Clarity \& reproducibility (5) & \ref{sec:qa}, \ref{sec:repro} & \cd{README.md}, \cd{docs/RUN_GUIDE.md}, \cd{Makefile}, \cd{scripts/check_numbers.py}\\
+\hline
+\end{tabularx}
+\caption{Rubric traceability (Phase 1: 100 points, weighted 30\% of the final score).}
+\end{table}
+
+\textbf{Check our claims yourself in five minutes.}
+\begin{enumerate}[label=(\arabic*)]
+  \item \cd{python -m pytest -q} runs the automated tests.
+  \item \cd{python scripts/check_numbers.py docs/REPORT.md} proves every number in the Markdown report resolves to a result file; \cd{python scripts/render_latex.py --check} does the same for this document.
+  \item \cd{python scripts/quick_demo.py} runs satellite $\to$ attacker $\to$ ground on one laptop and opens the dashboard.
+\end{enumerate}

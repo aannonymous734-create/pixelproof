@@ -1,0 +1,42 @@
+\section{Assumptions and limitations}\label{sec:limits}
+
+\subsection{Assumptions and technical risks}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{5.4cm}|Y|}
+\hline
+\textbf{Assumption or risk} & \textbf{How we handle it}\\
+\hline
+We design both the manipulations and the detector (circular simulation) & held-out methods never seen in training, frozen sets with recorded SHA-256, a v3 set for later changes; the jury's patches are the real test\\
+\hline
+A software or emulated trust anchor is acceptable & explicitly allowed by the rules; same signer interface for SoftHSM2 or a TPM; fingerprints compared out of band\\
+\hline
+EuroSAT RGB is single-JPEG and 8-bit & re-encoding gate and laundering-robust training; multispectral and 16-bit inputs are converted but their false-alarm rate is \notmeas\\
+\hline
+No GAN or diffusion patches in the official data & the ``generated'' class is approximated by inpainting and texture synthesis, clearly labelled, not a claim about GAN imagery\\
+\hline
+A compromised source signs a fake & stated as a limit (scenario F1); content analysis still runs on signed data; revocation\\
+\hline
+Learned detectors degrade on unseen manipulations & provenance carries the guarantee; held-out numbers are reported next to the seen ones\\
+\hline
+A drifting or poisoned model & training refuses to overwrite the shipped model; model file hash shown on the Station page and checked against the model card\\
+\hline
+Partners and revenue are hypotheses & the business model and every partner of Section~\ref{sec:biz} are unvalidated; no agreement, pilot or price exists, and nothing in this report depends on them\\
+\hline
+\end{tabularx}
+\caption{Assumptions and technical risks.}
+\end{table}
+
+\subsection{Limitations, with numbers}
+\begin{itemize}
+  \item \textbf{Smoothing of authentic patches} (blur, JPEG 2000) still raises false alarms sharply (Table in Section~\ref{sec:robust}): at JPEG 2000 rate 30 the false-alarm rate is {{r:/rows/11/false_alarm_rate|pct1}}. We do not yet distinguish benign smoothing from resampling: the patch is quarantined for review, which is a false-alarm cost.
+  \item \textbf{Held-out splicing and copy-move remain the hardest families} for the shipped model: on held-out v1 splicing is detected at {{m:/models/fused (w=0.4)/test_heldout/detection_by_family/splice|pct1}} and copy-move at {{m:/models/fused (w=0.4)/test_heldout/detection_by_family/copy_move|pct1}}; on frozen v2 at {{h:/models/fused/detection_by_family/splice|pct1}} and {{h:/models/fused/detection_by_family/copy_move|pct1}}.
+  \item \textbf{Localisation} is weak except copy-move (IoU {{m:/localisation_iou_mean/copy_move|f2}}; {{m:/localisation_iou_mean/splice|f2}} for splicing and {{m:/localisation_iou_mean/inpaint|f2}} for inpainting).
+  \item \textbf{Integrity cannot judge content signed by a compromised source}: in scenario F1 the signature is valid for every fake and the detector flags only {{at:/scenarios/compromised_source/content_flagged|int}} of {{at:/n_per_scenario|int}}.
+  \item \textbf{The audit log is tamper-evident, not tamper-proof}, and the ground-station API has no authentication or TLS (isolated lab). The optional sign-in protects the dashboard's access, not the API, and its cookies are not flagged \texttt{Secure} on plain HTTP.
+  \item \textbf{In the lab, the processor key is created next to the satellite key}, and in Lab W the satellite writes the public registry that the ground station reads (emulation shortcuts). A real deployment keeps the processor key on the ground system.
+  \item \textbf{Provenance-stripped edits are only as good as the detector:} of {{c:/n_products|int}} edited patches with the manifest removed, {{c:/two_axis_verdicts/strip_manifest/UNVERIFIED_NO_TRACES|int}} were released as \cd{UNVERIFIED_NO_TRACES}.
+  \item \textbf{The frozen held-out v2 set has now been used to measure the effect of our changes} (Section~\ref{sec:scenario}). It is a fair before/after comparison, but it is no longer an unbiased estimate for any further change.
+  \item \textbf{Lab sizes are small} (tens of messages per Docker run, {{at:/n_per_scenario|int}} trials per scenario); the {{c:/n_products|int}}-product campaign is the more meaningful trust-layer result.
+  \item \textbf{The three-VM VirtualBox lab was not booted by us}; the Windows + Kali VM lab, the Docker labs and the namespace lab were run.
+\end{itemize}

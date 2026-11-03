@@ -1,0 +1,64 @@
+\section{Threat model and segment analysis}\label{sec:threat}
+\rubric{threat model (15)}{We deliver a segment and trust-boundary analysis, six attacker profiles, a STRIDE mapping \cite{shostack}, and the AI component that enables the attack. Evidence: \cd{docs/THREAT_MODEL.md}.}
+
+\subsection{Assets and trust boundaries}
+\textbf{Assets.} (1) the pixel values; (2) the capture claim (product id, source, sensor, capture date, bands); (3) the processing history; (4) trust material: the source and processor private keys and the public-key registry; (5) the detector (model file and thresholds) and the audit log.
+
+\textbf{Trust boundaries.}
+\begin{itemize}
+  \item \textbf{TB1 source:} the private key never leaves it.
+  \item \textbf{TB2 transport:} anyone may read, modify, replay or drop messages (the attacker of our labs sits here).
+  \item \textbf{TB3 ground processing:} only registered processors may add signed steps.
+  \item \textbf{TB4 storage and API:} stored files may be swapped; the ground station re-verifies and logs.
+\end{itemize}
+
+\subsection{Attackers and controls}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{0.9cm}|L{3.8cm}|Y|Y|}
+\hline
+\textbf{ID} & \textbf{Attacker} & \textbf{Capability} & \textbf{Our control}\\
+\hline
+A1 & network man-in-the-middle & modify, replay, strip or swap manifests & signature, pixel digest, key registry, sequence numbers\\
+\hline
+A2 & storage insider & edit pixels or claims, add fake processing & digest re-verification, signed chain, audit log\\
+\hline
+A3 & AI-equipped forger (unsigned imagery) & resample, splice, copy-move, inpaint, re-encode & content detector, {{m:/target_fpr|pct0}} false-alarm budget\\
+\hline
+A4 & adaptive attacker who knows the detector & feathering, colour matching, rotations, laundering & held-out evaluation, laundering-robust training, provenance first\\
+\hline
+A5 & key thief or compromised payload & signs arbitrary content & revocation; content analysis still runs on signed data\\
+\hline
+A6 & algorithm substitution & claims md5 or none and recomputes it & algorithm pinning (sha256 + ed25519 only)\\
+\hline
+\end{tabularx}
+\caption{Attacker profiles.}
+\end{table}
+
+\textbf{The AI component that facilitates the attack.} Generative inpainting and synthesis (diffusion, GANs, learned inpainting) let an attacker erase or invent content with plausible texture at almost no cost \cite{zhao}, and learned post-processing erases forensic traces. AI also powers our detector, as in recent work on satellite-image manipulation \cite{horvath}, but Section~\ref{sec:scenario} shows how much any learned detector degrades on manipulations it has never seen, which is the main reason provenance comes first.
+
+\subsection{STRIDE on the imagery segment}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{2.4cm}|Y|Y|L{3.1cm}|}
+\hline
+\textbf{Threat} & \textbf{Example} & \textbf{Control $\to$ status} & \textbf{Residual risk}\\
+\hline
+Spoofing & re-sign a re-dated patch with an own key & trusted registry $\to$ \cd{UNKNOWN_KEY} & stolen key until revoked\\
+\hline
+Tampering & inpainting, copy-move, resampling, LSB after capture & pixel digest $\to$ \cd{PIXELS_ALTERED} & unsigned imagery relies on statistics\\
+\hline
+Repudiation & a processor denies an alteration & signed steps and hash-chained log & ---\\
+\hline
+Information disclosure & LSB embedding as a covert channel & any bit change breaks the digest & invisible to content analysis\\
+\hline
+Denial of service & flooding with large files & 2 MB limit, decode guard, rate limit, quarantine instead of crash & volumetric DoS out of scope\\
+\hline
+Elevation of privilege & forged processing step to legitimise an edit & step signature and link $\to$ \cd{CHAIN_BROKEN} & compromised processor key\\
+\hline
+\end{tabularx}
+\caption{STRIDE mapping.}
+\end{table}
+
+\subsection{Operator access: an extra boundary}
+The dashboard is itself an attack surface. An optional sign-in server gates access with JWT tokens \cite{rfc7519} stored in \texttt{HttpOnly} cookies, so that page scripts cannot read them (Section~\ref{sec:auth}). This protects the \emph{dashboard}; the ground-station ingest API has no authentication or TLS in the isolated lab, which is listed as a limitation (Section~\ref{sec:limits}).

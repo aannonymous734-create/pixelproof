@@ -1,0 +1,1335 @@
+{
+  "scenario": "invisible_tampering",
+  "id": "A2",
+  "kind": "integrity",
+  "title": "Invisible tampering (hidden bits)",
+  "attacker_action": "Flips the least-significant bit of 512 pixels: invisible to the eye and to content detectors.",
+  "why_it_fails": "Any single changed pixel value changes the SHA-256 digest, visible or not.",
+  "expected": "PIXELS_ALTERED",
+  "n": 20,
+  "matches_expected": 20,
+  "rate": 1.0,
+  "control": {
+    "n": 20,
+    "verified": 20
+  },
+  "audit_log": {
+    "entries": 40,
+    "chain_valid": true,
+    "first_bad_entry": null
+  },
+  "trials": [
+    {
+      "trial": 1,
+      "sample": "Industrial_1846.jpg",
+      "matches_expected": true,
+      "signed_digest": "27f8b124170a37c6\u2026",
+      "received_digest": "ac3c7cbec504b027\u2026",
+      "product_id": "LAB-A2-001",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2131,
+        "threshold": 0.4414,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "cbf7026db153340e3b2f726a9c0298dc999ebd9be66aa8577f5ee36d14f4ff72",
+      "timeline": [
+        {
+          "t_ms": 1.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-001-ctl",
+          "pixel_digest": "a73bbecf32b60fba\u2026",
+          "seq": 1
+        },
+        {
+          "t_ms": 40.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "0798685c64d4827d\u2026"
+        },
+        {
+          "t_ms": 40.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-001",
+          "pixel_digest": "27f8b124170a37c6\u2026",
+          "seq": 2
+        },
+        {
+          "t_ms": 41.1,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 84.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "cbf7026db153340e\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 2,
+      "sample": "Industrial_767.jpg",
+      "matches_expected": true,
+      "signed_digest": "a73bbecf32b60fba\u2026",
+      "received_digest": "a6c8f7101c00c6ac\u2026",
+      "product_id": "LAB-A2-002",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.298,
+        "threshold": 0.4441,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "cc349bebe89101da884848f4c4517eefc51de468d5bfbbf84fe4ab6c40774180",
+      "timeline": [
+        {
+          "t_ms": 86.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-002-ctl",
+          "pixel_digest": "be2cee9c36ac3ff5\u2026",
+          "seq": 3
+        },
+        {
+          "t_ms": 122.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "0482284cb0399be2\u2026"
+        },
+        {
+          "t_ms": 122.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-002",
+          "pixel_digest": "a73bbecf32b60fba\u2026",
+          "seq": 4
+        },
+        {
+          "t_ms": 122.5,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 164.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "cc349bebe89101da\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 3,
+      "sample": "Forest_2520.jpg",
+      "matches_expected": true,
+      "signed_digest": "be2cee9c36ac3ff5\u2026",
+      "received_digest": "a9d767ee66c514cc\u2026",
+      "product_id": "LAB-A2-003",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.242,
+        "threshold": 0.436,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "89e0fd3c8ed40070d30b185bc5121b9bb12c9200ff961df4b36dbdc3349b5b8b",
+      "timeline": [
+        {
+          "t_ms": 165.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-003-ctl",
+          "pixel_digest": "f57ab96ccc96c577\u2026",
+          "seq": 5
+        },
+        {
+          "t_ms": 213.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "2d4f532aeba1cbe5\u2026"
+        },
+        {
+          "t_ms": 213.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-003",
+          "pixel_digest": "be2cee9c36ac3ff5\u2026",
+          "seq": 6
+        },
+        {
+          "t_ms": 213.9,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 251.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "89e0fd3c8ed40070\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 4,
+      "sample": "SeaLake_2373.jpg",
+      "matches_expected": true,
+      "signed_digest": "f57ab96ccc96c577\u2026",
+      "received_digest": "1e761a452bab10ce\u2026",
+      "product_id": "LAB-A2-004",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.3335,
+        "threshold": 0.4361,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "632bf0914915c8bfb3ed31018179add89fddaee9e3f639311ad2fa48548ef467",
+      "timeline": [
+        {
+          "t_ms": 252.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-004-ctl",
+          "pixel_digest": "f4d0cf0f41976a3e\u2026",
+          "seq": 7
+        },
+        {
+          "t_ms": 301.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "68e71e09a11df1b2\u2026"
+        },
+        {
+          "t_ms": 301.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-004",
+          "pixel_digest": "f57ab96ccc96c577\u2026",
+          "seq": 8
+        },
+        {
+          "t_ms": 301.8,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 340.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "632bf0914915c8bf\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 5,
+      "sample": "Residential_1482.jpg",
+      "matches_expected": true,
+      "signed_digest": "f4d0cf0f41976a3e\u2026",
+      "received_digest": "3f09eeaee9c3ba96\u2026",
+      "product_id": "LAB-A2-005",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1148,
+        "threshold": 0.4422,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "2310ff9212c3541c95bc247df2d29b41e1738cb2431024aa3c65fea38dd104ae",
+      "timeline": [
+        {
+          "t_ms": 341.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-005-ctl",
+          "pixel_digest": "4636100aef81a006\u2026",
+          "seq": 9
+        },
+        {
+          "t_ms": 383.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "b0c4eff18fb9356d\u2026"
+        },
+        {
+          "t_ms": 383.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-005",
+          "pixel_digest": "f4d0cf0f41976a3e\u2026",
+          "seq": 10
+        },
+        {
+          "t_ms": 384.1,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 434.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "2310ff9212c3541c\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 6,
+      "sample": "River_1196.jpg",
+      "matches_expected": true,
+      "signed_digest": "4636100aef81a006\u2026",
+      "received_digest": "f745410eb95128ff\u2026",
+      "product_id": "LAB-A2-006",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1964,
+        "threshold": 0.4479,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "e669d3a0e4f32daf5a0e3862bc30dee74d2575c5d35917f3627cdb80d87f12e9",
+      "timeline": [
+        {
+          "t_ms": 435.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-006-ctl",
+          "pixel_digest": "168a0b1e0cff167f\u2026",
+          "seq": 11
+        },
+        {
+          "t_ms": 481.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "a0a395ce8897e241\u2026"
+        },
+        {
+          "t_ms": 481.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-006",
+          "pixel_digest": "4636100aef81a006\u2026",
+          "seq": 12
+        },
+        {
+          "t_ms": 482.0,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 532.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "e669d3a0e4f32daf\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 7,
+      "sample": "Pasture_964.jpg",
+      "matches_expected": true,
+      "signed_digest": "168a0b1e0cff167f\u2026",
+      "received_digest": "86a806f8558ce61f\u2026",
+      "product_id": "LAB-A2-007",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1756,
+        "threshold": 0.4369,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "48fc102adc1a7b0a5f72bf7bf25d4f34ded1ca27e5628507ec3fdd5733063672",
+      "timeline": [
+        {
+          "t_ms": 534.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-007-ctl",
+          "pixel_digest": "5ed60e9df13a4ede\u2026",
+          "seq": 13
+        },
+        {
+          "t_ms": 575.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "8e39d8210445515c\u2026"
+        },
+        {
+          "t_ms": 576.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-007",
+          "pixel_digest": "168a0b1e0cff167f\u2026",
+          "seq": 14
+        },
+        {
+          "t_ms": 576.3,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 621.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "48fc102adc1a7b0a\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 8,
+      "sample": "Forest_1655.jpg",
+      "matches_expected": true,
+      "signed_digest": "5ed60e9df13a4ede\u2026",
+      "received_digest": "57427f8d5d19751c\u2026",
+      "product_id": "LAB-A2-008",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2173,
+        "threshold": 0.4363,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "f317ab7c74ddf62af70f64611be1a83f229c34243aed914efd720ee4798c053d",
+      "timeline": [
+        {
+          "t_ms": 622.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-008-ctl",
+          "pixel_digest": "890aff0aa5cad38e\u2026",
+          "seq": 15
+        },
+        {
+          "t_ms": 666.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "954a4b5803fbe9d3\u2026"
+        },
+        {
+          "t_ms": 666.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-008",
+          "pixel_digest": "5ed60e9df13a4ede\u2026",
+          "seq": 16
+        },
+        {
+          "t_ms": 667.0,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 709.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "f317ab7c74ddf62a\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 9,
+      "sample": "SeaLake_1314.jpg",
+      "matches_expected": true,
+      "signed_digest": "890aff0aa5cad38e\u2026",
+      "received_digest": "6c8ca84508108181\u2026",
+      "product_id": "LAB-A2-009",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.251,
+        "threshold": 0.4367,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "5781121026ab059d68566939efb775958bb20f3253e83d3a4cc5a66180242a25",
+      "timeline": [
+        {
+          "t_ms": 710.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-009-ctl",
+          "pixel_digest": "ce626a1403dd439e\u2026",
+          "seq": 17
+        },
+        {
+          "t_ms": 762.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "6c8e34e09286cb7c\u2026"
+        },
+        {
+          "t_ms": 763.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-009",
+          "pixel_digest": "890aff0aa5cad38e\u2026",
+          "seq": 18
+        },
+        {
+          "t_ms": 763.1,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 806.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "5781121026ab059d\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 10,
+      "sample": "PermanentCrop_1803.jpg",
+      "matches_expected": true,
+      "signed_digest": "ce626a1403dd439e\u2026",
+      "received_digest": "7b18aabc703017f8\u2026",
+      "product_id": "LAB-A2-010",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1574,
+        "threshold": 0.4536,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "31bc8a98370b6a58ddf400258f072a8966a9c3943404cdc578f891ce26389cdf",
+      "timeline": [
+        {
+          "t_ms": 808.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-010-ctl",
+          "pixel_digest": "6412f9511d03544e\u2026",
+          "seq": 19
+        },
+        {
+          "t_ms": 871.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "f799659fd76cb325\u2026"
+        },
+        {
+          "t_ms": 872.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-010",
+          "pixel_digest": "ce626a1403dd439e\u2026",
+          "seq": 20
+        },
+        {
+          "t_ms": 872.5,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 965.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "31bc8a98370b6a58\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 11,
+      "sample": "PermanentCrop_1083.jpg",
+      "matches_expected": true,
+      "signed_digest": "6412f9511d03544e\u2026",
+      "received_digest": "2db4a3c223fd7aa3\u2026",
+      "product_id": "LAB-A2-011",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1448,
+        "threshold": 0.437,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "0e82f26c2d431ddcf26cb1346365b674611c5077fd563df6691159fc8ac127e4",
+      "timeline": [
+        {
+          "t_ms": 966.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-011-ctl",
+          "pixel_digest": "163cfed3a86deb98\u2026",
+          "seq": 21
+        },
+        {
+          "t_ms": 1030.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "50942ba07282ca6b\u2026"
+        },
+        {
+          "t_ms": 1030.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-011",
+          "pixel_digest": "6412f9511d03544e\u2026",
+          "seq": 22
+        },
+        {
+          "t_ms": 1030.7,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 1097.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "0e82f26c2d431ddc\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 12,
+      "sample": "Industrial_2267.jpg",
+      "matches_expected": true,
+      "signed_digest": "163cfed3a86deb98\u2026",
+      "received_digest": "b1660dc4bd7326fc\u2026",
+      "product_id": "LAB-A2-012",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4671,
+        "threshold": 0.5473,
+        "evidence": [
+          "patch appears re-encoded after capture (p=0.55); threshold raised to 0.55 to avoid accusing benign re-compression"
+        ]
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing",
+        "patch appears re-encoded after capture (p=0.55); threshold raised to 0.55 to avoid accusing benign re-compression"
+      ],
+      "ledger_hash": "7927b0fae8adfbce28218e7f5c20f7c0dac52e1d4db23924c19062cb8f63b235",
+      "timeline": [
+        {
+          "t_ms": 1099.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-012-ctl",
+          "pixel_digest": "419dcacfd3ee65a4\u2026",
+          "seq": 23
+        },
+        {
+          "t_ms": 1159.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "9c6c007bc514e5ec\u2026"
+        },
+        {
+          "t_ms": 1159.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-012",
+          "pixel_digest": "163cfed3a86deb98\u2026",
+          "seq": 24
+        },
+        {
+          "t_ms": 1159.7,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 1224.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "7927b0fae8adfbce\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 13,
+      "sample": "AnnualCrop_1226.jpg",
+      "matches_expected": true,
+      "signed_digest": "419dcacfd3ee65a4\u2026",
+      "received_digest": "81cbe94469cce2fe\u2026",
+      "product_id": "LAB-A2-013",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1525,
+        "threshold": 0.4363,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "fc2815720b055ac8cc2a6a712c742a2b5909a124a899a0247fb3c921aaec5c8e",
+      "timeline": [
+        {
+          "t_ms": 1225.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-013-ctl",
+          "pixel_digest": "8895d1e45e246cda\u2026",
+          "seq": 25
+        },
+        {
+          "t_ms": 1287.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "43dcdd26d394d87e\u2026"
+        },
+        {
+          "t_ms": 1287.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-013",
+          "pixel_digest": "419dcacfd3ee65a4\u2026",
+          "seq": 26
+        },
+        {
+          "t_ms": 1287.7,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 1341.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "fc2815720b055ac8\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 14,
+      "sample": "River_1268.jpg",
+      "matches_expected": true,
+      "signed_digest": "8895d1e45e246cda\u2026",
+      "received_digest": "bdf8a6142bc15a2d\u2026",
+      "product_id": "LAB-A2-014",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4386,
+        "threshold": 0.4453,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "1ae4239a737cda07b9e7c7916922e7a9d8f16f48bab45bf72d46fc979b3614e6",
+      "timeline": [
+        {
+          "t_ms": 1343.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-014-ctl",
+          "pixel_digest": "77bd7698faf4f6db\u2026",
+          "seq": 27
+        },
+        {
+          "t_ms": 1398.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "923e14fc585de297\u2026"
+        },
+        {
+          "t_ms": 1398.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-014",
+          "pixel_digest": "8895d1e45e246cda\u2026",
+          "seq": 28
+        },
+        {
+          "t_ms": 1399.0,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 1455.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "1ae4239a737cda07\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 15,
+      "sample": "Residential_2181.jpg",
+      "matches_expected": true,
+      "signed_digest": "77bd7698faf4f6db\u2026",
+      "received_digest": "ced7a23032babe7d\u2026",
+      "product_id": "LAB-A2-015",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1555,
+        "threshold": 0.4383,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "2cbc2cc4fd759b60489548fd59c73fd3f8033a79a87351100a4f9444efa91eec",
+      "timeline": [
+        {
+          "t_ms": 1456.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-015-ctl",
+          "pixel_digest": "a030d0ead7009e0c\u2026",
+          "seq": 29
+        },
+        {
+          "t_ms": 1512.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "b1323fae79cf94d4\u2026"
+        },
+        {
+          "t_ms": 1512.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-015",
+          "pixel_digest": "77bd7698faf4f6db\u2026",
+          "seq": 30
+        },
+        {
+          "t_ms": 1512.9,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 1572.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "2cbc2cc4fd759b60\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 16,
+      "sample": "Highway_2453.jpg",
+      "matches_expected": true,
+      "signed_digest": "a030d0ead7009e0c\u2026",
+      "received_digest": "dc77b4abfb781e9f\u2026",
+      "product_id": "LAB-A2-016",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2566,
+        "threshold": 0.4495,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "00629f8d3ce7d4f75bdc6e396a0b961caba09da8551a711362ec8f74ede9bff0",
+      "timeline": [
+        {
+          "t_ms": 1573.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-016-ctl",
+          "pixel_digest": "113c5c08a8433f94\u2026",
+          "seq": 31
+        },
+        {
+          "t_ms": 1632.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "d4480683007ae0e6\u2026"
+        },
+        {
+          "t_ms": 1632.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-016",
+          "pixel_digest": "a030d0ead7009e0c\u2026",
+          "seq": 32
+        },
+        {
+          "t_ms": 1633.1,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 1689.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "00629f8d3ce7d4f7\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 17,
+      "sample": "HerbaceousVegetation_278.jpg",
+      "matches_expected": true,
+      "signed_digest": "113c5c08a8433f94\u2026",
+      "received_digest": "1f857642e004be44\u2026",
+      "product_id": "LAB-A2-017",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1555,
+        "threshold": 0.4366,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "8424d3ffae14eefaa8d45ac4abc5bb782438884e64bbe9ff79b14636061c7cc8",
+      "timeline": [
+        {
+          "t_ms": 1691.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-017-ctl",
+          "pixel_digest": "679273182252c336\u2026",
+          "seq": 33
+        },
+        {
+          "t_ms": 1738.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "2ebdda8852421eba\u2026"
+        },
+        {
+          "t_ms": 1739.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-017",
+          "pixel_digest": "113c5c08a8433f94\u2026",
+          "seq": 34
+        },
+        {
+          "t_ms": 1739.2,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 1793.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "8424d3ffae14eefa\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 18,
+      "sample": "HerbaceousVegetation_1941.jpg",
+      "matches_expected": true,
+      "signed_digest": "679273182252c336\u2026",
+      "received_digest": "70287d35842335c7\u2026",
+      "product_id": "LAB-A2-018",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2554,
+        "threshold": 0.4361,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "bb1288421b8a9da13f7d954b34e3e941cf3f8e6b34022da6422a2e31933f7344",
+      "timeline": [
+        {
+          "t_ms": 1794.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-018-ctl",
+          "pixel_digest": "fd91be430f3ad4e5\u2026",
+          "seq": 35
+        },
+        {
+          "t_ms": 1853.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "d5ef8a57fdfde76e\u2026"
+        },
+        {
+          "t_ms": 1853.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-018",
+          "pixel_digest": "679273182252c336\u2026",
+          "seq": 36
+        },
+        {
+          "t_ms": 1853.9,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 1907.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "bb1288421b8a9da1\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 19,
+      "sample": "AnnualCrop_2314.jpg",
+      "matches_expected": true,
+      "signed_digest": "fd91be430f3ad4e5\u2026",
+      "received_digest": "1c535e9bb4717a55\u2026",
+      "product_id": "LAB-A2-019",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.0718,
+        "threshold": 0.4368,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "8f58184dd0fa2af7bfd99fb18ad5e2d6b823fd2635f6d036aa873e3db86f6bc8",
+      "timeline": [
+        {
+          "t_ms": 1908.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-019-ctl",
+          "pixel_digest": "e0ef9d3a609526a9\u2026",
+          "seq": 37
+        },
+        {
+          "t_ms": 1943.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "f1f2d4a224275c84\u2026"
+        },
+        {
+          "t_ms": 1943.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-019",
+          "pixel_digest": "fd91be430f3ad4e5\u2026",
+          "seq": 38
+        },
+        {
+          "t_ms": 1944.1,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 1991.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "8f58184dd0fa2af7\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 20,
+      "sample": "Pasture_1471.jpg",
+      "matches_expected": true,
+      "signed_digest": "e0ef9d3a609526a9\u2026",
+      "received_digest": "5a5ba422d318f58a\u2026",
+      "product_id": "LAB-A2-020",
+      "integrity_status": "PIXELS_ALTERED",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.3298,
+        "threshold": 0.4363,
+        "evidence": []
+      },
+      "reasons": [
+        "pixels differ from the last signed digest: modified after capture/processing"
+      ],
+      "ledger_hash": "252e7ec43c2b5a8db58075060dd62b86b44129ccbd5b90e42ea94ab65370abd8",
+      "timeline": [
+        {
+          "t_ms": 1992.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-020-ctl",
+          "pixel_digest": "980c6c0ec6e89e8c\u2026",
+          "seq": 39
+        },
+        {
+          "t_ms": 2038.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "1cb4d9c78d2e018c\u2026"
+        },
+        {
+          "t_ms": 2038.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-A2-020",
+          "pixel_digest": "e0ef9d3a609526a9\u2026",
+          "seq": 40
+        },
+        {
+          "t_ms": 2038.9,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Invisible tampering (hidden bits)"
+        },
+        {
+          "t_ms": 2074.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "PIXELS_ALTERED",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "252e7ec43c2b5a8d\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    }
+  ],
+  "environment": {
+    "python": "3.12.2",
+    "platform": "Windows",
+    "cpu_threads": 8,
+    "model_mode": "features+cnn",
+    "seed": 7,
+    "samples": "samples/authentic (official EuroSAT RGB patches, unmodified)"
+  },
+  "duration_s": 2.21
+}

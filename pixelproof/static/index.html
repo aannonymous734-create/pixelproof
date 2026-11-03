@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PixelProof ground station</title>
+<style>
+  :root { --bg:#0e1621; --panel:#16212f; --line:#25364a; --text:#e6edf3; --muted:#94a6b8;
+          --ok:#3fb27f; --warn:#e3a33b; --bad:#e5534b; --accent:#4aa3df; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { padding:18px 24px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap; }
+  header h1 { margin:0; font-size:20px; }
+  header span { color:var(--muted); font-size:13px; }
+  main { display:grid; grid-template-columns:minmax(320px, 420px) 1fr; gap:16px; padding:16px 24px; }
+  @media (max-width: 860px) { main { grid-template-columns:1fr; padding:16px; } }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px; }
+  h2 { font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:0 0 12px; }
+  label { display:block; font-size:13px; color:var(--muted); margin:10px 0 4px; }
+  input[type=file] { width:100%; color:var(--text); }
+  button { margin-top:14px; width:100%; padding:10px; border:0; border-radius:8px; background:var(--accent); color:#06121d; font-weight:600; cursor:pointer; }
+  .verdict { font-size:22px; font-weight:700; padding:10px 14px; border-radius:8px; margin-bottom:12px; }
+  .VERIFIED { background:rgba(63,178,127,.18); color:var(--ok); }
+  .UNVERIFIED_NO_TRACES { background:rgba(148,166,184,.15); color:var(--text); }
+  .SUSPICIOUS, .SIGNED_BUT_SUSPICIOUS { background:rgba(227,163,59,.18); color:var(--warn); }
+  .ALTERED_AFTER_CAPTURE { background:rgba(229,83,75,.18); color:var(--bad); }
+  .axes { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+  .axis { border:1px solid var(--line); border-radius:8px; padding:10px; }
+  .axis b { display:block; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+  .row { display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start; }
+  img.patch { width:256px; height:256px; image-rendering:pixelated; border-radius:6px; border:1px solid var(--line); }
+  .bar { display:flex; align-items:center; gap:8px; font-size:13px; margin:4px 0; }
+  .bar i { display:block; height:8px; background:var(--accent); border-radius:4px; }
+  .bar span:first-child { width:160px; color:var(--muted); }
+  ul { margin:6px 0 0; padding-left:18px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); }
+  th { color:var(--muted); font-weight:600; }
+  .mono { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12px; }
+  .muted { color:var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>PixelProof ground station</h1>
+  <span id="health">connecting...</span>
+</header>
+<main>
+  <section class="panel">
+    <h2>Analyse a patch</h2>
+    <form id="f">
+      <label for="img">Image (PNG, JPEG, TIFF, WebP; 64x64 EuroSAT patch)</label>
+      <input id="img" type="file" accept="image/*" required>
+      <label for="man">Provenance manifest (optional .json)</label>
+      <input id="man" type="file" accept=".json,application/json">
+      <button type="submit">Verify and analyse</button>
+    </form>
+    <p class="muted" style="font-size:13px">Integrity and content are judged separately: a valid signature proves the
+      pixels and claims are unchanged since capture; content analysis can only find traces of manipulation.
+      "No traces" is never reported as "authentic".</p>
+  </section>
+  <section class="panel" id="out"><h2>Result</h2><p class="muted">No patch analysed yet.</p></section>
+  <section class="panel" style="grid-column:1 / -1">
+    <h2>Audit log (live downlink + analyst checks) <span id="chain" class="muted"></span></h2>
+    <table><thead><tr><th>Time (UTC)</th><th>Channel</th><th>Product</th><th>Integrity</th><th>Content</th><th>Verdict</th><th>Action</th><th>Entry hash</th></tr></thead>
+      <tbody id="log"></tbody></table>
+  </section>
+</main>
+<script>
+const el = (tag, text, cls) => { const e = document.createElement(tag); if (text !== undefined) e.textContent = text; if (cls) e.className = cls; return e; };
+
+async function health() {
+  try { const h = await (await fetch('/api/v1/health')).json();
+    document.getElementById('health').textContent = `model ${h.model} (${h.model_mode}) · ${h.trusted_keys} trusted key(s)`;
+  } catch { document.getElementById('health').textContent = 'service unreachable'; }
+}
+
+function render(r) {
+  const out = document.getElementById('out'); out.replaceChildren(el('h2', 'Result'));
+  out.append(el('div', r.verdict.replaceAll('_', ' ') + ' → ' + r.action, 'verdict ' + r.verdict));
+  const axes = el('div', undefined, 'axes');
+  const a1 = el('div', undefined, 'axis'); a1.append(el('b', 'Integrity (cryptography)'), el('span', r.integrity.status));
+  const a2 = el('div', undefined, 'axis'); a2.append(el('b', 'Content (forensics + AI)'),
+     el('span', `${r.content.type} · score ${r.content.manipulation_score} / threshold ${r.content.threshold}`));
+  axes.append(a1, a2); out.append(axes);
+  const row = el('div', undefined, 'row');
+  const im = el('img', undefined, 'patch'); im.src = 'data:image/png;base64,' + r.heatmap_png_b64; im.alt = 'patch with evidence heatmap';
+  const right = el('div'); right.style.flex = '1'; right.style.minWidth = '260px';
+  for (const [k, v] of Object.entries(r.content.probabilities)) {
+    const b = el('div', undefined, 'bar'); const bar = el('i'); bar.style.width = Math.round(v * 160) + 'px';
+    b.append(el('span', k), bar, el('span', (100 * v).toFixed(1) + '%')); right.append(b);
+  }
+  right.append(el('b', 'Reasons'));
+  const ul = el('ul'); r.reasons.forEach(x => ul.append(el('li', x))); right.append(ul);
+  right.append(el('p', 'pixel digest ' + r.pixel_digest, 'mono muted'));
+  row.append(im, right); out.append(row);
+}
+
+document.getElementById('f').addEventListener('submit', async ev => {
+  ev.preventDefault();
+  const fd = new FormData(); fd.append('image', document.getElementById('img').files[0]);
+  const m = document.getElementById('man').files[0]; if (m) fd.append('manifest', m);
+  const res = await fetch('/api/v1/analyse', { method: 'POST', body: fd });
+  const body = await res.json();
+  if (!res.ok) { const out = document.getElementById('out'); out.replaceChildren(el('h2', 'Result'), el('p', body.detail || 'error')); return; }
+  render(body); loadLog();
+});
+
+async function loadLog() {
+  const d = await (await fetch('/api/v1/ledger?limit=30')).json();
+  document.getElementById('chain').textContent = d.chain_valid ? '· hash chain intact' : '· HASH CHAIN BROKEN at entry ' + d.first_bad_entry;
+  const tb = document.getElementById('log'); tb.replaceChildren();
+  for (const e of d.entries) {
+    const tr = el('tr');
+    [e.time.replace('+00:00', ''), e.channel, e.product_id || '-', e.integrity, e.content_type, e.verdict, e.action].forEach(x => tr.append(el('td', x)));
+    tr.append(el('td', e.hash.slice(0, 12) + '…', 'mono')); tb.append(tr);
+  }
+}
+health(); loadLog(); setInterval(loadLog, 3000);
+</script>
+</body>
+</html>

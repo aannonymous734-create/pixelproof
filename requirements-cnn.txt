@@ -1,0 +1,5 @@
+# Optional: the pixel CNN (its measured gain is in results/RESULTS.md, ablation section).
+# Without it PixelProof runs with the feature model only (still calibrated to 5% false alarms).
+# CPU-only wheel, no GPU needed:
+#   pip install -r requirements-cnn.txt --index-url https://download.pytorch.org/whl/cpu
+torch==2.15.0

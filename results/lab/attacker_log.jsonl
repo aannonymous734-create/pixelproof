@@ -1,0 +1,16 @@
+{"product_id": "S2-River_1685-000081", "attack": "passthrough", "expected_integrity": "VERIFIED", "ground_verdict": "VERIFIED", "ground_integrity": "VERIFIED"}
+{"product_id": "S2-Forest_1845-000082", "attack": "passthrough", "expected_integrity": "VERIFIED", "ground_verdict": "VERIFIED", "ground_integrity": "VERIFIED"}
+{"product_id": "S2-HerbaceousVegetation_627-000083", "attack": "passthrough", "expected_integrity": "VERIFIED", "ground_verdict": "VERIFIED", "ground_integrity": "VERIFIED"}
+{"product_id": "S2-HerbaceousVegetation_2167-000084", "attack": "pixel_copy_move", "expected_integrity": "PIXELS_ALTERED", "ground_verdict": "ALTERED_AFTER_CAPTURE", "ground_integrity": "PIXELS_ALTERED"}
+{"product_id": "S2-SeaLake_2422-000085", "attack": "passthrough", "expected_integrity": "VERIFIED", "ground_verdict": "VERIFIED", "ground_integrity": "VERIFIED"}
+{"product_id": "S2-SeaLake_2409-000086", "attack": "passthrough", "expected_integrity": "VERIFIED", "ground_verdict": "VERIFIED", "ground_integrity": "VERIFIED"}
+{"product_id": "S2-Residential_2771-000087", "attack": "pixel_inpaint", "expected_integrity": "PIXELS_ALTERED", "ground_verdict": "ALTERED_AFTER_CAPTURE", "ground_integrity": "PIXELS_ALTERED"}
+{"product_id": "S2-River_1560-000088", "attack": "passthrough", "expected_integrity": "VERIFIED", "ground_verdict": "VERIFIED", "ground_integrity": "VERIFIED"}
+{"product_id": "S2-AnnualCrop_1799-000089", "attack": "date_replace_resign", "expected_integrity": "UNKNOWN_KEY", "ground_verdict": "ALTERED_AFTER_CAPTURE", "ground_integrity": "UNKNOWN_KEY"}
+{"product_id": "S2-Industrial_1102-000090", "attack": "pixel_inpaint", "expected_integrity": "PIXELS_ALTERED", "ground_verdict": "ALTERED_AFTER_CAPTURE", "ground_integrity": "PIXELS_ALTERED"}
+{"product_id": "S2-HerbaceousVegetation_1787-000091", "attack": "passthrough", "expected_integrity": "VERIFIED", "ground_verdict": "VERIFIED", "ground_integrity": "VERIFIED"}
+{"product_id": "S2-Highway_728-000092", "attack": "passthrough", "expected_integrity": "VERIFIED", "ground_verdict": "VERIFIED", "ground_integrity": "VERIFIED"}
+{"product_id": "S2-Industrial_2203-000093", "attack": "passthrough", "expected_integrity": "VERIFIED", "ground_verdict": "VERIFIED", "ground_integrity": "VERIFIED"}
+{"product_id": "S2-Pasture_1048-000094", "attack": "date_replace", "expected_integrity": "BAD_SIGNATURE", "ground_verdict": "ALTERED_AFTER_CAPTURE", "ground_integrity": "BAD_SIGNATURE"}
+{"product_id": "S2-HerbaceousVegetation_1569-000095", "attack": "date_replace", "expected_integrity": "BAD_SIGNATURE", "ground_verdict": "ALTERED_AFTER_CAPTURE", "ground_integrity": "BAD_SIGNATURE"}
+{"product_id": "S2-River_52-000096", "attack": "pixel_resample", "expected_integrity": "PIXELS_ALTERED", "ground_verdict": "ALTERED_AFTER_CAPTURE", "ground_integrity": "PIXELS_ALTERED"}

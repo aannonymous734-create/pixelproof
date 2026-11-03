@@ -1,0 +1,71 @@
+# PixelProof attack lab: three VMs in a ROUTED topology.
+#
+# It mirrors lab/netns_lab.py, the network-namespace version that WAS run (results/lab/): the attacker is a
+# compromised router sitting between two isolated subnets, so a transparent man-in-the-middle works with a plain
+# iptables redirect. (On one flat network the satellite would talk straight to the ground station and the
+# attacker would never see the packets.)
+#
+#   satellite (Ubuntu) 10.56.1.10 --[pxp-space]--+
+#                                                 attacker (Kali) 10.56.1.1 | 10.56.2.1   forwards packets
+#   ground    (Ubuntu) 10.56.2.30 --[pxp-ground]-+
+#
+# STATUS: these files have NOT been booted by the authors (no Vagrant on the build machine). docs/VM_LAB.md and
+# vm/README.md contain a first-boot checklist. The same attacks were run in Docker and in network namespaces.
+#
+# Isolation. The lab networks are VirtualBox INTERNAL networks: no host access, no bridge, no internet. Vagrant
+# additionally gives every VM a NAT adapter (adapter 1) for management and for the one-time package download.
+# NAT is outbound-only (nothing from the internet can reach the VMs); to cut even that before an attack run use
+# vm/README.md "STEP 8" (VBoxManage controlvm ... setlinkstate1 off).
+#
+# Only the folders the lab needs are shared, READ-ONLY. Never the whole repository: the host's runtime/ and data/
+# folders (which can hold demo private keys) must not be visible to the attacker VM.
+#
+# Bring up:  cd lab && vagrant up        Dashboard: http://127.0.0.1:8000 (forwarded from the ground VM)
+# Tear down: vagrant destroy -f          Optional console windows: LAB_GUI=1 vagrant up
+
+SHARED = %w[pixelproof simulation models samples]
+
+Vagrant.configure("2") do |config|
+  config.vm.box_check_update = false
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  SHARED.each { |d| config.vm.synced_folder "../#{d}", "/opt/pixelproof/#{d}", mount_options: ["ro"] }
+  config.vm.provision "file", source: "../requirements.txt", destination: "/tmp/requirements.txt"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.linked_clone = true
+    vb.gui = ENV["LAB_GUI"] == "1"
+  end
+
+  config.vm.define "ground" do |m|
+    m.vm.box = "bento/ubuntu-24.04"
+    m.vm.hostname = "ground"
+    m.vm.network "private_network", ip: "10.56.2.30", netmask: "255.255.255.0", virtualbox__intnet: "pxp-ground"
+    # View the dashboard from the host browser. Delete this line to keep the dashboard reachable only inside the lab.
+    m.vm.network "forwarded_port", guest: 8000, host: 8000, host_ip: "127.0.0.1", auto_correct: true, id: "dashboard"
+    m.vm.provider("virtualbox") { |vb| vb.name = "pxp-ground"; vb.memory = 2048; vb.cpus = 2 }
+    m.vm.provision "shell", path: "provision/common.sh"
+    m.vm.provision "shell", path: "provision/ground.sh"
+    m.vm.provision "shell", run: "always", inline: "ip route replace 10.56.1.0/24 via 10.56.2.1"
+  end
+
+  config.vm.define "satellite" do |m|
+    m.vm.box = "bento/ubuntu-24.04"
+    m.vm.hostname = "satellite"
+    m.vm.network "private_network", ip: "10.56.1.10", netmask: "255.255.255.0", virtualbox__intnet: "pxp-space"
+    m.vm.provider("virtualbox") { |vb| vb.name = "pxp-satellite"; vb.memory = 1536; vb.cpus = 1 }
+    m.vm.provision "shell", path: "provision/common.sh"
+    m.vm.provision "shell", path: "provision/satellite.sh"
+    m.vm.provision "shell", run: "always", inline: "ip route replace 10.56.2.0/24 via 10.56.1.1"
+  end
+
+  config.vm.define "attacker" do |m|
+    m.vm.box = "kalilinux/rolling"
+    m.vm.hostname = "attacker"
+    m.vm.network "private_network", ip: "10.56.1.1", netmask: "255.255.255.0", virtualbox__intnet: "pxp-space"
+    m.vm.network "private_network", ip: "10.56.2.1", netmask: "255.255.255.0", virtualbox__intnet: "pxp-ground"
+    m.vm.provider("virtualbox") { |vb| vb.name = "pxp-attacker"; vb.memory = 1536; vb.cpus = 1 }
+    m.vm.provision "shell", path: "provision/common.sh"
+    m.vm.provision "shell", path: "provision/attacker.sh"
+    m.vm.provision "shell", run: "always", inline: "sysctl -w net.ipv4.ip_forward=1"
+  end
+end

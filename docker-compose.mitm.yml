@@ -1,0 +1,120 @@
+# Transparent man-in-the-middle lab in Docker (routed topology; the container version of lab/netns_lab.py).
+#
+#   satellite 172.28.1.10 --[spacelink]--+
+#                                         attacker 172.28.1.1 | 172.28.2.1   (a router that also redirects)
+#   ground    172.28.2.30 --[groundnet]--+
+#
+# The satellite is configured with ONE address: the ground station's (http://172.28.2.30:8000). It has never heard of
+# the attacker. But the satellite's only route to the ground subnet goes THROUGH the attacker, and the attacker adds a
+# standard iptables DNAT rule that silently sends ground-bound traffic to its own tampering relay. That is a
+# transparent man-in-the-middle with an ordinary mechanism (the one transparent proxies use): no ARP spoofing, no
+# packet forging. The satellite's own packet capture (results/docker_mitm/) shows it only ever addressed 172.28.2.30.
+#
+# Isolation: the two networks are private bridges with address translation (masquerade) switched off, so the
+# containers can not reach the internet. The attacker needs NET_ADMIN (routing + iptables) INSIDE its own network
+# namespace only. Never run this against anything that is not these three containers.
+#
+# Run:  docker compose -f docker-compose.mitm.yml up --build --abort-on-container-exit --exit-code-from satellite
+# Then: python scripts/check_transparency.py
+#       python simulation/score_demo.py --log results/docker_mitm/attacker_log.jsonl --ledger results/docker_mitm/ledger.jsonl
+# Stop: docker compose -f docker-compose.mitm.yml down -v
+
+name: pixelproof-mitm
+
+services:
+  ground:
+    build: { context: ., target: lab }
+    user: root            # only to add one route, then the service drops to the unprivileged user
+    cap_add: [NET_ADMIN]
+    environment:
+      PIXELPROOF_MODEL: /app/models/detector.joblib
+      PIXELPROOF_REGISTRY: /shared/registry.json
+      PIXELPROOF_LEDGER: /evidence/ledger.jsonl
+      PIXELPROOF_RATE_PER_MIN: "0"     # the demo sends bursts; the limiter is tested separately
+    volumes:
+      - ./models:/app/models:ro
+      - registry:/shared:ro            # the ground station receives only the PUBLIC registry
+      - ./results/docker_mitm:/evidence
+    command:
+      - sh
+      - -c
+      - |
+        ip route add 172.28.1.0/24 via 172.28.2.1 &&
+        exec runuser -u app -- uvicorn pixelproof.api:app --host 0.0.0.0 --port 8000 --log-level warning
+    networks:
+      groundnet: { ipv4_address: 172.28.2.30 }
+
+  attacker:
+    build: { context: ., target: lab }
+    user: root
+    cap_add: [NET_ADMIN]
+    sysctls:
+      net.ipv4.ip_forward: "1"          # route between the two subnets
+    environment:
+      ATTACK_MODE: ${ATTACK_MODE:-random}
+      ATTACK_RATE: ${ATTACK_RATE:-0.7}
+    volumes:
+      - ./results/docker_mitm:/evidence
+    command:
+      - sh
+      - -c
+      - |
+        runuser -u app -- python simulation/attacker.py --listen 172.28.2.1:8081 \
+          --ground http://172.28.2.30:8000 --mode $${ATTACK_MODE} --rate $${ATTACK_RATE} \
+          --log /evidence/attacker_log.jsonl &
+        sleep 2
+        iptables -t nat -A PREROUTING -p tcp -d 172.28.2.30 --dport 8000 \
+          -j DNAT --to-destination 172.28.2.1:8081
+        echo "transparent redirect installed: ground-bound :8000 traffic now reaches the relay"
+        wait
+    depends_on: [ground]
+    networks:
+      spacelink: { ipv4_address: 172.28.1.1 }
+      groundnet: { ipv4_address: 172.28.2.1 }
+
+  satellite:
+    build: { context: ., target: lab }
+    user: root            # only to add one route and to capture its own packets
+    cap_add: [NET_ADMIN]
+    environment:
+      N_PRODUCTS: ${N_PRODUCTS:-24}
+    volumes:
+      - ./samples:/samples:ro
+      - satkeys:/home/app/keys           # the private keys exist ONLY in this volume
+      - registry:/shared                 # the satellite publishes only the PUBLIC registry here
+      - ./results/docker_mitm:/evidence
+    command:
+      - sh
+      - -c
+      - |
+        ip route add 172.28.2.0/24 via 172.28.1.1
+        tcpdump -nn -U -i eth0 -w /evidence/satellite.pcap tcp >/dev/null 2>&1 &
+        sleep 3
+        runuser -u app -- python simulation/satellite_node.py --patches /samples \
+          --target http://172.28.2.30:8000 --keys /home/app/keys --registry /shared/registry.json \
+          --n $${N_PRODUCTS} --interval 0.3
+        status=$$?
+        sleep 2
+        tcpdump -nn -r /evidence/satellite.pcap > /evidence/satellite_capture.txt 2>&1
+        exit $$status
+    depends_on: [attacker]
+    networks:
+      spacelink: { ipv4_address: 172.28.1.10 }
+
+volumes:
+  registry:
+  satkeys:
+
+# Docker would give .1 of each subnet to its own bridge; the attacker needs .1, so the bridge gets .254.
+#
+# Why not `internal: true`? We tried: Docker's firewall rule for internal networks drops every packet whose
+# destination lies outside the subnet, and a satellite-to-ground packet is exactly that (it is only the first hop
+# towards the attacker-router). Instead, address translation is switched off (enable_ip_masquerade=false), so the
+# private addresses of these containers can not be translated to reach the internet: no outbound access.
+networks:
+  spacelink:
+    driver_opts: { com.docker.network.bridge.enable_ip_masquerade: "false" }
+    ipam: { config: [{ subnet: 172.28.1.0/24, gateway: 172.28.1.254 }] }
+  groundnet:
+    driver_opts: { com.docker.network.bridge.enable_ip_masquerade: "false" }
+    ipam: { config: [{ subnet: 172.28.2.0/24, gateway: 172.28.2.254 }] }

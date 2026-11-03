@@ -1,0 +1,1515 @@
+{
+  "scenario": "replay",
+  "id": "D1",
+  "kind": "replay",
+  "title": "Replay of a genuine message",
+  "attacker_action": "Re-sends a genuine, validly signed message that was already delivered.",
+  "why_it_fails": "The ground station remembers received products and each source's last sequence number, and this memory survives a restart (it is rebuilt from the audit log).",
+  "expected": "REPLAY",
+  "n": 20,
+  "matches_expected": 20,
+  "rate": 1.0,
+  "control": {
+    "n": 20,
+    "verified": 20
+  },
+  "audit_log": {
+    "entries": 60,
+    "chain_valid": true,
+    "first_bad_entry": null
+  },
+  "trials": [
+    {
+      "trial": 1,
+      "sample": "Industrial_1846.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "27f8b124170a37c6\u2026",
+      "received_digest": "27f8b124170a37c6\u2026",
+      "product_id": "LAB-D1-001",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2161,
+        "threshold": 0.4409,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "e54a148de2c116090970c025816841799e82191d8fb983681790ee3373d6698d",
+      "timeline": [
+        {
+          "t_ms": 1.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-001-ctl",
+          "pixel_digest": "a73bbecf32b60fba\u2026",
+          "seq": 1
+        },
+        {
+          "t_ms": 50.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "327fb798eab7ea6f\u2026"
+        },
+        {
+          "t_ms": 51.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-001",
+          "pixel_digest": "27f8b124170a37c6\u2026",
+          "seq": 2
+        },
+        {
+          "t_ms": 98.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "4f692a36f71e8064\u2026"
+        },
+        {
+          "t_ms": 98.5,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 143.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "e54a148de2c11609\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 2,
+      "sample": "Industrial_767.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "a73bbecf32b60fba\u2026",
+      "received_digest": "a73bbecf32b60fba\u2026",
+      "product_id": "LAB-D1-002",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2931,
+        "threshold": 0.447,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "3eec0e57cefe25851c0c55a0ab50a8361979a0f7fe9053c6884b950dc12ca00d",
+      "timeline": [
+        {
+          "t_ms": 145.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-002-ctl",
+          "pixel_digest": "be2cee9c36ac3ff5\u2026",
+          "seq": 3
+        },
+        {
+          "t_ms": 179.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "b8baf7420cd1b06f\u2026"
+        },
+        {
+          "t_ms": 180.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-002",
+          "pixel_digest": "a73bbecf32b60fba\u2026",
+          "seq": 4
+        },
+        {
+          "t_ms": 226.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "c999074c8584caf3\u2026"
+        },
+        {
+          "t_ms": 226.7,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 283.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "3eec0e57cefe2585\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 3,
+      "sample": "Forest_2520.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "be2cee9c36ac3ff5\u2026",
+      "received_digest": "be2cee9c36ac3ff5\u2026",
+      "product_id": "LAB-D1-003",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2386,
+        "threshold": 0.436,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "3e5cbba831542d929eefd969c435c455fb60f5783a683ce27a6ca1b028c4fd7f",
+      "timeline": [
+        {
+          "t_ms": 284.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-003-ctl",
+          "pixel_digest": "f57ab96ccc96c577\u2026",
+          "seq": 5
+        },
+        {
+          "t_ms": 326.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "91bf8eaa450cde27\u2026"
+        },
+        {
+          "t_ms": 326.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-003",
+          "pixel_digest": "be2cee9c36ac3ff5\u2026",
+          "seq": 6
+        },
+        {
+          "t_ms": 355.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "ac46568a83b15047\u2026"
+        },
+        {
+          "t_ms": 355.7,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 387.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "3e5cbba831542d92\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 4,
+      "sample": "SeaLake_2373.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "f57ab96ccc96c577\u2026",
+      "received_digest": "f57ab96ccc96c577\u2026",
+      "product_id": "LAB-D1-004",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.3233,
+        "threshold": 0.4361,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "e88ad11518bd795503e7ffdb67c00247d961eebfb5a2a049664f1fe16fd5d3ea",
+      "timeline": [
+        {
+          "t_ms": 389.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-004-ctl",
+          "pixel_digest": "f4d0cf0f41976a3e\u2026",
+          "seq": 7
+        },
+        {
+          "t_ms": 440.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "39fbed7d644e16af\u2026"
+        },
+        {
+          "t_ms": 441.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-004",
+          "pixel_digest": "f57ab96ccc96c577\u2026",
+          "seq": 8
+        },
+        {
+          "t_ms": 481.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "442f73439d85b8bd\u2026"
+        },
+        {
+          "t_ms": 481.6,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 523.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "e88ad11518bd7955\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 5,
+      "sample": "Residential_1482.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "f4d0cf0f41976a3e\u2026",
+      "received_digest": "f4d0cf0f41976a3e\u2026",
+      "product_id": "LAB-D1-005",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1152,
+        "threshold": 0.4413,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "aaaa389e5aa523fdb8d709f3a10dd7175168fd92fb21e16e6451871c2f7c8c02",
+      "timeline": [
+        {
+          "t_ms": 524.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-005-ctl",
+          "pixel_digest": "4636100aef81a006\u2026",
+          "seq": 9
+        },
+        {
+          "t_ms": 573.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "1a91da2751779e1b\u2026"
+        },
+        {
+          "t_ms": 573.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-005",
+          "pixel_digest": "f4d0cf0f41976a3e\u2026",
+          "seq": 10
+        },
+        {
+          "t_ms": 628.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "6dfb34e12427b53c\u2026"
+        },
+        {
+          "t_ms": 628.5,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 685.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "aaaa389e5aa523fd\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 6,
+      "sample": "River_1196.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "4636100aef81a006\u2026",
+      "received_digest": "4636100aef81a006\u2026",
+      "product_id": "LAB-D1-006",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1934,
+        "threshold": 0.4517,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "225e0d5154f6fb7096e596f6ba92823c9afd7b682161946a9b56fa5aaeeaf624",
+      "timeline": [
+        {
+          "t_ms": 687.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-006-ctl",
+          "pixel_digest": "168a0b1e0cff167f\u2026",
+          "seq": 11
+        },
+        {
+          "t_ms": 743.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "3a303aa089bfc3f2\u2026"
+        },
+        {
+          "t_ms": 743.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-006",
+          "pixel_digest": "4636100aef81a006\u2026",
+          "seq": 12
+        },
+        {
+          "t_ms": 795.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "1627dc1fdb046332\u2026"
+        },
+        {
+          "t_ms": 795.4,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 849.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "225e0d5154f6fb70\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 7,
+      "sample": "Pasture_964.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "168a0b1e0cff167f\u2026",
+      "received_digest": "168a0b1e0cff167f\u2026",
+      "product_id": "LAB-D1-007",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1602,
+        "threshold": 0.4367,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "2c3110cace45b717db5aec182cffb7e1943e518d73628d93c1e28e7bc0fbd077",
+      "timeline": [
+        {
+          "t_ms": 851.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-007-ctl",
+          "pixel_digest": "5ed60e9df13a4ede\u2026",
+          "seq": 13
+        },
+        {
+          "t_ms": 893.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "5e780a017f0f30e7\u2026"
+        },
+        {
+          "t_ms": 894.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-007",
+          "pixel_digest": "168a0b1e0cff167f\u2026",
+          "seq": 14
+        },
+        {
+          "t_ms": 938.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "135c05078aec4f03\u2026"
+        },
+        {
+          "t_ms": 938.3,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 986.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "2c3110cace45b717\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 8,
+      "sample": "Forest_1655.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "5ed60e9df13a4ede\u2026",
+      "received_digest": "5ed60e9df13a4ede\u2026",
+      "product_id": "LAB-D1-008",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1944,
+        "threshold": 0.4365,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "b633c9f8b6ebd7c5c61682b7d88dd809a3061a359532c64da452dca04f5f6e3e",
+      "timeline": [
+        {
+          "t_ms": 987.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-008-ctl",
+          "pixel_digest": "890aff0aa5cad38e\u2026",
+          "seq": 15
+        },
+        {
+          "t_ms": 1026.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "94af8b168ac43d3b\u2026"
+        },
+        {
+          "t_ms": 1027.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-008",
+          "pixel_digest": "5ed60e9df13a4ede\u2026",
+          "seq": 16
+        },
+        {
+          "t_ms": 1071.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "259f5e1862a9d2c0\u2026"
+        },
+        {
+          "t_ms": 1071.1,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 1113.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "b633c9f8b6ebd7c5\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 9,
+      "sample": "SeaLake_1314.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "890aff0aa5cad38e\u2026",
+      "received_digest": "890aff0aa5cad38e\u2026",
+      "product_id": "LAB-D1-009",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2509,
+        "threshold": 0.4372,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "4defa1542f2034f8ce418bd46709d872504191b115bf5904b64fc559722a826e",
+      "timeline": [
+        {
+          "t_ms": 1115.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-009-ctl",
+          "pixel_digest": "ce626a1403dd439e\u2026",
+          "seq": 17
+        },
+        {
+          "t_ms": 1168.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "9cdef2df2ee815ce\u2026"
+        },
+        {
+          "t_ms": 1168.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-009",
+          "pixel_digest": "890aff0aa5cad38e\u2026",
+          "seq": 18
+        },
+        {
+          "t_ms": 1207.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "1d56eecdf3324f6c\u2026"
+        },
+        {
+          "t_ms": 1207.7,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 1248.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "4defa1542f2034f8\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 10,
+      "sample": "PermanentCrop_1803.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "ce626a1403dd439e\u2026",
+      "received_digest": "ce626a1403dd439e\u2026",
+      "product_id": "LAB-D1-010",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1347,
+        "threshold": 0.4504,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "8ecd547952e3e401be6ad641fd2729e5d47072f3a799df41fea2aef12bd55e00",
+      "timeline": [
+        {
+          "t_ms": 1249.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-010-ctl",
+          "pixel_digest": "6412f9511d03544e\u2026",
+          "seq": 19
+        },
+        {
+          "t_ms": 1300.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "080e06c0522c83dc\u2026"
+        },
+        {
+          "t_ms": 1300.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-010",
+          "pixel_digest": "ce626a1403dd439e\u2026",
+          "seq": 20
+        },
+        {
+          "t_ms": 1349.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "05e1593023df2040\u2026"
+        },
+        {
+          "t_ms": 1349.8,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 1399.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "8ecd547952e3e401\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 11,
+      "sample": "PermanentCrop_1083.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "6412f9511d03544e\u2026",
+      "received_digest": "6412f9511d03544e\u2026",
+      "product_id": "LAB-D1-011",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.142,
+        "threshold": 0.4368,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "d102f0f843da1dabba14819233a12302d87ea64ff68f1ff6e4cbef7e9f354f9f",
+      "timeline": [
+        {
+          "t_ms": 1401.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-011-ctl",
+          "pixel_digest": "163cfed3a86deb98\u2026",
+          "seq": 21
+        },
+        {
+          "t_ms": 1456.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "d0bafbd91f82f147\u2026"
+        },
+        {
+          "t_ms": 1457.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-011",
+          "pixel_digest": "6412f9511d03544e\u2026",
+          "seq": 22
+        },
+        {
+          "t_ms": 1508.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "62a936df0c79ef73\u2026"
+        },
+        {
+          "t_ms": 1508.2,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 1556.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "d102f0f843da1dab\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 12,
+      "sample": "Industrial_2267.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "163cfed3a86deb98\u2026",
+      "received_digest": "163cfed3a86deb98\u2026",
+      "product_id": "LAB-D1-012",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4491,
+        "threshold": 0.5493,
+        "evidence": [
+          "patch appears re-encoded after capture (p=0.56); threshold raised to 0.55 to avoid accusing benign re-compression"
+        ]
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)",
+        "patch appears re-encoded after capture (p=0.56); threshold raised to 0.55 to avoid accusing benign re-compression"
+      ],
+      "ledger_hash": "ed23e025746445e6e4c286d65daab6a95d86a395f13affa623da7018f78a1510",
+      "timeline": [
+        {
+          "t_ms": 1558.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-012-ctl",
+          "pixel_digest": "419dcacfd3ee65a4\u2026",
+          "seq": 23
+        },
+        {
+          "t_ms": 1605.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "42e1dc3eeef4c01b\u2026"
+        },
+        {
+          "t_ms": 1606.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-012",
+          "pixel_digest": "163cfed3a86deb98\u2026",
+          "seq": 24
+        },
+        {
+          "t_ms": 1654.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "16f0cacec34a08d8\u2026"
+        },
+        {
+          "t_ms": 1654.4,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 1710.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "ed23e025746445e6\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 13,
+      "sample": "AnnualCrop_1226.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "419dcacfd3ee65a4\u2026",
+      "received_digest": "419dcacfd3ee65a4\u2026",
+      "product_id": "LAB-D1-013",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.149,
+        "threshold": 0.4362,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "33dc008aa3d9100416ae6d43edc94981210b04c817fa543151c12a03ddccdf62",
+      "timeline": [
+        {
+          "t_ms": 1712.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-013-ctl",
+          "pixel_digest": "8895d1e45e246cda\u2026",
+          "seq": 25
+        },
+        {
+          "t_ms": 1762.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "d2d7cb1595102a70\u2026"
+        },
+        {
+          "t_ms": 1762.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-013",
+          "pixel_digest": "419dcacfd3ee65a4\u2026",
+          "seq": 26
+        },
+        {
+          "t_ms": 1815.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "da5d5f47e4b20192\u2026"
+        },
+        {
+          "t_ms": 1815.6,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 1866.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "33dc008aa3d91004\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 14,
+      "sample": "River_1268.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "8895d1e45e246cda\u2026",
+      "received_digest": "8895d1e45e246cda\u2026",
+      "product_id": "LAB-D1-014",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4255,
+        "threshold": 0.4438,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "7686fdfab4f174dae98deaa923888398e10cd9c32c03cc3bf481318be8f30cb0",
+      "timeline": [
+        {
+          "t_ms": 1868.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-014-ctl",
+          "pixel_digest": "77bd7698faf4f6db\u2026",
+          "seq": 27
+        },
+        {
+          "t_ms": 1931.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "472f7a90722550ce\u2026"
+        },
+        {
+          "t_ms": 1931.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-014",
+          "pixel_digest": "8895d1e45e246cda\u2026",
+          "seq": 28
+        },
+        {
+          "t_ms": 2130.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "67b407e713aea61e\u2026"
+        },
+        {
+          "t_ms": 2130.4,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 2204.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "7686fdfab4f174da\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 15,
+      "sample": "Residential_2181.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "77bd7698faf4f6db\u2026",
+      "received_digest": "77bd7698faf4f6db\u2026",
+      "product_id": "LAB-D1-015",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1631,
+        "threshold": 0.44,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "38ab8902ada3536107c8c80d67075c2d72a5a6cd102c91d716134d4fcca9bc10",
+      "timeline": [
+        {
+          "t_ms": 2205.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-015-ctl",
+          "pixel_digest": "a030d0ead7009e0c\u2026",
+          "seq": 29
+        },
+        {
+          "t_ms": 2267.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "c82759b081159a80\u2026"
+        },
+        {
+          "t_ms": 2267.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-015",
+          "pixel_digest": "77bd7698faf4f6db\u2026",
+          "seq": 30
+        },
+        {
+          "t_ms": 2319.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "d1e60d7bcece5512\u2026"
+        },
+        {
+          "t_ms": 2319.0,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 2370.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "38ab8902ada35361\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 16,
+      "sample": "Highway_2453.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "a030d0ead7009e0c\u2026",
+      "received_digest": "a030d0ead7009e0c\u2026",
+      "product_id": "LAB-D1-016",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2541,
+        "threshold": 0.4504,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "c5d227f30efc613ff5cdae39d2d1b9434c3fa275dcfee1576f043b673780445b",
+      "timeline": [
+        {
+          "t_ms": 2372.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-016-ctl",
+          "pixel_digest": "113c5c08a8433f94\u2026",
+          "seq": 31
+        },
+        {
+          "t_ms": 2421.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "a2e09a11b28f53a7\u2026"
+        },
+        {
+          "t_ms": 2421.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-016",
+          "pixel_digest": "a030d0ead7009e0c\u2026",
+          "seq": 32
+        },
+        {
+          "t_ms": 2481.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "bc517cf14e8d1959\u2026"
+        },
+        {
+          "t_ms": 2481.4,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 2533.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "c5d227f30efc613f\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 17,
+      "sample": "HerbaceousVegetation_278.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "113c5c08a8433f94\u2026",
+      "received_digest": "113c5c08a8433f94\u2026",
+      "product_id": "LAB-D1-017",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1523,
+        "threshold": 0.4366,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "b42b65b5f3142c91617bbbd368badb93dd6a9739bee2744652b5892735bacd21",
+      "timeline": [
+        {
+          "t_ms": 2534.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-017-ctl",
+          "pixel_digest": "679273182252c336\u2026",
+          "seq": 33
+        },
+        {
+          "t_ms": 2582.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "4cc440282f463f53\u2026"
+        },
+        {
+          "t_ms": 2583.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-017",
+          "pixel_digest": "113c5c08a8433f94\u2026",
+          "seq": 34
+        },
+        {
+          "t_ms": 2636.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "85ab367378e51a6e\u2026"
+        },
+        {
+          "t_ms": 2636.8,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 2684.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "b42b65b5f3142c91\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 18,
+      "sample": "HerbaceousVegetation_1941.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "679273182252c336\u2026",
+      "received_digest": "679273182252c336\u2026",
+      "product_id": "LAB-D1-018",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2884,
+        "threshold": 0.4362,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "ef73e6227f2cf00b810c775e128aa18a7f67e73b7bc52c3b8685d91457f94248",
+      "timeline": [
+        {
+          "t_ms": 2686.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-018-ctl",
+          "pixel_digest": "fd91be430f3ad4e5\u2026",
+          "seq": 35
+        },
+        {
+          "t_ms": 2732.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "5cd59188af812f85\u2026"
+        },
+        {
+          "t_ms": 2732.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-018",
+          "pixel_digest": "679273182252c336\u2026",
+          "seq": 36
+        },
+        {
+          "t_ms": 2780.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "8fbc93683d77e6ff\u2026"
+        },
+        {
+          "t_ms": 2780.1,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 2829.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "ef73e6227f2cf00b\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 19,
+      "sample": "AnnualCrop_2314.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "fd91be430f3ad4e5\u2026",
+      "received_digest": "fd91be430f3ad4e5\u2026",
+      "product_id": "LAB-D1-019",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.0717,
+        "threshold": 0.4367,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "3cbb79c50ff2ddadff5c23e98af16d99674ed36c0e90d190af10d31525c39483",
+      "timeline": [
+        {
+          "t_ms": 2830.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-019-ctl",
+          "pixel_digest": "e0ef9d3a609526a9\u2026",
+          "seq": 37
+        },
+        {
+          "t_ms": 2867.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "60493f76e77546ac\u2026"
+        },
+        {
+          "t_ms": 2867.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-019",
+          "pixel_digest": "fd91be430f3ad4e5\u2026",
+          "seq": 38
+        },
+        {
+          "t_ms": 2921.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "ebf353384122ceb6\u2026"
+        },
+        {
+          "t_ms": 2921.0,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 2972.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "3cbb79c50ff2ddad\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 20,
+      "sample": "Pasture_1471.jpg",
+      "first_delivery": "VERIFIED",
+      "matches_expected": true,
+      "signed_digest": "e0ef9d3a609526a9\u2026",
+      "received_digest": "e0ef9d3a609526a9\u2026",
+      "product_id": "LAB-D1-020",
+      "integrity_status": "REPLAY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2713,
+        "threshold": 0.4361,
+        "evidence": []
+      },
+      "reasons": [
+        "this signed product was already received (replayed message)"
+      ],
+      "ledger_hash": "d19622ede30079c384f3ca52e9e8d5a40185ad25f99b558e9b8d84db9d7a3897",
+      "timeline": [
+        {
+          "t_ms": 2973.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-020-ctl",
+          "pixel_digest": "980c6c0ec6e89e8c\u2026",
+          "seq": 39
+        },
+        {
+          "t_ms": 3024.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "b2b6fdca5ef7a3c6\u2026"
+        },
+        {
+          "t_ms": 3024.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-D1-020",
+          "pixel_digest": "e0ef9d3a609526a9\u2026",
+          "seq": 40
+        },
+        {
+          "t_ms": 3059.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "b1c7582a000d6f4c\u2026"
+        },
+        {
+          "t_ms": 3059.9,
+          "actor": "attacker",
+          "event": "recorded the delivered message and sends it again"
+        },
+        {
+          "t_ms": 3096.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "REPLAY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "d19622ede30079c3\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    }
+  ],
+  "environment": {
+    "python": "3.12.2",
+    "platform": "Windows",
+    "cpu_threads": 8,
+    "model_mode": "features+cnn",
+    "seed": 7,
+    "samples": "samples/authentic (official EuroSAT RGB patches, unmodified)"
+  },
+  "duration_s": 3.23
+}

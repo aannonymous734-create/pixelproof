@@ -1,0 +1,29 @@
+feature model: 165 trees, 6.2s, threshold 0.5563
+rendered 67292 patches in 57s
+epoch 1/8 loss 1.2060 val_acc 0.5353
+epoch 2/8 loss 1.0710 val_acc 0.6148
+epoch 3/8 loss 0.9215 val_acc 0.6678
+epoch 4/8 loss 0.8209 val_acc 0.6821
+epoch 5/8 loss 0.7701 val_acc 0.7015
+epoch 6/8 loss 0.7259 val_acc 0.7168
+epoch 7/8 loss 0.6929 val_acc 0.7328
+epoch 8/8 loss 0.6757 val_acc 0.7346
+CNN trained in 20.8 min
+CNN inference on 67292 patches: 1.71 ms/patch
+  fusion w_features=0.0: val recall at 5% FPR = 0.6927
+  fusion w_features=0.1: val recall at 5% FPR = 0.7163
+  fusion w_features=0.2: val recall at 5% FPR = 0.7492
+  fusion w_features=0.3: val recall at 5% FPR = 0.7828
+  fusion w_features=0.4: val recall at 5% FPR = 0.8059
+  fusion w_features=0.5: val recall at 5% FPR = 0.7930
+  fusion w_features=0.6: val recall at 5% FPR = 0.7813
+  fusion w_features=0.7: val recall at 5% FPR = 0.7216
+  fusion w_features=0.8: val recall at 5% FPR = 0.6362
+  fusion w_features=0.9: val recall at 5% FPR = 0.5656
+  fusion w_features=1.0: val recall at 5% FPR = 0.5156
+chosen fusion weight w_features=0.4, threshold 0.4480
+re-encoding gate: validation accuracy 0.968
+gbm: threshold clean 0.5495, re-encoded 0.6779
+fused: threshold clean 0.4360, re-encoded 0.6375
+saved models/detector.joblib sha256=927f0930a148c56281c27362f6922797a6586b4ef848a51078f020f115e1e198
+wrote results/predictions.csv.gz

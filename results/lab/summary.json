@@ -1,0 +1,47 @@
+{
+  "topology": {
+    "satellite": "10.56.1.10",
+    "attacker": [
+      "10.56.1.1",
+      "10.56.2.1"
+    ],
+    "ground": "10.56.2.30"
+  },
+  "satellite_configured_target": "http://10.56.2.30:8000 (ground station only; attacker never named)",
+  "phaseA_control": {
+    "products": 16,
+    "all_verified": true
+  },
+  "phaseB_transparent_mitm": {
+    "date_replace": {
+      "messages": 2,
+      "correct": 2
+    },
+    "date_replace_resign": {
+      "messages": 1,
+      "correct": 1
+    },
+    "passthrough": {
+      "messages": 9,
+      "correct": 9
+    },
+    "pixel_copy_move": {
+      "messages": 1,
+      "correct": 1
+    },
+    "pixel_inpaint": {
+      "messages": 2,
+      "correct": 2
+    },
+    "pixel_resample": {
+      "messages": 1,
+      "correct": 1
+    }
+  },
+  "mitm_transparent": true,
+  "satellite_pcap_destinations": [
+    "10.56.2.30"
+  ],
+  "pcap_note": "destinations captured on the satellite's own interface; empty if L2 capture was unavailable in this environment (the structural proof above still holds)",
+  "tampering_caught": "7/7"
+}

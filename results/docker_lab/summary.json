@@ -1,0 +1,60 @@
+{
+  "messages": 40,
+  "passthrough_messages": 20,
+  "passthrough_correct": 20,
+  "crypto_attack_messages": 19,
+  "crypto_attack_stopped": 19,
+  "provenance_stripped_messages": 1,
+  "provenance_stripped_verdicts": {
+    "UNVERIFIED_NO_TRACES": 1
+  },
+  "all_correct": true,
+  "by_attack": {
+    "algorithm_downgrade": {
+      "messages": 3,
+      "correct": 3
+    },
+    "date_replace": {
+      "messages": 1,
+      "correct": 1
+    },
+    "date_replace_resign": {
+      "messages": 1,
+      "correct": 1
+    },
+    "lsb_embed": {
+      "messages": 2,
+      "correct": 2
+    },
+    "manifest_swap": {
+      "messages": 1,
+      "correct": 1
+    },
+    "passthrough": {
+      "messages": 20,
+      "correct": 20
+    },
+    "pixel_copy_move": {
+      "messages": 3,
+      "correct": 3
+    },
+    "pixel_inpaint": {
+      "messages": 6,
+      "correct": 6
+    },
+    "pixel_resample": {
+      "messages": 1,
+      "correct": 1
+    },
+    "replay": {
+      "messages": 1,
+      "correct": 1
+    },
+    "strip_manifest": {
+      "messages": 1,
+      "correct": 1
+    }
+  },
+  "ledger_entries": 40,
+  "ledger_chain_valid": true
+}

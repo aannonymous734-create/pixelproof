@@ -1,0 +1,55 @@
+\section{Objectives}\label{sec:objectives}
+\begin{keybox}
+\textbf{Main objective.} Prove where every pixel came from, assess what it shows without over-claiming, never silently release a doubtful patch, keep the analyst in charge of releasing quarantined data, and make every decision auditable, on a laptop with no GPU.
+\end{keybox}
+The challenge asks for reported detection quality, false alarms, latency, memory and security overhead; it sets no numeric targets. The {{m:/target_fpr|pct0}} false-alarm budget is ours and is fixed on validation; the other targets are stated qualitatively and measured on frozen sets.
+
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\scriptsize]
+  \node[bn,text width=36mm] (g1) at (0,0) {\textbf{Prove}};
+  \node[bn,text width=36mm] (g2) at (4.4,0) {\textbf{Detect}};
+  \node[bn,text width=36mm] (g3) at (8.8,0) {\textbf{Withstand}};
+  \node[bn,text width=36mm] (g4) at (13.2,0) {\textbf{Operate}};
+  \node[bt,text width=36mm] at (0,-1.2) {O1 integrity of every attack type};
+  \node[bt,text width=36mm] at (0,-2.4) {O7 auditable hash chain};
+  \node[bo,text width=36mm] at (4.4,-1.2) {O2 $\le$5\% false alarms};
+  \node[bo,text width=36mm] at (4.4,-2.4) {O3 detection, seen and held-out};
+  \node[bo,text width=36mm] at (4.4,-3.6) {O4 name the manipulation type};
+  \node[br,text width=36mm] at (8.8,-1.2) {O5 survive laundering};
+  \node[br,text width=36mm] at (8.8,-2.4) {O6 explain with evidence and heatmap};
+  \node[bg,text width=36mm] at (13.2,-1.2) {O8 local, CPU-only};
+  \node[bg,text width=36mm] at (13.2,-2.4) {O9 reproducible, every number resolves};
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Our nine objectives grouped by what they protect.}
+\end{figure}
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{0.9cm}|L{3.2cm}|Y|Y|}
+\hline
+\textbf{\#} & \textbf{Objective} & \textbf{Target} & \textbf{How we measure it}\\
+\hline
+O1 & Prove integrity & every cryptographic attack returns its expected status; genuine products 100\% \targ & trust-layer campaign ({{c:/n_products|int}} products $\times$ 11 attacks), live labs\\
+\hline
+O2 & Keep false alarms low & $\le${{m:/target_fpr|pct0}} on clean authentic validation patches \targ & threshold fixed on validation; false-alarm rate per land cover\\
+\hline
+O3 & Detect manipulation & high detection on seen variants, honest detection on held-out variants & seen, held-out v1, frozen v2 (and v3 for the candidate)\\
+\hline
+O4 & Name the manipulation type & 4-class macro-F1 reported on seen and held-out & confusion matrices\\
+\hline
+O5 & Survive laundering & report false alarms and detection under re-encoding and smoothing & robustness sweep\\
+\hline
+O6 & Explain & plain-words evidence and a heatmap on every alarm & feature z-scores; heatmap IoU\\
+\hline
+O7 & Be auditable & 100\% of decisions in a hash chain; tampering detected & ledger verification on every refresh\\
+\hline
+O8 & Run locally & CPU only, one core, laptop memory & latency probe, peak memory\\
+\hline
+O9 & Be reproducible & one command per step; every number resolves & \cd{render_latex.py}, \cd{check_numbers.py}, \cd{make reproduce}\\
+\hline
+\end{tabularx}
+\caption{Project objectives, targets and how they are measured.}
+\end{table}

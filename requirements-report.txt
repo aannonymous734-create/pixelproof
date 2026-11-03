@@ -1,0 +1,5 @@
+# Only needed to rebuild docs/REPORT.pdf (python scripts/render_report.py). Not needed to run PixelProof.
+# pandoc ships inside pypandoc_binary; the browser is the system Edge/Chrome, or Playwright's Chromium
+# (python -m playwright install chromium).
+pypandoc_binary==1.17
+playwright==1.64.1

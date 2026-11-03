@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Offline + no inline scripts: a strict CSP. 'unsafe-inline' only for styled-component style tags.
+         connect-src: the FastAPI ground station (:8000) and the Laravel auth server (:8001). -->
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' http://localhost:8000 http://127.0.0.1:8000 http://10.56.0.30:8000 http://localhost:8001 http://127.0.0.1:8001 http://10.56.0.30:8001; worker-src 'self' blob:; object-src 'none'; base-uri 'self'" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 29 29'%3E%3Crect x='1' y='1' width='8' height='8' rx='2' fill='%23555'/%3E%3Crect x='10' y='1' width='8' height='8' rx='2' fill='%23555'/%3E%3Crect x='19' y='1' width='8' height='8' rx='2' fill='%23555'/%3E%3Crect x='1' y='10' width='8' height='8' rx='2' fill='%23555'/%3E%3Crect x='10' y='10' width='8' height='8' rx='2' fill='%2338bdf8'/%3E%3Crect x='19' y='10' width='8' height='8' rx='2' fill='%23555'/%3E%3Crect x='1' y='19' width='8' height='8' rx='2' fill='%23555'/%3E%3Crect x='10' y='19' width='8' height='8' rx='2' fill='%23555'/%3E%3Crect x='19' y='19' width='8' height='8' rx='2' fill='%23555'/%3E%3C/svg%3E" />
+    <title>PixelProof — image provenance & forensics</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

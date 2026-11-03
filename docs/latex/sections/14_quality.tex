@@ -1,0 +1,79 @@
+\section{Testing, documentation and reproducibility}\label{sec:qa}
+\rubric{clarity \& reproducibility (5)}{We deliver four test layers, safeguards that make silent errors visible, run and data guides, seeds, a model card, a Makefile and a number-check script. Evidence: \cd{tests/}, \cd{frontend/tests/}, \cd{docs/TESTING.md}, \cd{README.md}, \cd{docs/RUN_GUIDE.md}, \cd{make reproduce}.}
+
+\subsection{Testing and quality assurance}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{3.6cm}|L{4.4cm}|Y|}
+\hline
+\textbf{Layer} & \textbf{Command} & \textbf{What it covers}\\
+\hline
+Python (unit, integration, security, attack) & \cd{python -m pytest -q} & every trust-layer attack, replay after a restart, the scenario engine, features and generators, jury input formats, the detector contract, the API (rate limit, size limit, no stack traces, no key material, lab off by default), the training guard, and the candidate safeguards\\
+\hline
+Dashboard unit & \cd{npx vitest run} & verdict rendering, upload validation, WebGL fallback, results summary\\
+\hline
+Dashboard end-to-end & \cd{npx playwright test} & every page opens, the analyser asks both questions, the attack guide renders\\
+\hline
+Report numbers & \cd{python scripts/check_numbers.py docs/REPORT.md}, \cd{python scripts/render_latex.py --check} & every number in the reports resolves to a result file\\
+\hline
+\end{tabularx}
+\caption{The four test layers.}
+\end{table}
+
+\textbf{Safeguards.} Training refuses to overwrite the shipped model unless explicitly asked; the Station page shows the model file's real SHA-256 and whether it matches its model card; the held-out sets are hash-checked before scoring, and held-out v3 refuses to score the same model twice; a test checks that the shipped detector, run through the current code, still reproduces the probabilities stored in \cd{results/predictions.csv.gz}; and \cd{scripts/anonymity_check.py} searches the submission for identifying words, e-mails, home paths and image or PDF metadata.
+
+\subsection{Documentation, data and reproducibility}\label{sec:repro}
+\textbf{How the numbers in this report are produced.} Every measured number is inserted from the result files in \cd{results/} by \cd{scripts/render_latex.py}, which refuses to build the PDF when a number cannot be resolved. The only exceptions are the live Windows + Kali session (Section~\ref{sec:labw}) and the Phase 2 candidate (Section~\ref{sec:phase2}), whose values are typed in the source and say so where they appear. Values are labelled \meas, \targ{} or \notmeas. We never write ``perfect'' or ``unbreakable'', and never call a patch ``authentic'', only ``no traces found''.
+
+\begin{itemize}
+  \item \cd{README.md} explains the whole system and every command; \cd{docs/RUN_GUIDE.md} is the jury's clean-machine guide; \cd{vm/README.md} is the step-by-step lab runbook.
+  \item \cd{scripts/download_eurosat.py} downloads the official release and refuses data whose class counts differ; the copy used for our numbers has a published content fingerprint (\cd{docs/DATASET_CARD.md}).
+  \item All randomness is seeded; every evaluation patch is rebuilt deterministically from (patch id, split, family). Dependency versions are pinned (\cd{requirements.txt}, \cd{requirements-cnn.txt}).
+  \item The model card (\cd{models/detector.json}) records the model's thresholds, its fusion weight and its SHA-256:
+  \begin{center}\ttfamily\footnotesize {{m:/card/sha256|raw}}\end{center}
+\end{itemize}
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{5.0cm}|Y|}
+\hline
+\textbf{\texttt{make} target} & \textbf{What it runs}\\
+\hline
+\cd{make test} & \cd{python -m pytest -q}\\
+\hline
+\cd{make demo} & \cd{python scripts/quick_demo.py} (ground + attacker + satellite)\\
+\hline
+\cd{make quick} & a 5-minute end-to-end check on one fifth of the data\\
+\hline
+\cd{make reproduce} & features $\to$ training $\to$ attack campaign $\to$ evaluation\\
+\hline
+\cd{make campaign}, \cd{make evaluate}, \cd{make heldout} & each step on its own\\
+\hline
+\cd{make check}, \cd{make report} & number check, then the report PDF\\
+\hline
+\cd{make anonymity}, \cd{make delivery} & anonymity search, submission zip\\
+\hline
+\end{tabularx}
+\caption{Make targets. \texttt{make} does not exist on Windows; every target is one plain \texttt{python \ldots} line that can be run by hand.}
+\end{table}
+
+\subsection{Phase 1 deliverables and Phase 2 next steps}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{2.4cm}|Y|Y|}
+\hline
+ & \textbf{Phase 1 (this submission)} & \textbf{Phase 2 (next steps)}\\
+\hline
+Trust & signed claim and chain, key registry, algorithm pinning, replay memory rebuilt from the log, hash-chained audit log, 11-attack campaign, scenarios A--F & authentication and TLS on the ingest API, an external anchor for the audit log, processor key kept on the ground system\\
+\hline
+Detection & 48 features, GBM + PixelNet fusion, re-encoding gate, calibrated budget, heatmap and evidence text & calibrated ``globally processed / inconclusive'' output, adoption of the candidate detector once its re-encoding cost is fixed, RANSAC grouping for copy-move\\
+\hline
+Validation & seen and held-out evaluation, frozen v2, robustness sweep, ablation, bootstrap intervals, four lab architectures & training and testing on public GAN or diffusion satellite fakes; multispectral inter-band consistency\\
+\hline
+Operator & dashboard (ten pages and a guided tour), optional sign-in & the live demonstration on the Windows + Kali lab, with the transparent variant on Docker\\
+\hline
+Documentation & this report, run guide, data card, threat model, security analysis, testing and reproducibility notes & final slides and a replayable attack demonstration for the pitch\\
+\hline
+\end{tabularx}
+\caption{Phase 1 deliverables and Phase 2 next steps.}
+\end{table}

@@ -1,0 +1,28 @@
+\section{Feasibility, affordability and local execution}\label{sec:feas}
+\rubric{feasibility (10)}{We deliver a CPU-only, laptop-friendly system built on open data and libraries, with no hardware to buy. Evidence: \cd{scripts/latency_probe.py}, \cd{make evaluate}.}
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|Y|L{6.2cm}|}
+\hline
+\textbf{Measure (one CPU core, no GPU)} & \textbf{Value}\\
+\hline
+Feature extraction per patch (p50 / p95) & {{m:/efficiency/feature_ms_p50|ms1}} / {{m:/efficiency/feature_ms_p95|ms1}}\\
+\hline
+Full analysis per patch (features + CNN + fusion) & {{m:/efficiency/analyse_ms_p50|ms1}} ({{m:/efficiency/throughput_patches_per_s_1core|f1}} patches/s); {{m:/efficiency/analyse_ms_p50_with_heatmap|ms1}} with heatmap\\
+\hline
+Peak memory of the analysis process (including PyTorch) & {{m:/efficiency/peak_rss_mb|f0}}~MB\\
+\hline
+Model size (feature model, CNN) & {{m:/efficiency/model_sizes_kb/detector.joblib|f0}}~KB + {{m:/efficiency/model_sizes_kb/pixelnet.pt|f0}}~KB\\
+\hline
+Signing / verification (median) & {{c:/overhead/sign_ms_p50|f2}}~ms / {{c:/overhead/verify_ms_p50|f2}}~ms\\
+\hline
+Signed manifest size (one processing record) & {{c:/overhead/manifest_bytes_mean|f0}} bytes, {{c:/overhead/overhead_percent_of_png|f1}}\% of the PNG\\
+\hline
+\end{tabularx}
+\caption{Cost of one decision: the challenge asks for latency, memory and security overhead.}
+\end{table}
+
+The trust layer adds nothing measurable next to the content analysis: signing and verification together take a small fraction of one millisecond, against tens of milliseconds for the forensic features and the CNN.
+
+No GPU, cloud, hardware or paid tool is needed. Without PyTorch the system runs with the feature model alone (its own calibrated threshold), so it works on any machine with Python; the dashboard's Station page and \cd{/api/v1/health} show which mode is active. The Docker labs fit on an ordinary 8~GB laptop, and each VM of the three-VM lab fits in 1.5--2~GB of RAM. The software trust anchor and the emulated satellite are explicitly allowed by the challenge rules; the same signer interface can later sit in front of SoftHSM2 or a TPM without code changes.

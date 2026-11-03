@@ -1,0 +1,95 @@
+\section{Phase 2 work in progress: a candidate detector, measured}\label{sec:phase2}
+\begin{warnbox}
+\textbf{Not shipped, and typed values.} Every number in the other sections belongs to the shipped detector. This section reports a retrained candidate measured with the same tools, so the jury can see the direction of Phase 2 and its cost. The candidate's evaluation figures below are typed in this document; the repository snapshot this document is built from holds the candidate model, its training log and its predictions (\cd{models_candidate_w16/}, \cd{results/candidate/w16/}) but no regenerated metrics file, so unlike every other number they are not produced by \cd{render_latex.py}.
+\end{warnbox}
+
+\subsection{Why, and what changed}
+The shipped CNN was still improving when its training stopped (validation accuracy rising at the last of its 8 epochs), and its weakest families are unseen splicing and copy-move. The candidate keeps the architecture and the features and changes only the training:
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{3.6cm}|L{3.6cm}|Y|}
+\hline
+\textbf{Change} & \textbf{Shipped} & \textbf{Candidate}\\
+\hline
+Training edits & \cd{dev} variants & \cd{dev} + \cd{dev_plus}: irregular blob-shaped edits absent from every test set (nearest/shear resampling, blob splices with brightness matching, blob copy-move with a gain change, blob fills)\\
+\hline
+CNN epochs and selection & 8 epochs, best validation accuracy & up to 24 epochs, early stopping on validation recall at the {{m:/target_fpr|pct0}} operating point\\
+\hline
+Regularisation & none & dropout 0.1, label smoothing 0.05\\
+\hline
+Test-time averaging & no & average over the 8 flips and rotations\\
+\hline
+Fusion weight (features) & {{m:/card/w_gbm|f1}} & 0.1 (chosen on validation)\\
+\hline
+\end{tabularx}
+\caption{What the candidate changes. Every choice was made on validation data. A wider network (width 32) was planned but not trained.}
+\end{table}
+
+\subsection{Held-out v3, frozen before the candidate was trained}
+Held-out v2 had already been used to measure the changes after v1, so it is no longer unbiased for a further change. We therefore built held-out v3 (Section~\ref{sec:data}) with methods and shapes that appear nowhere else, rendered {{v3:/n_patches|int}} patches and recorded their SHA-256 before the candidate was trained. The script refuses to re-freeze it and refuses to score the same model twice.
+
+\subsection{Results (fused models)}
+\begin{table}[!htbp]
+\centering\small
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\begin{tabularx}{\textwidth}{|L{4.6cm}|C|C|C|C|}
+\hline
+\textbf{Test set} & \textbf{Shipped detection} & \textbf{Shipped false alarms} & \textbf{Candidate detection} & \textbf{Candidate false alarms}\\
+\hline
+seen variants (test-seen) & {{m:/models/fused (w=0.4)/test_dev/detection_rate|pct1}} & {{m:/models/fused (w=0.4)/test_dev/false_alarm_rate|pct1}} & \ext{97.5\%} & \ext{5.0\%}\\
+\hline
+held-out v1 & {{m:/models/fused (w=0.4)/test_heldout/detection_rate|pct1}} & {{m:/models/fused (w=0.4)/test_heldout/false_alarm_rate|pct1}} & \ext{75.2\%} & \ext{4.3\%}\\
+\hline
+held-out v2 (biased, see above) & {{h:/models/fused/detection_rate|pct1}} & {{h:/models/fused/false_alarm_rate|pct1}} & \ext{84.6\%} & \ext{4.3\%}\\
+\hline
+\textbf{held-out v3 (first and only look)} & \ext{51.1\%} & \ext{3.4\%} & \textbf{\ext{98.7\%}} & \ext{5.0\%}\\
+\hline
+\end{tabularx}
+\caption{Shipped versus candidate detector on four test sets. The shipped columns of the first three rows come from the result files; the candidate columns and the v3 row are typed.}
+\end{table}
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Family} & \textbf{held-out v1} & \textbf{held-out v2} & \textbf{held-out v3}\\
+\hline
+resample & \ext{96.6\% $\to$ 100.0\%} & \ext{67.5\% $\to$ 99.8\%} & \ext{97.4\% $\to$ 100.0\%}\\
+\hline
+splice & \ext{18.1\% $\to$ 64.7\%} & \ext{17.4\% $\to$ 47.7\%} & \ext{34.1\% $\to$ 94.2\%}\\
+\hline
+copy-move & \ext{25.3\% $\to$ 63.9\%} & \ext{41.7\% $\to$ 81.0\%} & \ext{35.7\% $\to$ 98.8\%}\\
+\hline
+inpaint & \ext{63.8\% $\to$ 80.1\%} & \ext{45.1\% $\to$ 99.9\%} & \ext{52.5\% $\to$ 100.0\%}\\
+\hline
+\end{tabular}
+\caption{Detection by family, shipped $\to$ candidate.}
+\end{table}
+
+\subsection{The cost, and how to read the gain}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Robustness (false alarms on authentic patches)} & \textbf{Shipped} & \textbf{Candidate}\\
+\hline
+no operation & {{r:/rows/0/false_alarm_rate|pct1}} & \ext{6.7\%}\\
+\hline
+JPEG q90 & {{r:/rows/1/false_alarm_rate|pct1}} & \ext{23.7\%}\\
+\hline
+JPEG q70 & {{r:/rows/2/false_alarm_rate|pct1}} & \ext{3.0\%}\\
+\hline
+WebP q60 & {{r:/rows/5/false_alarm_rate|pct1}} & \ext{3.7\%}\\
+\hline
+analysis time per patch (one core) & {{m:/efficiency/analyse_ms_p50|ms1}} & \ext{74.7~ms}\\
+\hline
+\end{tabular}
+\caption{The candidate's price (shipped column from the result files, candidate column typed).}
+\end{table}
+\begin{itemize}
+  \item \textbf{The gain is large and consistent} across three held-out sets, including v2, which was designed independently of the new training edits.
+  \item \textbf{The cost is real:} more false alarms on re-encoded authentic patches, and about twice the analysis time (the 8-fold test-time averaging; the candidate was also timed on a busier machine).
+  \item \textbf{Caveat on v3.} v3 and the new training edits were written by the same authors; their shapes and methods are disjoint, but v3 may still be closer to them than a truly unknown attack. The jury's held-out patches remain the real test, which is why the shipped model stays the official one until the re-encoding cost is fixed.
+\end{itemize}
+\textbf{Phase 2 plan for the candidate:} recalibrate the re-encoding gate for the new score distribution, train the width-32 variant, and adopt the model only if it keeps the false-alarm budget on re-encoded authentics.

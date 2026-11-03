@@ -1,0 +1,7 @@
+{
+  "train_variants": [
+    "dev",
+    "dev_plus"
+  ],
+  "quick": false
+}

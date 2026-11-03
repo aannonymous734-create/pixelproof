@@ -1,0 +1,44 @@
+\section{Signal and image processing}\label{sec:signal}
+\rubric{signal/image processing (15)}{We deliver six explainable forensic feature families with the physics of each trace, and an evidence heatmap. Evidence: \cd{pixelproof/features.py}, \cd{tests/test_content.py}.}
+
+All features are computed on the 64$\times$64 patch (luminance $g = 0.299R + 0.587G + 0.114B$ unless stated). Images of any other size are cut into 64$\times$64 tiles and \textbf{never resized}, because resizing would itself add resampling traces.
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{2.4cm}|Y|Y|}
+\hline
+\textbf{Family} & \textbf{Physics of the trace} & \textbf{What we compute}\\
+\hline
+Resampling \cd{rs_*} \cite{popescu} & Interpolation makes each pixel a fixed linear combination of its neighbours, creating \emph{periodic} correlations & (a) mean absolute second derivative of each column and row as a 1-D signal; Fourier peak over median at the resampling period. (b) Popescu--Farid probability map of the residual of a 4-neighbour linear predictor; peak ratio and radius of its 2-D spectrum, $\log\hat\sigma$, kurtosis\\
+\hline
+Frequency profile \cd{fq_*} & Inpainting and generation remove high frequencies; local edits disturb the JPEG grid & Hann-windowed power spectrum in 8 radial bands, log--log slope, high/low energy ratio, strength of the 8$\times$8 JPEG block grid (authentic EuroSAT RGB is single-JPEG)\\
+\hline
+Noise residual \cd{nz_*} \cite{fridrich2012} & Real sensor noise is spatially consistent; edited regions are too smooth or too noisy & SRM high-pass residual, local standard deviation in 8$\times$8 blocks, robust z-scores: level, spread, range, extremes per block and per 16$\times$16 neighbourhood, share of outlier and ``too smooth'' blocks, kurtosis\\
+\hline
+Channel coherence \cd{cc_*} & Sensor and demosaicing noise is correlated across R, G, B; pasted or synthesised regions break that & correlation of the three residuals, globally and in 16$\times$16 windows\\
+\hline
+Colour statistics \cd{cs_*} & Spliced regions carry colour or noise that does not match the host, even with a feathered seam & local z-scores of chroma (Cb, Cr) and saturation, share of outlying regions, local noise-level inconsistency\\
+\hline
+Copy-move \cd{cm_*} \cite{fridrich2003} & Duplicated regions share low-frequency content, possibly rotated or mirrored & overlapping 8$\times$8 blocks matched on 9 low-frequency DCT coefficients; keys canonicalised over the 8 dihedral (D4) transforms; matches grouped by a common symmetry and translation; textureless blocks (water, cloud, bare soil) skipped\\
+\hline
+\end{tabularx}
+\caption{The six forensic feature families (48 features in total).}
+\end{table}
+
+The SRM high-pass residual uses the kernel
+\[
+r = g * \tfrac14\begin{bmatrix}-1&2&-1\\2&-4&2\\-1&2&-1\end{bmatrix},
+\qquad
+p = \exp\!\Big(-\frac{e^2}{2\hat\sigma^2}\Big),\quad \hat\sigma = 1.4826\,\mathrm{MAD}(e),
+\]
+where $e = g - k * g$ is the residual of the 4-neighbour linear predictor used by the Popescu--Farid map. To catch rotated or mirrored copies, each 8$\times$8 block's key is the lexicographically smallest of its eight D4 variants; the eight DCT variants are derived algebraically from a single transform, so the matcher costs one DCT per block.
+
+The resampling peaks are \emph{periodic}, which is why they are informative for resampling; they feed the classifier, but a separate decision between periodic resampling and aperiodic smoothing is \textbf{not implemented yet} (Sections~\ref{sec:robust} and~\ref{sec:limits}).
+
+\textbf{Evidence heatmap.} The maximum of the noise-inconsistency map, the over-smooth map and the copy-move mask, smoothed: it shows \emph{where} the evidence is. Each alarm also lists, in plain words, the features furthest (more than 2.5 standard deviations) from the distribution of authentic training patches. Localisation is the weakest part: mean IoU against the true mask is {{m:/localisation_iou_mean/copy_move|f2}} for copy-move, {{m:/localisation_iou_mean/splice|f2}} for splicing and {{m:/localisation_iou_mean/inpaint|f2}} for inpainting. Classification is reliable; precise location is Phase 2.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{examples.png}
+\caption{Authentic patch, the same patch after each attack family, the true mask, and the evidence heatmap for each.}
+\end{figure}

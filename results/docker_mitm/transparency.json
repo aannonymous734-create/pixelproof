@@ -1,0 +1,11 @@
+{
+  "satellite_ip": "172.28.1.10",
+  "satellite_configured_target": "http://172.28.2.30:8000 (the ground station only; the attacker is never named)",
+  "ip_packets_captured_on_the_satellite": 466,
+  "peers_in_ip_headers": {
+    "172.28.2.30": 466
+  },
+  "attacker_address_in_any_ip_header": false,
+  "transparent": true,
+  "note": "Replies appear to come from the ground station address although the attacker's relay answered: the redirect rewrites the source back. The satellite cannot tell."
+}

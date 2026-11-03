@@ -1,0 +1,966 @@
+{
+  "scenario": "visual_copy_move",
+  "id": "E1",
+  "kind": "content",
+  "title": "Copy-move manipulation (no provenance)",
+  "attacker_action": "Duplicates a region inside the image and removes the manifest.",
+  "why_it_fails": "It may not: with no signature to check, only the statistical detector can notice. The result is a measured detection, never a guarantee.",
+  "expected": "CONTENT_FLAGGED",
+  "n": 20,
+  "matches_expected": 4,
+  "rate": 0.2,
+  "control": {
+    "n": 20,
+    "false_alarms": 0
+  },
+  "audit_log": {
+    "entries": 40,
+    "chain_valid": true,
+    "first_bad_entry": null
+  },
+  "trials": [
+    {
+      "trial": 1,
+      "sample": "Industrial_1846.jpg",
+      "matches_expected": false,
+      "received_digest": "dd52c6ca31ba5356\u2026",
+      "product_id": "LAB-E1-001",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2494,
+        "threshold": 0.4408,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "7ad5b75ba17690f8f562c23c746a9cd9b5004442f1bcf9a39dd1d0c6a94c37a1",
+      "timeline": [
+        {
+          "t_ms": 42.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "db528abc00fe9a7f\u2026"
+        },
+        {
+          "t_ms": 44.2,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 93.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "7ad5b75ba17690f8\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 2,
+      "sample": "Industrial_767.jpg",
+      "matches_expected": false,
+      "received_digest": "5c03626ca4ab6b6c\u2026",
+      "product_id": "LAB-E1-002",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2903,
+        "threshold": 0.4645,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "23223735f8bc3647ec0c731f785f7255d39a64a945e3935e8f82971b6f5d25b9",
+      "timeline": [
+        {
+          "t_ms": 143.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "ea55fc310a88c169\u2026"
+        },
+        {
+          "t_ms": 144.5,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 195.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "23223735f8bc3647\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 3,
+      "sample": "Forest_2520.jpg",
+      "matches_expected": true,
+      "received_digest": "236000fb10e578cc\u2026",
+      "product_id": "LAB-E1-003",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "copy_move",
+        "score": 0.5545,
+        "threshold": 0.436,
+        "evidence": [
+          "duplicated regions inside the patch (copy-move) (cm_d4_frac, 11.7 sd from authentic patches)"
+        ]
+      },
+      "reasons": [
+        "no provenance record supplied",
+        "duplicated regions inside the patch (copy-move) (cm_d4_frac, 11.7 sd from authentic patches)"
+      ],
+      "ledger_hash": "0436d9bda8ccb771686b2ad852e9a637f8abcf200fdba99b68961f51328cd8d5",
+      "timeline": [
+        {
+          "t_ms": 230.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "f57da4e217e7235a\u2026"
+        },
+        {
+          "t_ms": 231.2,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 263.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "0436d9bda8ccb771\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 4,
+      "sample": "SeaLake_2373.jpg",
+      "matches_expected": true,
+      "received_digest": "56f2d882cd9fc188\u2026",
+      "product_id": "LAB-E1-004",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "generated_inpainted",
+        "score": 0.7006,
+        "threshold": 0.4362,
+        "evidence": [
+          "duplicated regions inside the patch (copy-move) (cm_frac, 4.7 sd from authentic patches)",
+          "duplicated regions inside the patch (copy-move) (cm_d4_frac, 4.3 sd from authentic patches)",
+          "duplicated regions inside the patch (copy-move) (cm_d4_count, 3.0 sd from authentic patches)"
+        ]
+      },
+      "reasons": [
+        "no provenance record supplied",
+        "duplicated regions inside the patch (copy-move) (cm_frac, 4.7 sd from authentic patches)",
+        "duplicated regions inside the patch (copy-move) (cm_d4_frac, 4.3 sd from authentic patches)"
+      ],
+      "ledger_hash": "17071a25a6ff524023e934a2c95355e432e6c585b482fbb2b3e3e43e958ac810",
+      "timeline": [
+        {
+          "t_ms": 300.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "1b12e793dfe0c459\u2026"
+        },
+        {
+          "t_ms": 302.0,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 347.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "17071a25a6ff5240\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 5,
+      "sample": "Residential_1482.jpg",
+      "matches_expected": false,
+      "received_digest": "b26abf0c8f336de5\u2026",
+      "product_id": "LAB-E1-005",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1024,
+        "threshold": 0.4433,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "3bd4ad95f6b57d61a78ca30daa5167b03740c317b67e7d1c0bfb166de26542f4",
+      "timeline": [
+        {
+          "t_ms": 404.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "07d394f0831e71e1\u2026"
+        },
+        {
+          "t_ms": 405.2,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 457.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "3bd4ad95f6b57d61\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 6,
+      "sample": "River_1196.jpg",
+      "matches_expected": false,
+      "received_digest": "66c58a0582d6d148\u2026",
+      "product_id": "LAB-E1-006",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1942,
+        "threshold": 0.4513,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "36337bf8f3e0e5725cf9460f0a2c47fccc5b8c770b616ef5dff62cab1997cf8b",
+      "timeline": [
+        {
+          "t_ms": 504.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "5efa5d13dbf488a3\u2026"
+        },
+        {
+          "t_ms": 505.7,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 551.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "36337bf8f3e0e572\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 7,
+      "sample": "Pasture_964.jpg",
+      "matches_expected": false,
+      "received_digest": "4cc09fd2ec82a0de\u2026",
+      "product_id": "LAB-E1-007",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1512,
+        "threshold": 0.4367,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "7e78032b739328c1a71e13358418b7a865e768c18f9ac432f46ee2728d170e77",
+      "timeline": [
+        {
+          "t_ms": 597.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "6473bf7d0f4d7154\u2026"
+        },
+        {
+          "t_ms": 598.1,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 642.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "7e78032b739328c1\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 8,
+      "sample": "Forest_1655.jpg",
+      "matches_expected": true,
+      "received_digest": "0d6b13651727678b\u2026",
+      "product_id": "LAB-E1-008",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "generated_inpainted",
+        "score": 0.8279,
+        "threshold": 0.4362,
+        "evidence": [
+          "duplicated regions inside the patch (copy-move) (cm_frac, 3.1 sd from authentic patches)",
+          "duplicated regions inside the patch (copy-move) (cm_area, 2.5 sd from authentic patches)"
+        ]
+      },
+      "reasons": [
+        "no provenance record supplied",
+        "duplicated regions inside the patch (copy-move) (cm_frac, 3.1 sd from authentic patches)",
+        "duplicated regions inside the patch (copy-move) (cm_area, 2.5 sd from authentic patches)"
+      ],
+      "ledger_hash": "8f8ade6addf0d9db69fedba52b4383a5604920a8fb7407bb3a15a271a64fa4c6",
+      "timeline": [
+        {
+          "t_ms": 686.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "d4bfea5d8734118d\u2026"
+        },
+        {
+          "t_ms": 688.2,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 730.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "8f8ade6addf0d9db\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 9,
+      "sample": "SeaLake_1314.jpg",
+      "matches_expected": false,
+      "received_digest": "41eb0daa18fdc5ab\u2026",
+      "product_id": "LAB-E1-009",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.3975,
+        "threshold": 0.4368,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "4df15898ad2b76964bc2ed2ba7ab227c1fb19ea15b145615f9b5a5430d65a16a",
+      "timeline": [
+        {
+          "t_ms": 771.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "f7ae89d8af982253\u2026"
+        },
+        {
+          "t_ms": 772.1,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 813.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "4df15898ad2b7696\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 10,
+      "sample": "PermanentCrop_1803.jpg",
+      "matches_expected": false,
+      "received_digest": "90435e1d8b8432fd\u2026",
+      "product_id": "LAB-E1-010",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1472,
+        "threshold": 0.4699,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "c1de9463224a1d3529ec5ce68d5ecf111666df44bd76be55f081442597a9028d",
+      "timeline": [
+        {
+          "t_ms": 869.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "3c68e4c167ea49d2\u2026"
+        },
+        {
+          "t_ms": 870.5,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 922.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "c1de9463224a1d35\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 11,
+      "sample": "PermanentCrop_1083.jpg",
+      "matches_expected": false,
+      "received_digest": "d0c4249412b68fef\u2026",
+      "product_id": "LAB-E1-011",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1793,
+        "threshold": 0.4378,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "a73e5d78ad252ce48f3e16a94b4c1fd543a08b6edcaed7f324338ba5797ff300",
+      "timeline": [
+        {
+          "t_ms": 974.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "87869b3673ffd2b5\u2026"
+        },
+        {
+          "t_ms": 975.4,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 1033.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "a73e5d78ad252ce4\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 12,
+      "sample": "Industrial_2267.jpg",
+      "matches_expected": false,
+      "received_digest": "6602aaf47cc3a2e3\u2026",
+      "product_id": "LAB-E1-012",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4889,
+        "threshold": 0.5045,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "d6f474e1d7a869078077ba5d792bb94d9e8a27bc0e195482a00567fa2e817131",
+      "timeline": [
+        {
+          "t_ms": 1090.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "2d84219eb0758488\u2026"
+        },
+        {
+          "t_ms": 1092.1,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 1148.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "d6f474e1d7a86907\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 13,
+      "sample": "AnnualCrop_1226.jpg",
+      "matches_expected": false,
+      "received_digest": "72a58b05debaedc4\u2026",
+      "product_id": "LAB-E1-013",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1788,
+        "threshold": 0.4365,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "2efa6c5395570e0e3ea671f654b859918c737b0487d5934b5997330cc7e8d875",
+      "timeline": [
+        {
+          "t_ms": 1200.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "e7ddaed68a37b5a6\u2026"
+        },
+        {
+          "t_ms": 1201.1,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 1254.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "2efa6c5395570e0e\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 14,
+      "sample": "River_1268.jpg",
+      "matches_expected": false,
+      "received_digest": "36b347580bac4d1d\u2026",
+      "product_id": "LAB-E1-014",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4083,
+        "threshold": 0.4545,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "0514bf5d63328d4c029950f16c08d18acb2b6cda1c4b61060620e4f7b7d61cdb",
+      "timeline": [
+        {
+          "t_ms": 1305.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "a7c2d7fced16a27d\u2026"
+        },
+        {
+          "t_ms": 1306.3,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 1350.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "0514bf5d63328d4c\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 15,
+      "sample": "Residential_2181.jpg",
+      "matches_expected": false,
+      "received_digest": "5cab6a2bc623a333\u2026",
+      "product_id": "LAB-E1-015",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1786,
+        "threshold": 0.4581,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "90c53a39f4678fbe1e17fbe650812cfa3bbb50cfdc6b45b1bfeeb3ce5858407e",
+      "timeline": [
+        {
+          "t_ms": 1395.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "3ba40e5b61706097\u2026"
+        },
+        {
+          "t_ms": 1396.1,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 1445.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "90c53a39f4678fbe\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 16,
+      "sample": "Highway_2453.jpg",
+      "matches_expected": false,
+      "received_digest": "1e278d36a015d664\u2026",
+      "product_id": "LAB-E1-016",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.302,
+        "threshold": 0.445,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "a5d1e47c58031d722ad4928c8c86a008c6dfc9fd017a3c6ef298e20a763db259",
+      "timeline": [
+        {
+          "t_ms": 1498.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "38e85015e9899aa2\u2026"
+        },
+        {
+          "t_ms": 1499.4,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 1555.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "a5d1e47c58031d72\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 17,
+      "sample": "HerbaceousVegetation_278.jpg",
+      "matches_expected": false,
+      "received_digest": "fd32472b020d46e3\u2026",
+      "product_id": "LAB-E1-017",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1485,
+        "threshold": 0.4366,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "69abe8b326974c6c7ef7015c6450e97fa5a8ddc2f10f07b5ad36032087a00c08",
+      "timeline": [
+        {
+          "t_ms": 1610.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "36a39c6fba2551d5\u2026"
+        },
+        {
+          "t_ms": 1611.4,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 1666.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "69abe8b326974c6c\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 18,
+      "sample": "HerbaceousVegetation_1941.jpg",
+      "matches_expected": false,
+      "received_digest": "3ad892bed1375369\u2026",
+      "product_id": "LAB-E1-018",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2705,
+        "threshold": 0.4364,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "a2c35180e3bd6d9d2cd516270e31072a7633783e0bb3c415934c51fb438d8e1f",
+      "timeline": [
+        {
+          "t_ms": 1720.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "56144839ec6e45f6\u2026"
+        },
+        {
+          "t_ms": 1721.8,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 1772.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "a2c35180e3bd6d9d\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 19,
+      "sample": "AnnualCrop_2314.jpg",
+      "matches_expected": false,
+      "received_digest": "979271fb7f2e0d65\u2026",
+      "product_id": "LAB-E1-019",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "UNVERIFIED_NO_TRACES",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2403,
+        "threshold": 0.4399,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "9cb09e5086914579d43e80d886b3f825e187b914ce7ba087375c68dbc2019f06",
+      "timeline": [
+        {
+          "t_ms": 1826.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "7e23420768da37fa\u2026"
+        },
+        {
+          "t_ms": 1827.3,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 1876.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "9cb09e5086914579\u2026"
+        }
+      ]
+    },
+    {
+      "trial": 20,
+      "sample": "Pasture_1471.jpg",
+      "matches_expected": true,
+      "received_digest": "0a36f68814c47cc5\u2026",
+      "product_id": "LAB-E1-020",
+      "integrity_status": "NO_PROVENANCE",
+      "verdict": "SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "generated_inpainted",
+        "score": 0.5017,
+        "threshold": 0.437,
+        "evidence": []
+      },
+      "reasons": [
+        "no provenance record supplied"
+      ],
+      "ledger_hash": "32b4ea42628bd9eabeb0bfae024ddd0b4b3a43fd0cd33dd82a7d37b9b7fe8bf5",
+      "timeline": [
+        {
+          "t_ms": 1912.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "UNVERIFIED_NO_TRACES",
+          "action": "RELEASE",
+          "ledger_hash": "b02e73299b2ea850\u2026"
+        },
+        {
+          "t_ms": 1913.9,
+          "actor": "attacker",
+          "event": "edited image (copy_move) and removed the manifest"
+        },
+        {
+          "t_ms": 1950.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "NO_PROVENANCE",
+          "verdict": "SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "32b4ea42628bd9ea\u2026"
+        }
+      ]
+    }
+  ],
+  "environment": {
+    "python": "3.12.2",
+    "platform": "Windows",
+    "cpu_threads": 8,
+    "model_mode": "features+cnn",
+    "seed": 7,
+    "samples": "samples/authentic (official EuroSAT RGB patches, unmodified)"
+  },
+  "duration_s": 2.08
+}

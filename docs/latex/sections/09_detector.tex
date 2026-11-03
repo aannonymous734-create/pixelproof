@@ -1,0 +1,166 @@
+\section{AI / statistical detection and evaluation}\label{sec:detector}
+\rubric{detector design \& evaluation (20)}{We deliver a fused feature+CNN detector, a calibrated false-alarm budget with a re-encoding gate, leakage-free splits (Section~\ref{sec:data}), an ablation, and bootstrap confidence intervals. Evidence: \cd{pixelproof/detector.py}, \cd{scripts/evaluate.py}, \cd{make evaluate}.}
+
+\subsection{Design}
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\scriptsize]
+  \node[bg,text width=24mm] (patch) at (0,0) {\textbf{patch}\\any size or format\\64$\times$64 tiles, never resized};
+  \node[bo,text width=30mm] (feat) at (4.2,1.1) {\textbf{48 forensic features}\\rs fq nz cc cs cm\\$\to$ gradient boosting};
+  \node[bo,text width=30mm] (cnn) at (4.2,-1.1) {\textbf{PixelNet CNN}\\fixed SRM front end\\4-class softmax};
+  \node[bg,text width=26mm] (fus) at (8.2,0) {\textbf{fusion}\\$P = wP_f + (1-w)P_c$\\$w$ chosen on validation};
+  \node[bg,text width=26mm] (dec) at (11.6,0) {\textbf{decision}\\$s = 1-P(\text{auth})$\\alarm if $s \ge t(x)$};
+  \node[bn,text width=22mm] (out) at (14.9,0) {\textbf{output}\\verdict, evidence text, heatmap};
+  \node[bt,text width=62mm] (gate) at (11.6,-2.2) {\textbf{re-encoding gate} $g(x)$:\ $t(x) = c + g(x)(p - c)$, budget met on clean AND on re-encoded validation authentics};
+  \draw[arr] (patch)--(feat); \draw[arr] (patch)--(cnn);
+  \draw[arr] (feat)--(fus); \draw[arr] (cnn)--(fus); \draw[arr] (fus)--(dec); \draw[arr] (dec)--(out);
+  \draw[arr] (gate)--(dec);
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Content analysis: two models, one calibrated decision.}
+\end{figure}
+
+\textbf{Feature model.} Scikit-learn \cd{HistGradientBoostingClassifier} on the 48 features, four classes: authentic, resampled/spliced, copy-move, generated/inpainted.
+
+\textbf{Pixel model (PixelNet).} A 74,116-parameter forensic CNN, in the spirit of constrained and SRM-initialised forensic networks \cite{bayar,fridrich2012}. A \emph{fixed} front end applies three SRM high-pass kernels per colour channel; residuals are truncated to $\pm3$ and concatenated with the centred RGB patch (12 channels). Then three stages of two 3$\times$3 convolutions (16/32/64 channels, batch norm, ReLU), global average and max pooling, and a linear layer. Trained with AdamW and a one-cycle schedule, using only flips and 90$^\circ$ rotations (they preserve forensic traces).
+
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\scriptsize]
+  \tikzset{s/.style={bo,text width=24mm}}
+  \node[bg,text width=24mm] (i) at (0,0) {\textbf{input}\\RGB 64$\times$64, values 0..1};
+  \node[s] (f) at (3.6,0) {\textbf{fixed SRM}\\3 high-pass kernels $\times$ 3 colours, clip $\pm3$};
+  \node[s] (c) at (7.2,0) {\textbf{concat}\\9 residual maps + RGB $-0.5$ = 12 channels};
+  \node[s] (b1) at (10.8,0) {\textbf{block 1}\\2$\times$ conv3$\times$3 (16), BN, ReLU, max-pool};
+  \node[s] (b2) at (0,-2.0) {\textbf{block 2}\\2$\times$ conv3$\times$3 (32), BN, ReLU, max-pool};
+  \node[s] (b3) at (3.6,-2.0) {\textbf{block 3}\\2$\times$ conv3$\times$3 (64), BN, ReLU};
+  \node[s] (p) at (7.2,-2.0) {\textbf{pool}\\global average (64) + global max (64) = 128};
+  \node[bn,text width=24mm] (h) at (10.8,-2.0) {\textbf{head}\\linear 128 $\to$ 4\\softmax};
+  \draw[arr] (i)--(f); \draw[arr] (f)--(c); \draw[arr] (c)--(b1);
+  \draw[arr] (b1.south) -- ++(0,-0.6) -| ([yshift=0.6cm]b2.north) -- (b2.north);
+  \draw[arr] (b2)--(b3); \draw[arr] (b3)--(p); \draw[arr] (p)--(h);
+\end{tikzpicture}
+\end{adjustbox}
+\caption{PixelNet: the fixed high-pass front end makes the network read sensor noise instead of scenery; global max pooling keeps strong local evidence from a small edited region.}
+\end{figure}
+
+\begin{lstlisting}[style=py]
+def forward(self, x):                      # x: (N, 3, 64, 64) in [0, 1]
+    r = F.conv2d(x * 255.0, self.srm, padding=2, groups=3)  # 9 fixed SRM residual maps
+    r = torch.clamp(r, -3, 3) / 3.0        # truncation (TLU)
+    h = torch.cat([r, x - 0.5], 1)         # + centred RGB = 12 channels
+    h = F.max_pool2d(self.b1(h), 2)
+    h = F.max_pool2d(self.b2(h), 2)
+    h = self.b3(h)
+    h = torch.cat([h.mean((2, 3)), h.amax((2, 3))], 1)       # global average + max
+    return self.head(self.drop(h))
+\end{lstlisting}
+
+\textbf{Fusion and decision.} $P = w\,P_{\text{features}} + (1-w)\,P_{\text{CNN}}$ with $w = {{m:/card/w_gbm|f1}}$ chosen on validation. The manipulation score is $s = 1 - P(\text{authentic})$. The alarm threshold is condition-aware: $t(x) = c + g(x)\,(p - c)$, where $g(x)$ is the probability the patch was re-encoded after capture (a second gradient-boosting model, validation accuracy {{m:/gate_val_accuracy|pct1}} \meas), $c = {{m:/card/threshold_fused|f3}}$ gives the {{m:/target_fpr|pct0}} budget on clean validation authentics and $p = {{m:/card/threshold_proc_fused|f3}}$ gives it on re-encoded ones (Section~\ref{sec:robust} explains why).
+
+\subsection{Evaluation protocol}
+Table~\ref{tab:evalproto} lists what we measure and how. Thresholds are never tuned on a test set, and every interval is a 95\% bootstrap interval over test patches.
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{4.0cm}|Y|}
+\hline
+\textbf{Metric} & \textbf{Method}\\
+\hline
+Detection rate at a fixed false-alarm budget & threshold set on clean validation authentics; reported on test, never tuned on test\\
+\hline
+AUC-ROC, AUC-PR & score $s = 1 - P(\text{authentic})$ over authentic and manipulated test patches\\
+\hline
+False-alarm rate & authentic test patches, overall and per land cover; 95\% bootstrap intervals\\
+\hline
+Four-class macro-F1 and confusion matrix & authentic / resampled-spliced / copy-move / generated-inpainted, on detected and undetected patches\\
+\hline
+Generalisation & seen variants versus held-out v1, frozen held-out v2 (SHA-256 recorded), and v3 for the candidate\\
+\hline
+Robustness & one operation (JPEG, WebP, blur, noise, JPEG 2000, gamma) applied to every patch; false alarms and detection reported\\
+\hline
+Trust layer & {{c:/n_products|int}} signed products $\times$ 11 attacks, scenarios A--F, three lab architectures; every status compared with its expected value\\
+\hline
+Efficiency & latency (p50, p95), throughput, peak memory, model size, signing and verification time, manifest size\\
+\hline
+Explanation & heatmap IoU against the true mask; evidence text from the features furthest from authentic\\
+\hline
+\end{tabularx}
+\caption{Evaluation metrics and how each is computed.}\label{tab:evalproto}
+\end{table}
+
+\subsection{Results on clean test patches}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Test set} & \textbf{AUC-ROC} & \textbf{Detection} & \textbf{False alarms} & \textbf{4-class macro-F1}\\
+\hline
+Features (GBM) & seen & {{m:/models/features (GBM)/test_dev/auc_roc|f3}} & {{m:/models/features (GBM)/test_dev/detection_rate|pct1}} & {{m:/models/features (GBM)/test_dev/false_alarm_rate|pct1}} & {{m:/models/features (GBM)/test_dev/macro_f1_4class|f3}}\\
+\hline
+Pixel CNN & seen & {{m:/models/pixel CNN/test_dev/auc_roc|f3}} & {{m:/models/pixel CNN/test_dev/detection_rate|pct1}} & {{m:/models/pixel CNN/test_dev/false_alarm_rate|pct1}} & {{m:/models/pixel CNN/test_dev/macro_f1_4class|f3}}\\
+\hline
+\textbf{Fused} & \textbf{seen} & \textbf{{{m:/models/fused (w=0.4)/test_dev/auc_roc|f3}}} & \textbf{{{m:/models/fused (w=0.4)/test_dev/detection_rate|pct1}}} & \textbf{{{m:/models/fused (w=0.4)/test_dev/false_alarm_rate|pct1}}} & \textbf{{{m:/models/fused (w=0.4)/test_dev/macro_f1_4class|f3}}}\\
+\hline
+Features (GBM) & held-out & {{m:/models/features (GBM)/test_heldout/auc_roc|f3}} & {{m:/models/features (GBM)/test_heldout/detection_rate|pct1}} & {{m:/models/features (GBM)/test_heldout/false_alarm_rate|pct1}} & {{m:/models/features (GBM)/test_heldout/macro_f1_4class|f3}}\\
+\hline
+Pixel CNN & held-out & {{m:/models/pixel CNN/test_heldout/auc_roc|f3}} & {{m:/models/pixel CNN/test_heldout/detection_rate|pct1}} & {{m:/models/pixel CNN/test_heldout/false_alarm_rate|pct1}} & {{m:/models/pixel CNN/test_heldout/macro_f1_4class|f3}}\\
+\hline
+\textbf{Fused} & \textbf{held-out} & \textbf{{{m:/models/fused (w=0.4)/test_heldout/auc_roc|f3}}} & \textbf{{{m:/models/fused (w=0.4)/test_heldout/detection_rate|pct1}}} & \textbf{{{m:/models/fused (w=0.4)/test_heldout/false_alarm_rate|pct1}}} & \textbf{{{m:/models/fused (w=0.4)/test_heldout/macro_f1_4class|f3}}}\\
+\hline
+\end{tabular}
+\caption{Results on clean test patches (the fused model uses the shipped weights).}
+\end{table}
+
+95\% bootstrap intervals (fused): seen detection [{{m:/models/fused (w=0.4)/test_dev/detection_rate_ci95/0|pct1}}, {{m:/models/fused (w=0.4)/test_dev/detection_rate_ci95/1|pct1}}], seen false alarms [{{m:/models/fused (w=0.4)/test_dev/false_alarm_rate_ci95/0|pct1}}, {{m:/models/fused (w=0.4)/test_dev/false_alarm_rate_ci95/1|pct1}}], held-out detection [{{m:/models/fused (w=0.4)/test_heldout/detection_rate_ci95/0|pct1}}, {{m:/models/fused (w=0.4)/test_heldout/detection_rate_ci95/1|pct1}}].
+
+\emph{Takeaway: fusing the two models beats either alone on seen variants at a lower false-alarm rate; every detector loses ground on manipulations it has never seen, which Section~\ref{sec:scenario} quantifies.}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{confusion.png}
+\caption{Confusion matrices of the fused model, seen and held-out variants, with thresholds for the false-alarm budget on validation authentics.}
+\end{figure}
+
+\textbf{False alarms by land cover} (seen test): every class stays near the {{m:/target_fpr|pct0}} budget; the highest is Industrial at {{m:/false_alarm_by_landcover/test_dev/Industrial|pct1}}.
+\begin{table}[!htbp]
+\centering\small\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|}
+\hline
+ & \rotatebox{60}{AnnualCrop} & \rotatebox{60}{Forest} & \rotatebox{60}{Herbaceous} & \rotatebox{60}{Highway} & \rotatebox{60}{Industrial} & \rotatebox{60}{Pasture} & \rotatebox{60}{PermanentCrop} & \rotatebox{60}{Residential} & \rotatebox{60}{River} & \rotatebox{60}{SeaLake}\\
+\hline
+false alarms & {{m:/false_alarm_by_landcover/test_dev/AnnualCrop|pct1}} & {{m:/false_alarm_by_landcover/test_dev/Forest|pct1}} & {{m:/false_alarm_by_landcover/test_dev/HerbaceousVegetation|pct1}} & {{m:/false_alarm_by_landcover/test_dev/Highway|pct1}} & {{m:/false_alarm_by_landcover/test_dev/Industrial|pct1}} & {{m:/false_alarm_by_landcover/test_dev/Pasture|pct1}} & {{m:/false_alarm_by_landcover/test_dev/PermanentCrop|pct1}} & {{m:/false_alarm_by_landcover/test_dev/Residential|pct1}} & {{m:/false_alarm_by_landcover/test_dev/River|pct1}} & {{m:/false_alarm_by_landcover/test_dev/SeaLake|pct1}}\\
+\hline
+\end{tabular}
+\caption{False-alarm rate by land cover (seen test).}
+\end{table}
+
+\subsection{Ablation}
+We retrain the feature model without one feature group at a time (AUC-ROC; the CNN is not part of this ablation).
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Feature set} & \textbf{AUC seen} & \textbf{AUC held-out}\\
+\hline
+all 48 features & {{m:/ablation_feature_model/all features/test_dev/auc_roc|f3}} & {{m:/ablation_feature_model/all features/test_heldout/auc_roc|f3}}\\
+\hline
+without resampling (\cd{rs_*}) & {{m:/ablation_feature_model/without rs_*/test_dev/auc_roc|f3}} & {{m:/ablation_feature_model/without rs_*/test_heldout/auc_roc|f3}}\\
+\hline
+without frequency (\cd{fq_*}) & {{m:/ablation_feature_model/without fq_*/test_dev/auc_roc|f3}} & {{m:/ablation_feature_model/without fq_*/test_heldout/auc_roc|f3}}\\
+\hline
+without noise residual (\cd{nz_*}) & {{m:/ablation_feature_model/without nz_*/test_dev/auc_roc|f3}} & {{m:/ablation_feature_model/without nz_*/test_heldout/auc_roc|f3}}\\
+\hline
+without channel coherence (\cd{cc_*}) & {{m:/ablation_feature_model/without cc_*/test_dev/auc_roc|f3}} & {{m:/ablation_feature_model/without cc_*/test_heldout/auc_roc|f3}}\\
+\hline
+without copy-move (\cd{cm_*}) & {{m:/ablation_feature_model/without cm_*/test_dev/auc_roc|f3}} & {{m:/ablation_feature_model/without cm_*/test_heldout/auc_roc|f3}}\\
+\hline
+without colour statistics (\cd{cs_*}) & {{m:/ablation_feature_model/without cs_*/test_dev/auc_roc|f3}} & {{m:/ablation_feature_model/without cs_*/test_heldout/auc_roc|f3}}\\
+\hline
+no laundering augmentation & {{m:/ablation_feature_model/no laundering augmentation/test_dev/auc_roc|f3}} & {{m:/ablation_feature_model/no laundering augmentation/test_heldout/auc_roc|f3}}\\
+\hline
+\end{tabular}
+\caption{Ablation of the feature model.}
+\end{table}
+The largest drop on seen variants is the copy-move group ({{m:/ablation_feature_model/all features/test_dev/auc_roc|f3}} to {{m:/ablation_feature_model/without cm_*/test_dev/auc_roc|f3}}); on held-out variants it is channel coherence ({{m:/ablation_feature_model/all features/test_heldout/auc_roc|f3}} to {{m:/ablation_feature_model/without cc_*/test_heldout/auc_roc|f3}}). The ablation does \emph{not} show a held-out benefit for every group: removing the frequency group leaves held-out AUC slightly higher, and removing the resampling group leaves it unchanged. We keep all six because the plain-language evidence of an alarm is drawn from all of them.

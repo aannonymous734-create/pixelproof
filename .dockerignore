@@ -1,0 +1,13 @@
+.git
+.venv
+data
+runtime
+results
+docs
+tests
+__pycache__
+frontend/node_modules
+frontend
+results/lab
+lab/.vagrant
+.claude

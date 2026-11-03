@@ -1,0 +1,118 @@
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fonts are bundled by Vite (no CDN), so the dashboard stays fully offline inside the VMs. */
+
+:root {
+  --radius: 0.75rem;
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 240 8% 7%;
+  --card-foreground: 0 0% 98%;
+  --muted: 240 4% 13%;
+  --muted-foreground: 240 5% 65%;
+  --primary: 199 95% 62%;
+  --primary-foreground: 240 10% 5%;
+  --accent: 252 90% 70%;
+  --accent-foreground: 0 0% 100%;
+  --border: 240 4% 16%;
+  --input: 240 4% 16%;
+  --ring: 199 95% 62%;
+  --ring-color: 199 95% 62%;
+  /* native controls (select popups, scrollbars, date pickers) follow the dark theme */
+  color-scheme: dark;
+}
+:root.light {
+  color-scheme: light;
+  --background: 0 0% 99%;
+  --foreground: 240 10% 6%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 6%;
+  --muted: 240 5% 94%;
+  --muted-foreground: 240 4% 40%;
+  --primary: 204 94% 40%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 252 80% 55%;
+  --border: 240 6% 88%;
+  --input: 240 6% 88%;
+  --ring: 204 94% 40%;
+  --ring-color: 204 94% 40%;
+}
+
+* { border-color: hsl(var(--border)); }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+::selection { background: hsl(var(--primary) / 0.35); }
+:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 2px; border-radius: 6px; }
+code, kbd, pre { font-family: "Geist Mono Variable", ui-monospace, monospace; }
+code { font-size: 0.85em; }
+
+@layer utilities {
+  /* faint engineering grid, faded at the edges (21st.dev-style hero backdrop) */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, hsl(0 0% 100% / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(0 0% 100% / 0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+  .text-gradient {
+    background: linear-gradient(180deg, #fff 0%, hsl(var(--primary) / 0.95) 120%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .text-gradient-accent {
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .glass { background: hsl(var(--card) / 0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .ring-hairline { box-shadow: 0 0 0 1px hsl(0 0% 100% / 0.07), 0 1px 0 0 hsl(0 0% 100% / 0.05) inset; }
+}
+
+@layer components {
+  /* cursor-following spotlight on cards: --mx/--my are set from onMouseMove */
+  .spotlight::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.35s;
+    background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), hsl(var(--primary) / 0.10), transparent 45%);
+  }
+  .spotlight:hover::before { opacity: 1; }
+
+  /* shimmering primary call-to-action */
+  .btn-shimmer {
+    background-image: linear-gradient(110deg, hsl(var(--primary)) 35%, hsl(var(--accent)) 50%, hsl(var(--primary)) 65%);
+    background-size: 250% 100%;
+    animation: shimmer 3.2s linear infinite;
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.5), 0 8px 30px -8px hsl(var(--primary) / 0.55);
+  }
+
+  /* rotating conic border (hero verdict card / featured bento card) */
+  @property --beam-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+  .border-beam { position: relative; }
+  .border-beam::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+    background: conic-gradient(from var(--beam-angle), transparent 0 70%, hsl(var(--beam, var(--primary))) 85%, transparent 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: beam-spin 6s linear infinite;
+  }
+  @keyframes beam-spin { to { --beam-angle: 360deg; } }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important; scroll-behavior: auto !important;
+  }
+}

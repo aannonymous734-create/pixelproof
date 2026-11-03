@@ -1,0 +1,1338 @@
+{
+  "scenario": "compromised_source",
+  "id": "F1",
+  "kind": "compromised_source",
+  "title": "Manipulated BEFORE signing (compromised payload)",
+  "attacker_action": "Edits the image before it reaches the signer, so the satellite signs the fake itself.",
+  "why_it_fails": "It is NOT stopped by the signature: a valid signature proves who signed and that nothing changed afterwards, not that the picture is true. Only the content detector can raise a flag.",
+  "expected": "VERIFIED",
+  "n": 20,
+  "matches_expected": 20,
+  "rate": 1.0,
+  "control": {
+    "n": 20,
+    "verified": 20
+  },
+  "audit_log": {
+    "entries": 40,
+    "chain_valid": true,
+    "first_bad_entry": null
+  },
+  "trials": [
+    {
+      "trial": 1,
+      "sample": "Industrial_1846.jpg",
+      "matches_expected": true,
+      "signed_digest": "2992d4244d4ae6d1\u2026",
+      "received_digest": "2992d4244d4ae6d1\u2026",
+      "product_id": "LAB-F1-001",
+      "integrity_status": "VERIFIED",
+      "verdict": "VERIFIED",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4344,
+        "threshold": 0.4375,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "a544f640f706d0fc89db785d065ece74aa1852ccba3287810ed1a56cc5c30b32",
+      "timeline": [
+        {
+          "t_ms": 1.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-001-ctl",
+          "pixel_digest": "a73bbecf32b60fba\u2026",
+          "seq": 1
+        },
+        {
+          "t_ms": 48.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "3b1bb10cb91582cb\u2026"
+        },
+        {
+          "t_ms": 49.1,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 49.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-001",
+          "pixel_digest": "2992d4244d4ae6d1\u2026",
+          "seq": 2
+        },
+        {
+          "t_ms": 101.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "a544f640f706d0fc\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 2,
+      "sample": "Industrial_767.jpg",
+      "matches_expected": true,
+      "signed_digest": "e2c1fcc202e713ca\u2026",
+      "received_digest": "e2c1fcc202e713ca\u2026",
+      "product_id": "LAB-F1-002",
+      "integrity_status": "VERIFIED",
+      "verdict": "VERIFIED",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.3551,
+        "threshold": 0.4617,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "a7c6841891fed02964ae56e47c9dd34fb74da7796bf15081c66f29a78b52df90",
+      "timeline": [
+        {
+          "t_ms": 103.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-002-ctl",
+          "pixel_digest": "be2cee9c36ac3ff5\u2026",
+          "seq": 3
+        },
+        {
+          "t_ms": 145.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "7a047aff13a148c7\u2026"
+        },
+        {
+          "t_ms": 147.5,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 147.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-002",
+          "pixel_digest": "e2c1fcc202e713ca\u2026",
+          "seq": 4
+        },
+        {
+          "t_ms": 196.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "a7c6841891fed029\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 3,
+      "sample": "Forest_2520.jpg",
+      "matches_expected": true,
+      "signed_digest": "a42b75ef5be9f2a7\u2026",
+      "received_digest": "a42b75ef5be9f2a7\u2026",
+      "product_id": "LAB-F1-003",
+      "integrity_status": "VERIFIED",
+      "verdict": "VERIFIED",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.356,
+        "threshold": 0.436,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "173497401670805260e9098a2bb71d4f66da8c9d790ca11ba7f667ab03df77a8",
+      "timeline": [
+        {
+          "t_ms": 197.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-003-ctl",
+          "pixel_digest": "f57ab96ccc96c577\u2026",
+          "seq": 5
+        },
+        {
+          "t_ms": 233.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "ccbbef82b4a94841\u2026"
+        },
+        {
+          "t_ms": 234.1,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 234.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-003",
+          "pixel_digest": "a42b75ef5be9f2a7\u2026",
+          "seq": 6
+        },
+        {
+          "t_ms": 267.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "1734974016708052\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 4,
+      "sample": "SeaLake_2373.jpg",
+      "matches_expected": true,
+      "signed_digest": "5d4fdc479679c05b\u2026",
+      "received_digest": "5d4fdc479679c05b\u2026",
+      "product_id": "LAB-F1-004",
+      "integrity_status": "VERIFIED",
+      "verdict": "VERIFIED",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.3898,
+        "threshold": 0.4368,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "81535b70549cc48304a84b3ed66f7fc33379198b61c052d6be82dfc77de8c753",
+      "timeline": [
+        {
+          "t_ms": 268.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-004-ctl",
+          "pixel_digest": "f4d0cf0f41976a3e\u2026",
+          "seq": 7
+        },
+        {
+          "t_ms": 321.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "f7f0247b7da8e800\u2026"
+        },
+        {
+          "t_ms": 322.2,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 322.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-004",
+          "pixel_digest": "5d4fdc479679c05b\u2026",
+          "seq": 8
+        },
+        {
+          "t_ms": 368.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "81535b70549cc483\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 5,
+      "sample": "Residential_1482.jpg",
+      "matches_expected": true,
+      "signed_digest": "54beb374dd24b03d\u2026",
+      "received_digest": "54beb374dd24b03d\u2026",
+      "product_id": "LAB-F1-005",
+      "integrity_status": "VERIFIED",
+      "verdict": "SIGNED_BUT_SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "generated_inpainted",
+        "score": 0.7619,
+        "threshold": 0.4403,
+        "evidence": [
+          "a region whose colour or noise does not match the rest (splicing) (cs_noise_z3min, 5.0 sd from authentic patches)"
+        ]
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches",
+        "a region whose colour or noise does not match the rest (splicing) (cs_noise_z3min, 5.0 sd from authentic patches)"
+      ],
+      "ledger_hash": "512cddc53105efc829a11c693ee54966e6ccd35c7809b19a0738d949d567b290",
+      "timeline": [
+        {
+          "t_ms": 369.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-005-ctl",
+          "pixel_digest": "4636100aef81a006\u2026",
+          "seq": 9
+        },
+        {
+          "t_ms": 419.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "20b4f71715663620\u2026"
+        },
+        {
+          "t_ms": 421.3,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 421.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-005",
+          "pixel_digest": "54beb374dd24b03d\u2026",
+          "seq": 10
+        },
+        {
+          "t_ms": 472.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "SIGNED_BUT_SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "512cddc53105efc8\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 6,
+      "sample": "River_1196.jpg",
+      "matches_expected": true,
+      "signed_digest": "31e5e43c2f4340f1\u2026",
+      "received_digest": "31e5e43c2f4340f1\u2026",
+      "product_id": "LAB-F1-006",
+      "integrity_status": "VERIFIED",
+      "verdict": "VERIFIED",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.3753,
+        "threshold": 0.4422,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "6d8f3fa1200828e279645782089d3bf32796c506c51d34abd365f97e8b3536f7",
+      "timeline": [
+        {
+          "t_ms": 474.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-006-ctl",
+          "pixel_digest": "168a0b1e0cff167f\u2026",
+          "seq": 11
+        },
+        {
+          "t_ms": 660.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "e04002096d29ee48\u2026"
+        },
+        {
+          "t_ms": 663.0,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 663.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-006",
+          "pixel_digest": "31e5e43c2f4340f1\u2026",
+          "seq": 12
+        },
+        {
+          "t_ms": 713.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "6d8f3fa1200828e2\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 7,
+      "sample": "Pasture_964.jpg",
+      "matches_expected": true,
+      "signed_digest": "f563bd26d2797397\u2026",
+      "received_digest": "f563bd26d2797397\u2026",
+      "product_id": "LAB-F1-007",
+      "integrity_status": "VERIFIED",
+      "verdict": "SIGNED_BUT_SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "generated_inpainted",
+        "score": 0.5216,
+        "threshold": 0.4372,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "746a482bc93ae8fdec9a478a99e954aac8c5d0db8bd904430df7deb39abd2c39",
+      "timeline": [
+        {
+          "t_ms": 715.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-007-ctl",
+          "pixel_digest": "5ed60e9df13a4ede\u2026",
+          "seq": 13
+        },
+        {
+          "t_ms": 758.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "9f4384170374ab30\u2026"
+        },
+        {
+          "t_ms": 759.0,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 759.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-007",
+          "pixel_digest": "f563bd26d2797397\u2026",
+          "seq": 14
+        },
+        {
+          "t_ms": 805.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "SIGNED_BUT_SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "746a482bc93ae8fd\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 8,
+      "sample": "Forest_1655.jpg",
+      "matches_expected": true,
+      "signed_digest": "b815bbcb7eab27fd\u2026",
+      "received_digest": "b815bbcb7eab27fd\u2026",
+      "product_id": "LAB-F1-008",
+      "integrity_status": "VERIFIED",
+      "verdict": "VERIFIED",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2132,
+        "threshold": 0.4366,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "1bee2d826df39cfaec37ea551a825b7a2355baf15aa00732b13bafbbe30d2735",
+      "timeline": [
+        {
+          "t_ms": 807.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-008-ctl",
+          "pixel_digest": "890aff0aa5cad38e\u2026",
+          "seq": 15
+        },
+        {
+          "t_ms": 864.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "f6ff3f31b967c23d\u2026"
+        },
+        {
+          "t_ms": 864.8,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 865.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-008",
+          "pixel_digest": "b815bbcb7eab27fd\u2026",
+          "seq": 16
+        },
+        {
+          "t_ms": 915.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "1bee2d826df39cfa\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 9,
+      "sample": "SeaLake_1314.jpg",
+      "matches_expected": true,
+      "signed_digest": "e7e921a195834f6c\u2026",
+      "received_digest": "e7e921a195834f6c\u2026",
+      "product_id": "LAB-F1-009",
+      "integrity_status": "VERIFIED",
+      "verdict": "SIGNED_BUT_SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "generated_inpainted",
+        "score": 0.5955,
+        "threshold": 0.4817,
+        "evidence": [
+          "inconsistent or missing sensor noise (nz_frac_out, 4.5 sd from authentic patches)",
+          "a region whose colour or noise does not match the rest (splicing) (cs_sat_zmax, 3.0 sd from authentic patches)"
+        ]
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches",
+        "inconsistent or missing sensor noise (nz_frac_out, 4.5 sd from authentic patches)",
+        "a region whose colour or noise does not match the rest (splicing) (cs_sat_zmax, 3.0 sd from authentic patches)"
+      ],
+      "ledger_hash": "4b7b3a83ad74432eb6d98aabccd7521800bdc13dcf93e2bb8b15232703f67d47",
+      "timeline": [
+        {
+          "t_ms": 916.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-009-ctl",
+          "pixel_digest": "ce626a1403dd439e\u2026",
+          "seq": 17
+        },
+        {
+          "t_ms": 983.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "1c69254166ca7f12\u2026"
+        },
+        {
+          "t_ms": 986.3,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 986.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-009",
+          "pixel_digest": "e7e921a195834f6c\u2026",
+          "seq": 18
+        },
+        {
+          "t_ms": 1031.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "SIGNED_BUT_SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "4b7b3a83ad74432e\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 10,
+      "sample": "PermanentCrop_1803.jpg",
+      "matches_expected": true,
+      "signed_digest": "d964c42a2751b2fe\u2026",
+      "received_digest": "d964c42a2751b2fe\u2026",
+      "product_id": "LAB-F1-010",
+      "integrity_status": "VERIFIED",
+      "verdict": "VERIFIED",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4253,
+        "threshold": 0.5695,
+        "evidence": [
+          "patch appears re-encoded after capture (p=0.66); threshold raised to 0.57 to avoid accusing benign re-compression"
+        ]
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches",
+        "patch appears re-encoded after capture (p=0.66); threshold raised to 0.57 to avoid accusing benign re-compression"
+      ],
+      "ledger_hash": "f64fe6cb24a66cd6881d1cbd498da593d816e795d865b4cb578030cf2fa488fe",
+      "timeline": [
+        {
+          "t_ms": 1032.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-010-ctl",
+          "pixel_digest": "6412f9511d03544e\u2026",
+          "seq": 19
+        },
+        {
+          "t_ms": 1089.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "c301495e56d62d6c\u2026"
+        },
+        {
+          "t_ms": 1092.3,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 1092.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-010",
+          "pixel_digest": "d964c42a2751b2fe\u2026",
+          "seq": 20
+        },
+        {
+          "t_ms": 1153.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "f64fe6cb24a66cd6\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 11,
+      "sample": "PermanentCrop_1083.jpg",
+      "matches_expected": true,
+      "signed_digest": "033144ea8c96114e\u2026",
+      "received_digest": "033144ea8c96114e\u2026",
+      "product_id": "LAB-F1-011",
+      "integrity_status": "VERIFIED",
+      "verdict": "VERIFIED",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1786,
+        "threshold": 0.4377,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "89ee0d292384fe50df472a5a83530d7761b46fcf7583d7bc344bd4afe000e526",
+      "timeline": [
+        {
+          "t_ms": 1155.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-011-ctl",
+          "pixel_digest": "163cfed3a86deb98\u2026",
+          "seq": 21
+        },
+        {
+          "t_ms": 1213.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "2c5d1752dff34460\u2026"
+        },
+        {
+          "t_ms": 1215.6,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 1215.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-011",
+          "pixel_digest": "033144ea8c96114e\u2026",
+          "seq": 22
+        },
+        {
+          "t_ms": 1268.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "89ee0d292384fe50\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 12,
+      "sample": "Industrial_2267.jpg",
+      "matches_expected": true,
+      "signed_digest": "3e3f77dd0e5246af\u2026",
+      "received_digest": "3e3f77dd0e5246af\u2026",
+      "product_id": "LAB-F1-012",
+      "integrity_status": "VERIFIED",
+      "verdict": "SIGNED_BUT_SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "generated_inpainted",
+        "score": 0.8346,
+        "threshold": 0.6097,
+        "evidence": [
+          "inconsistent or missing sensor noise (nz_z2min, 4.4 sd from authentic patches)",
+          "a region whose colour or noise does not match the rest (splicing) (cs_noise_z3min, 4.2 sd from authentic patches)",
+          "inconsistent or missing sensor noise (nz_zmin, 3.6 sd from authentic patches)"
+        ]
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches",
+        "inconsistent or missing sensor noise (nz_z2min, 4.4 sd from authentic patches)",
+        "a region whose colour or noise does not match the rest (splicing) (cs_noise_z3min, 4.2 sd from authentic patches)"
+      ],
+      "ledger_hash": "8e9a7e08dd72ea97c7149a29342e2ed2f8d0f3dc666ac4c66d8416f0a3d864a0",
+      "timeline": [
+        {
+          "t_ms": 1270.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-012-ctl",
+          "pixel_digest": "419dcacfd3ee65a4\u2026",
+          "seq": 23
+        },
+        {
+          "t_ms": 1322.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "71d70e0b67bdc07c\u2026"
+        },
+        {
+          "t_ms": 1325.1,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 1325.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-012",
+          "pixel_digest": "3e3f77dd0e5246af\u2026",
+          "seq": 24
+        },
+        {
+          "t_ms": 1376.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "SIGNED_BUT_SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "8e9a7e08dd72ea97\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 13,
+      "sample": "AnnualCrop_1226.jpg",
+      "matches_expected": true,
+      "signed_digest": "60cb5090e40496dd\u2026",
+      "received_digest": "60cb5090e40496dd\u2026",
+      "product_id": "LAB-F1-013",
+      "integrity_status": "VERIFIED",
+      "verdict": "SIGNED_BUT_SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "generated_inpainted",
+        "score": 0.7763,
+        "threshold": 0.439,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "4571d5206a5330d627eacffb59ef0ce1e9a7bce8d6010d926fb58b105cabd59f",
+      "timeline": [
+        {
+          "t_ms": 1377.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-013-ctl",
+          "pixel_digest": "8895d1e45e246cda\u2026",
+          "seq": 25
+        },
+        {
+          "t_ms": 1433.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "0e79322abe47c691\u2026"
+        },
+        {
+          "t_ms": 1434.7,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 1435.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-013",
+          "pixel_digest": "60cb5090e40496dd\u2026",
+          "seq": 26
+        },
+        {
+          "t_ms": 1500.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "SIGNED_BUT_SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "4571d5206a5330d6\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 14,
+      "sample": "River_1268.jpg",
+      "matches_expected": true,
+      "signed_digest": "b690d4f86db2ef4d\u2026",
+      "received_digest": "b690d4f86db2ef4d\u2026",
+      "product_id": "LAB-F1-014",
+      "integrity_status": "VERIFIED",
+      "verdict": "VERIFIED",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4225,
+        "threshold": 0.4436,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "2fdb789fa73229c6c9430bd2dd6585f7f7a42cae1afed1890a841b20c85e959c",
+      "timeline": [
+        {
+          "t_ms": 1501.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-014-ctl",
+          "pixel_digest": "77bd7698faf4f6db\u2026",
+          "seq": 27
+        },
+        {
+          "t_ms": 1565.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "83aba41232a2a38b\u2026"
+        },
+        {
+          "t_ms": 1566.3,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 1566.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-014",
+          "pixel_digest": "b690d4f86db2ef4d\u2026",
+          "seq": 28
+        },
+        {
+          "t_ms": 1620.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "2fdb789fa73229c6\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 15,
+      "sample": "Residential_2181.jpg",
+      "matches_expected": true,
+      "signed_digest": "445881f3033cdb9d\u2026",
+      "received_digest": "445881f3033cdb9d\u2026",
+      "product_id": "LAB-F1-015",
+      "integrity_status": "VERIFIED",
+      "verdict": "SIGNED_BUT_SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "generated_inpainted",
+        "score": 0.9889,
+        "threshold": 0.4497,
+        "evidence": [
+          "a region whose colour or noise does not match the rest (splicing) (cs_noise_z3min, 7.2 sd from authentic patches)",
+          "inconsistent or missing sensor noise (nz_zmin, 6.2 sd from authentic patches)",
+          "inconsistent or missing sensor noise (nz_z2min, 4.1 sd from authentic patches)"
+        ]
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches",
+        "a region whose colour or noise does not match the rest (splicing) (cs_noise_z3min, 7.2 sd from authentic patches)",
+        "inconsistent or missing sensor noise (nz_zmin, 6.2 sd from authentic patches)"
+      ],
+      "ledger_hash": "c4c5ccae26119fcab686e2993111400a546e5992df98ff74ab0156ff129e77fb",
+      "timeline": [
+        {
+          "t_ms": 1622.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-015-ctl",
+          "pixel_digest": "a030d0ead7009e0c\u2026",
+          "seq": 29
+        },
+        {
+          "t_ms": 1693.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "48e28e66f59fdd87\u2026"
+        },
+        {
+          "t_ms": 1696.2,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 1696.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-015",
+          "pixel_digest": "445881f3033cdb9d\u2026",
+          "seq": 30
+        },
+        {
+          "t_ms": 1756.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "SIGNED_BUT_SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "c4c5ccae26119fca\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 16,
+      "sample": "Highway_2453.jpg",
+      "matches_expected": true,
+      "signed_digest": "caa2d8eb420f5444\u2026",
+      "received_digest": "caa2d8eb420f5444\u2026",
+      "product_id": "LAB-F1-016",
+      "integrity_status": "VERIFIED",
+      "verdict": "VERIFIED",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.3537,
+        "threshold": 0.442,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "700f7e44db5e5446c33f0e12b1ef7710c73eb4c9cbe1b9e21385be560cb683b7",
+      "timeline": [
+        {
+          "t_ms": 1757.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-016-ctl",
+          "pixel_digest": "113c5c08a8433f94\u2026",
+          "seq": 31
+        },
+        {
+          "t_ms": 1819.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "03b4bf3d06ed7b6c\u2026"
+        },
+        {
+          "t_ms": 1820.0,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 1820.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-016",
+          "pixel_digest": "caa2d8eb420f5444\u2026",
+          "seq": 32
+        },
+        {
+          "t_ms": 1880.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "700f7e44db5e5446\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 17,
+      "sample": "HerbaceousVegetation_278.jpg",
+      "matches_expected": true,
+      "signed_digest": "0bf06f5ceb41e782\u2026",
+      "received_digest": "0bf06f5ceb41e782\u2026",
+      "product_id": "LAB-F1-017",
+      "integrity_status": "VERIFIED",
+      "verdict": "SIGNED_BUT_SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "generated_inpainted",
+        "score": 0.7262,
+        "threshold": 0.4364,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "dc81de4a09525b0912f7ce5fb8472b628be00dc54799e517661d4605fab90eba",
+      "timeline": [
+        {
+          "t_ms": 1881.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-017-ctl",
+          "pixel_digest": "679273182252c336\u2026",
+          "seq": 33
+        },
+        {
+          "t_ms": 1938.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "e2e2064e540e715b\u2026"
+        },
+        {
+          "t_ms": 1940.0,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 1940.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-017",
+          "pixel_digest": "0bf06f5ceb41e782\u2026",
+          "seq": 34
+        },
+        {
+          "t_ms": 2001.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "SIGNED_BUT_SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "dc81de4a09525b09\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 18,
+      "sample": "HerbaceousVegetation_1941.jpg",
+      "matches_expected": true,
+      "signed_digest": "8b021e8a2f67108e\u2026",
+      "received_digest": "8b021e8a2f67108e\u2026",
+      "product_id": "LAB-F1-018",
+      "integrity_status": "VERIFIED",
+      "verdict": "SIGNED_BUT_SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "resampled_spliced",
+        "score": 0.7073,
+        "threshold": 0.4421,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "1957486642b105567fdfdb11cb1d15b19f6d0668d64a7fe1ba4d9927d7d7baba",
+      "timeline": [
+        {
+          "t_ms": 2003.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-018-ctl",
+          "pixel_digest": "fd91be430f3ad4e5\u2026",
+          "seq": 35
+        },
+        {
+          "t_ms": 2060.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "27d5e11047ff5b37\u2026"
+        },
+        {
+          "t_ms": 2061.6,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 2062.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-018",
+          "pixel_digest": "8b021e8a2f67108e\u2026",
+          "seq": 36
+        },
+        {
+          "t_ms": 2126.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "SIGNED_BUT_SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "1957486642b10556\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 19,
+      "sample": "AnnualCrop_2314.jpg",
+      "matches_expected": true,
+      "signed_digest": "417e920fa418d78a\u2026",
+      "received_digest": "417e920fa418d78a\u2026",
+      "product_id": "LAB-F1-019",
+      "integrity_status": "VERIFIED",
+      "verdict": "SIGNED_BUT_SUSPICIOUS",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": true,
+        "type": "generated_inpainted",
+        "score": 0.6883,
+        "threshold": 0.4427,
+        "evidence": [
+          "periodic interpolation pattern (resampling trace) (rs_peak_v, 2.9 sd from authentic patches)"
+        ]
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches",
+        "periodic interpolation pattern (resampling trace) (rs_peak_v, 2.9 sd from authentic patches)"
+      ],
+      "ledger_hash": "4469484ea56474c92fa1609af4324efcccc2bb2dca6a864749e9e484250b2918",
+      "timeline": [
+        {
+          "t_ms": 2128.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-019-ctl",
+          "pixel_digest": "e0ef9d3a609526a9\u2026",
+          "seq": 37
+        },
+        {
+          "t_ms": 2181.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "ef46ebd630947b03\u2026"
+        },
+        {
+          "t_ms": 2181.9,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 2182.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-019",
+          "pixel_digest": "417e920fa418d78a\u2026",
+          "seq": 38
+        },
+        {
+          "t_ms": 2234.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "SIGNED_BUT_SUSPICIOUS",
+          "action": "QUARANTINE",
+          "ledger_hash": "4469484ea56474c9\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 20,
+      "sample": "Pasture_1471.jpg",
+      "matches_expected": true,
+      "signed_digest": "8a29423862be578e\u2026",
+      "received_digest": "8a29423862be578e\u2026",
+      "product_id": "LAB-F1-020",
+      "integrity_status": "VERIFIED",
+      "verdict": "VERIFIED",
+      "action": "RELEASE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.3946,
+        "threshold": 0.4361,
+        "evidence": []
+      },
+      "reasons": [
+        "signed by ESA Copernicus (emulated) (sat-01), 1 processing step(s), digest matches"
+      ],
+      "ledger_hash": "a1d8a626a1668bb316e5864410619fa24d2c583318fcf67ab9d105f73864ec10",
+      "timeline": [
+        {
+          "t_ms": 2236.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-020-ctl",
+          "pixel_digest": "980c6c0ec6e89e8c\u2026",
+          "seq": 39
+        },
+        {
+          "t_ms": 2287.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "53fe5e07bee241c4\u2026"
+        },
+        {
+          "t_ms": 2288.5,
+          "actor": "attacker",
+          "event": "edited the image BEFORE signing (compromised payload)"
+        },
+        {
+          "t_ms": 2288.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-F1-020",
+          "pixel_digest": "8a29423862be578e\u2026",
+          "seq": 40
+        },
+        {
+          "t_ms": 2330.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "a1d8a626a1668bb3\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    }
+  ],
+  "environment": {
+    "python": "3.12.2",
+    "platform": "Windows",
+    "cpu_threads": 8,
+    "model_mode": "features+cnn",
+    "seed": 7,
+    "samples": "samples/authentic (official EuroSAT RGB patches, unmodified)"
+  },
+  "duration_s": 2.6
+}

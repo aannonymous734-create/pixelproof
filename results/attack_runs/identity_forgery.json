@@ -1,0 +1,1335 @@
+{
+  "scenario": "identity_forgery",
+  "id": "B2",
+  "kind": "integrity",
+  "title": "Satellite identity forgery",
+  "attacker_action": "Changes the date, claims to be the satellite and signs with its own key.",
+  "why_it_fails": "The ground station trusts only the public keys in its own registry, never a key sent with the message.",
+  "expected": "UNKNOWN_KEY",
+  "n": 20,
+  "matches_expected": 20,
+  "rate": 1.0,
+  "control": {
+    "n": 20,
+    "verified": 20
+  },
+  "audit_log": {
+    "entries": 40,
+    "chain_valid": true,
+    "first_bad_entry": null
+  },
+  "trials": [
+    {
+      "trial": 1,
+      "sample": "Industrial_1846.jpg",
+      "matches_expected": true,
+      "signed_digest": "27f8b124170a37c6\u2026",
+      "received_digest": "27f8b124170a37c6\u2026",
+      "product_id": "LAB-B2-001",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2161,
+        "threshold": 0.4409,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "f59286ba0e6b31d0e5492e18b8011a26efab3a625af2b22f254f27039b1b0051",
+      "timeline": [
+        {
+          "t_ms": 1.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-001-ctl",
+          "pixel_digest": "a73bbecf32b60fba\u2026",
+          "seq": 1
+        },
+        {
+          "t_ms": 45.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "122ad466562afa5b\u2026"
+        },
+        {
+          "t_ms": 45.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-001",
+          "pixel_digest": "27f8b124170a37c6\u2026",
+          "seq": 2
+        },
+        {
+          "t_ms": 45.5,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 92.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "f59286ba0e6b31d0\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 2,
+      "sample": "Industrial_767.jpg",
+      "matches_expected": true,
+      "signed_digest": "a73bbecf32b60fba\u2026",
+      "received_digest": "a73bbecf32b60fba\u2026",
+      "product_id": "LAB-B2-002",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2931,
+        "threshold": 0.447,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "d1e4b045598c557579e8f36512a02e090ae55f0aaa1f9951cbd7dd8e412354e2",
+      "timeline": [
+        {
+          "t_ms": 93.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-002-ctl",
+          "pixel_digest": "be2cee9c36ac3ff5\u2026",
+          "seq": 3
+        },
+        {
+          "t_ms": 127.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "5bf8c1cbd1d52b89\u2026"
+        },
+        {
+          "t_ms": 127.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-002",
+          "pixel_digest": "a73bbecf32b60fba\u2026",
+          "seq": 4
+        },
+        {
+          "t_ms": 127.8,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 174.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "d1e4b045598c5575\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 3,
+      "sample": "Forest_2520.jpg",
+      "matches_expected": true,
+      "signed_digest": "be2cee9c36ac3ff5\u2026",
+      "received_digest": "be2cee9c36ac3ff5\u2026",
+      "product_id": "LAB-B2-003",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2386,
+        "threshold": 0.436,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "596318748a0c46c12b2d249cc52704d7a8c3bbf3a7be465066f2c361867fa834",
+      "timeline": [
+        {
+          "t_ms": 176.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-003-ctl",
+          "pixel_digest": "f57ab96ccc96c577\u2026",
+          "seq": 5
+        },
+        {
+          "t_ms": 215.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "5d8802dbf02d753d\u2026"
+        },
+        {
+          "t_ms": 215.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-003",
+          "pixel_digest": "be2cee9c36ac3ff5\u2026",
+          "seq": 6
+        },
+        {
+          "t_ms": 215.9,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 247.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "596318748a0c46c1\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 4,
+      "sample": "SeaLake_2373.jpg",
+      "matches_expected": true,
+      "signed_digest": "f57ab96ccc96c577\u2026",
+      "received_digest": "f57ab96ccc96c577\u2026",
+      "product_id": "LAB-B2-004",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.3233,
+        "threshold": 0.4361,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "23227ada1d6b09be86679c35b01276be0e91b331def029dfd709c8f949436a69",
+      "timeline": [
+        {
+          "t_ms": 248.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-004-ctl",
+          "pixel_digest": "f4d0cf0f41976a3e\u2026",
+          "seq": 7
+        },
+        {
+          "t_ms": 293.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "702a095055ea2fae\u2026"
+        },
+        {
+          "t_ms": 293.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-004",
+          "pixel_digest": "f57ab96ccc96c577\u2026",
+          "seq": 8
+        },
+        {
+          "t_ms": 293.7,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 331.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "23227ada1d6b09be\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 5,
+      "sample": "Residential_1482.jpg",
+      "matches_expected": true,
+      "signed_digest": "f4d0cf0f41976a3e\u2026",
+      "received_digest": "f4d0cf0f41976a3e\u2026",
+      "product_id": "LAB-B2-005",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1152,
+        "threshold": 0.4413,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "89abcb8b0941f2924576e059c9d762443985879dc8a8138217c485c4552103dd",
+      "timeline": [
+        {
+          "t_ms": 332.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-005-ctl",
+          "pixel_digest": "4636100aef81a006\u2026",
+          "seq": 9
+        },
+        {
+          "t_ms": 380.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "2f7bfd6022cd8ebb\u2026"
+        },
+        {
+          "t_ms": 380.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-005",
+          "pixel_digest": "f4d0cf0f41976a3e\u2026",
+          "seq": 10
+        },
+        {
+          "t_ms": 380.7,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 429.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "89abcb8b0941f292\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 6,
+      "sample": "River_1196.jpg",
+      "matches_expected": true,
+      "signed_digest": "4636100aef81a006\u2026",
+      "received_digest": "4636100aef81a006\u2026",
+      "product_id": "LAB-B2-006",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1934,
+        "threshold": 0.4517,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "3788cbe8a4341eca35fb8bbc73ce49a74b7883bcb2d2cb98ab023096ec7df696",
+      "timeline": [
+        {
+          "t_ms": 431.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-006-ctl",
+          "pixel_digest": "168a0b1e0cff167f\u2026",
+          "seq": 11
+        },
+        {
+          "t_ms": 474.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "44962cafe4755412\u2026"
+        },
+        {
+          "t_ms": 475.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-006",
+          "pixel_digest": "4636100aef81a006\u2026",
+          "seq": 12
+        },
+        {
+          "t_ms": 475.1,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 533.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "3788cbe8a4341eca\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 7,
+      "sample": "Pasture_964.jpg",
+      "matches_expected": true,
+      "signed_digest": "168a0b1e0cff167f\u2026",
+      "received_digest": "168a0b1e0cff167f\u2026",
+      "product_id": "LAB-B2-007",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1602,
+        "threshold": 0.4367,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "10abf6e1c7bcd964cf470e518e010078d1b73820553be37f059ac275bdcca5ef",
+      "timeline": [
+        {
+          "t_ms": 535.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-007-ctl",
+          "pixel_digest": "5ed60e9df13a4ede\u2026",
+          "seq": 13
+        },
+        {
+          "t_ms": 587.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "039a908cfcd03d5b\u2026"
+        },
+        {
+          "t_ms": 588.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-007",
+          "pixel_digest": "168a0b1e0cff167f\u2026",
+          "seq": 14
+        },
+        {
+          "t_ms": 588.4,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 974.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "10abf6e1c7bcd964\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 8,
+      "sample": "Forest_1655.jpg",
+      "matches_expected": true,
+      "signed_digest": "5ed60e9df13a4ede\u2026",
+      "received_digest": "5ed60e9df13a4ede\u2026",
+      "product_id": "LAB-B2-008",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1944,
+        "threshold": 0.4365,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "8e6248b105200e517e854d1784e3ab2a2500149e26049f3a5a707a1cafafa812",
+      "timeline": [
+        {
+          "t_ms": 976.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-008-ctl",
+          "pixel_digest": "890aff0aa5cad38e\u2026",
+          "seq": 15
+        },
+        {
+          "t_ms": 1033.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "2449f45c5d20ad1d\u2026"
+        },
+        {
+          "t_ms": 1033.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-008",
+          "pixel_digest": "5ed60e9df13a4ede\u2026",
+          "seq": 16
+        },
+        {
+          "t_ms": 1033.7,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 1082.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "8e6248b105200e51\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 9,
+      "sample": "SeaLake_1314.jpg",
+      "matches_expected": true,
+      "signed_digest": "890aff0aa5cad38e\u2026",
+      "received_digest": "890aff0aa5cad38e\u2026",
+      "product_id": "LAB-B2-009",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2509,
+        "threshold": 0.4372,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "fd13ca1f853096d175bd82de2827c84c96374e568b83ed90db2a914fa03b68fe",
+      "timeline": [
+        {
+          "t_ms": 1083.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-009-ctl",
+          "pixel_digest": "ce626a1403dd439e\u2026",
+          "seq": 17
+        },
+        {
+          "t_ms": 1153.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "9c0abf86f1a8df03\u2026"
+        },
+        {
+          "t_ms": 1153.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-009",
+          "pixel_digest": "890aff0aa5cad38e\u2026",
+          "seq": 18
+        },
+        {
+          "t_ms": 1153.9,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 1200.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "fd13ca1f853096d1\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 10,
+      "sample": "PermanentCrop_1803.jpg",
+      "matches_expected": true,
+      "signed_digest": "ce626a1403dd439e\u2026",
+      "received_digest": "ce626a1403dd439e\u2026",
+      "product_id": "LAB-B2-010",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1347,
+        "threshold": 0.4504,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "79a4c54b251e7977b9aa4e98fb425078d187aaa6d0f29f8c535968818e45f6fd",
+      "timeline": [
+        {
+          "t_ms": 1201.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-010-ctl",
+          "pixel_digest": "6412f9511d03544e\u2026",
+          "seq": 19
+        },
+        {
+          "t_ms": 1249.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "e45f8f644f4118d8\u2026"
+        },
+        {
+          "t_ms": 1250.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-010",
+          "pixel_digest": "ce626a1403dd439e\u2026",
+          "seq": 20
+        },
+        {
+          "t_ms": 1250.2,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 1304.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "79a4c54b251e7977\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 11,
+      "sample": "PermanentCrop_1083.jpg",
+      "matches_expected": true,
+      "signed_digest": "6412f9511d03544e\u2026",
+      "received_digest": "6412f9511d03544e\u2026",
+      "product_id": "LAB-B2-011",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.142,
+        "threshold": 0.4368,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "8ea2d9c014a2e06a3d70458e6128e95e3d58dae71f94ceb66a55da043b30b5d6",
+      "timeline": [
+        {
+          "t_ms": 1305.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-011-ctl",
+          "pixel_digest": "163cfed3a86deb98\u2026",
+          "seq": 21
+        },
+        {
+          "t_ms": 1364.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "ced2881d59e91507\u2026"
+        },
+        {
+          "t_ms": 1365.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-011",
+          "pixel_digest": "6412f9511d03544e\u2026",
+          "seq": 22
+        },
+        {
+          "t_ms": 1365.2,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 1414.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "8ea2d9c014a2e06a\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 12,
+      "sample": "Industrial_2267.jpg",
+      "matches_expected": true,
+      "signed_digest": "163cfed3a86deb98\u2026",
+      "received_digest": "163cfed3a86deb98\u2026",
+      "product_id": "LAB-B2-012",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4491,
+        "threshold": 0.5493,
+        "evidence": [
+          "patch appears re-encoded after capture (p=0.56); threshold raised to 0.55 to avoid accusing benign re-compression"
+        ]
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source",
+        "patch appears re-encoded after capture (p=0.56); threshold raised to 0.55 to avoid accusing benign re-compression"
+      ],
+      "ledger_hash": "a208231796f2aeab73707d8ac62ddb08fb183689c9306087e524a97c7f3eb145",
+      "timeline": [
+        {
+          "t_ms": 1415.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-012-ctl",
+          "pixel_digest": "419dcacfd3ee65a4\u2026",
+          "seq": 23
+        },
+        {
+          "t_ms": 1465.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "7874ea7e68645abc\u2026"
+        },
+        {
+          "t_ms": 1465.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-012",
+          "pixel_digest": "163cfed3a86deb98\u2026",
+          "seq": 24
+        },
+        {
+          "t_ms": 1466.0,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 1518.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "a208231796f2aeab\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 13,
+      "sample": "AnnualCrop_1226.jpg",
+      "matches_expected": true,
+      "signed_digest": "419dcacfd3ee65a4\u2026",
+      "received_digest": "419dcacfd3ee65a4\u2026",
+      "product_id": "LAB-B2-013",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.149,
+        "threshold": 0.4362,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "f5b40c9e5ed9f78aa68cadff24251951015dda225c68c3ec088f43a3d64839f2",
+      "timeline": [
+        {
+          "t_ms": 1519.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-013-ctl",
+          "pixel_digest": "8895d1e45e246cda\u2026",
+          "seq": 25
+        },
+        {
+          "t_ms": 1568.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "ed3ca82477914b30\u2026"
+        },
+        {
+          "t_ms": 1568.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-013",
+          "pixel_digest": "419dcacfd3ee65a4\u2026",
+          "seq": 26
+        },
+        {
+          "t_ms": 1569.0,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 1618.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "f5b40c9e5ed9f78a\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 14,
+      "sample": "River_1268.jpg",
+      "matches_expected": true,
+      "signed_digest": "8895d1e45e246cda\u2026",
+      "received_digest": "8895d1e45e246cda\u2026",
+      "product_id": "LAB-B2-014",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4255,
+        "threshold": 0.4438,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "a7e62bd47a2284816c0cceef79a4f22311ecd1ea64c2bed8128d729379967e89",
+      "timeline": [
+        {
+          "t_ms": 1619.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-014-ctl",
+          "pixel_digest": "77bd7698faf4f6db\u2026",
+          "seq": 27
+        },
+        {
+          "t_ms": 1665.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "65295c7ca844de97\u2026"
+        },
+        {
+          "t_ms": 1666.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-014",
+          "pixel_digest": "8895d1e45e246cda\u2026",
+          "seq": 28
+        },
+        {
+          "t_ms": 1666.1,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 1716.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "a7e62bd47a228481\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 15,
+      "sample": "Residential_2181.jpg",
+      "matches_expected": true,
+      "signed_digest": "77bd7698faf4f6db\u2026",
+      "received_digest": "77bd7698faf4f6db\u2026",
+      "product_id": "LAB-B2-015",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1631,
+        "threshold": 0.44,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "904bba4b29f9cc5796c510a391535f2fbe827f0d7933c8c994346d7b83ec8933",
+      "timeline": [
+        {
+          "t_ms": 1717.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-015-ctl",
+          "pixel_digest": "a030d0ead7009e0c\u2026",
+          "seq": 29
+        },
+        {
+          "t_ms": 1764.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "af1334e603247ae9\u2026"
+        },
+        {
+          "t_ms": 1765.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-015",
+          "pixel_digest": "77bd7698faf4f6db\u2026",
+          "seq": 30
+        },
+        {
+          "t_ms": 1765.2,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 1813.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "904bba4b29f9cc57\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 16,
+      "sample": "Highway_2453.jpg",
+      "matches_expected": true,
+      "signed_digest": "a030d0ead7009e0c\u2026",
+      "received_digest": "a030d0ead7009e0c\u2026",
+      "product_id": "LAB-B2-016",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2541,
+        "threshold": 0.4504,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "208a5809a33e90603c18e48c98f94025adf3c117911025797159980c2b8ede0a",
+      "timeline": [
+        {
+          "t_ms": 1814.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-016-ctl",
+          "pixel_digest": "113c5c08a8433f94\u2026",
+          "seq": 31
+        },
+        {
+          "t_ms": 1868.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "c06a7a290c5d7687\u2026"
+        },
+        {
+          "t_ms": 1868.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-016",
+          "pixel_digest": "a030d0ead7009e0c\u2026",
+          "seq": 32
+        },
+        {
+          "t_ms": 1869.0,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 2048.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "208a5809a33e9060\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 17,
+      "sample": "HerbaceousVegetation_278.jpg",
+      "matches_expected": true,
+      "signed_digest": "113c5c08a8433f94\u2026",
+      "received_digest": "113c5c08a8433f94\u2026",
+      "product_id": "LAB-B2-017",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1523,
+        "threshold": 0.4366,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "721ac7dbc42475061f850f774fa595827da28877b775f727834b5f28e80ca5a6",
+      "timeline": [
+        {
+          "t_ms": 2049.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-017-ctl",
+          "pixel_digest": "679273182252c336\u2026",
+          "seq": 33
+        },
+        {
+          "t_ms": 2097.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "0b0c247c0246cd3c\u2026"
+        },
+        {
+          "t_ms": 2097.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-017",
+          "pixel_digest": "113c5c08a8433f94\u2026",
+          "seq": 34
+        },
+        {
+          "t_ms": 2097.5,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 2154.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "721ac7dbc4247506\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 18,
+      "sample": "HerbaceousVegetation_1941.jpg",
+      "matches_expected": true,
+      "signed_digest": "679273182252c336\u2026",
+      "received_digest": "679273182252c336\u2026",
+      "product_id": "LAB-B2-018",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2884,
+        "threshold": 0.4362,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "9583693aa6bdc8e88bed4a6cf3c162d41e257cc036aa081942de166f3d112032",
+      "timeline": [
+        {
+          "t_ms": 2155.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-018-ctl",
+          "pixel_digest": "fd91be430f3ad4e5\u2026",
+          "seq": 35
+        },
+        {
+          "t_ms": 2207.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "253d4d086e07faad\u2026"
+        },
+        {
+          "t_ms": 2207.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-018",
+          "pixel_digest": "679273182252c336\u2026",
+          "seq": 36
+        },
+        {
+          "t_ms": 2207.7,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 2255.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "9583693aa6bdc8e8\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 19,
+      "sample": "AnnualCrop_2314.jpg",
+      "matches_expected": true,
+      "signed_digest": "fd91be430f3ad4e5\u2026",
+      "received_digest": "fd91be430f3ad4e5\u2026",
+      "product_id": "LAB-B2-019",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.0717,
+        "threshold": 0.4367,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "237e0fdd7efb68b4bf95ba490efcecb81db84b8aae04f2c498c81d78877cc5d9",
+      "timeline": [
+        {
+          "t_ms": 2256.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-019-ctl",
+          "pixel_digest": "e0ef9d3a609526a9\u2026",
+          "seq": 37
+        },
+        {
+          "t_ms": 2290.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "690f05f292d5c7d3\u2026"
+        },
+        {
+          "t_ms": 2290.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-019",
+          "pixel_digest": "fd91be430f3ad4e5\u2026",
+          "seq": 38
+        },
+        {
+          "t_ms": 2290.8,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 2333.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "237e0fdd7efb68b4\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 20,
+      "sample": "Pasture_1471.jpg",
+      "matches_expected": true,
+      "signed_digest": "e0ef9d3a609526a9\u2026",
+      "received_digest": "e0ef9d3a609526a9\u2026",
+      "product_id": "LAB-B2-020",
+      "integrity_status": "UNKNOWN_KEY",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2713,
+        "threshold": 0.4361,
+        "evidence": []
+      },
+      "reasons": [
+        "signer 'sat-99' is not a trusted source"
+      ],
+      "ledger_hash": "4be812e4f8561c671a72fd9282feb3ed1b2862c6b4dbdaead64c2db870e67781",
+      "timeline": [
+        {
+          "t_ms": 2334.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-020-ctl",
+          "pixel_digest": "980c6c0ec6e89e8c\u2026",
+          "seq": 39
+        },
+        {
+          "t_ms": 2379.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "70158a40795ad706\u2026"
+        },
+        {
+          "t_ms": 2380.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B2-020",
+          "pixel_digest": "e0ef9d3a609526a9\u2026",
+          "seq": 40
+        },
+        {
+          "t_ms": 2380.3,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Satellite identity forgery"
+        },
+        {
+          "t_ms": 2417.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "UNKNOWN_KEY",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "4be812e4f8561c67\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    }
+  ],
+  "environment": {
+    "python": "3.12.2",
+    "platform": "Windows",
+    "cpu_threads": 8,
+    "model_mode": "features+cnn",
+    "seed": 7,
+    "samples": "samples/authentic (official EuroSAT RGB patches, unmodified)"
+  },
+  "duration_s": 2.61
+}

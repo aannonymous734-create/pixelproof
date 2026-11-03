@@ -1,0 +1,110 @@
+\section{The trust layer: digest, signed claim, chain and anchor}\label{sec:trust}
+\rubric{architecture \& trust anchor (15)}{We deliver a signed digest + claim + processing chain, a software key registry with revocation and algorithm pinning, replay protection and a hash-chained audit log. Evidence: \cd{pixelproof/provenance.py}, \cd{pixelproof/ledger.py}, \cd{make campaign}.}
+
+\subsection{Digest}
+\cd{SHA-256("PXP1" | dtype | shape | raw pixel bytes)} \cite{fips180}. Re-saving a file without changing pixels keeps the digest; flipping one bit changes it. It is computed over pixels, not the file, so the same claim holds whether the patch travels as PNG, TIFF or lossless WebP.
+\begin{lstlisting}[style=py]
+def pixel_digest(img: np.ndarray) -> str:
+    a = np.ascontiguousarray(img)
+    head = f"PXP1|{a.dtype.str}|{'x'.join(map(str, a.shape))}|".encode()
+    return sha256_hex(head + a.tobytes())
+\end{lstlisting}
+
+\subsection{Signed claim and processing chain}
+\textbf{Signed claim.} The claim holds \cd{format}, \cd{product_id}, \cd{source}, \cd{sensor}, \cd{capture_time}, \cd{bands}, \cd{shape}, \cd{dtype}, \cd{pixel_digest}, \cd{hash_alg}, \cd{sig_alg}, \cd{key_id}, \cd{seq} and \cd{prev_hash}. It is serialised as canonical JSON (sorted keys, no spaces) and signed with Ed25519 \cite{rfc8032,ed25519} by the source key. \cd{seq} and \cd{prev_hash} chain the captures of one source (replay and re-order detection).
+
+\textbf{Processing chain.} Each step appends \cd{op}, \cd{params}, \cd{input_digest}, \cd{output_digest}, \cd{key_id} and \cd{prev_record}, signed by a registered processor key. The verifier walks the chain: every step must be validly signed, start from the previous output, and link to the previous record; the final digest must equal the digest of the pixels received.
+
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\scriptsize]
+  \node[bt,text width=33mm] (c) at (0,0) {\textbf{Capture claim}\\product\_id, source, sensor\\pixel\_digest = A\\key\_id = sat-01\\Ed25519 signature};
+  \node[bt,text width=33mm] (s1) at (4.5,0) {\textbf{Processing step 1}\\op = eurosat\_patch\_export\\input = A, output = B\\prev\_record = H(claim+sig)\\processor signature};
+  \node[bt,text width=33mm] (s2) at (9.0,0) {\textbf{Processing step $n$}\\op, params\\input = previous output\\output = C\\processor signature};
+  \node[bo,text width=30mm] (p) at (13.4,0) {\textbf{Received pixels}\\SHA-256 must equal C\\else \texttt{PIXELS\_ALTERED}};
+  \draw[arr] (c)--(s1); \draw[arr] (s1)--(s2); \draw[arr] (s2)--(p);
+\end{tikzpicture}
+\end{adjustbox}
+\caption{The provenance chain: each record is signed and points to the previous one; the received pixels must hash to the last signed digest.}
+\end{figure}
+
+\begin{lstlisting}[style=py]
+claim = {"format": FORMAT, "product_id": product_id, "source": self.source, "sensor": self.sensor,
+         "capture_time": capture_time, "bands": list(bands), "shape": list(img.shape),
+         "dtype": str(img.dtype), "pixel_digest": pixel_digest(img), "hash_alg": "sha256",
+         "sig_alg": "ed25519", "key_id": self.key_id, "seq": self.seq, "prev_hash": self.head}
+manifest = {**claim, "signature": b64e(self._sk.sign(canonical(claim))), "processing": []}
+\end{lstlisting}
+
+\subsection{Trust anchor and registry}
+A software keystore (Ed25519 private keys outside the repository, permissions 0600) is explicitly allowed by the rules. The ground station holds only a \textbf{registry of public keys} with roles (\texttt{source}, \texttt{processor}) and revocation flags; a key that arrives inside a message is never trusted. Out-of-band trust is a human comparing the SHA-256 fingerprints of the public keys on both machines (\cd{python -m pixelproof.cli fingerprints}, and the dashboard's Station page). Upgrade path without code changes: the same signer interface backed by SoftHSM2 or a TPM through PKCS\#11. The signed claim plus signed processing history follows the same idea as the C2PA Content Credentials \cite{c2pa}, restricted to what a single ground station can verify offline.
+
+\subsection{Verification order}
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\tiny]
+  \tikzset{v/.style={draw=pxteal,fill=pxgreenbg,rounded corners=2pt,text width=26.5mm,minimum height=9mm,align=center,inner sep=2pt},
+           f/.style={draw=pxred,fill=pxredbg,rounded corners=2pt,text width=26.5mm,minimum height=7mm,align=center,inner sep=2pt}}
+  \foreach \i/\t/\u in {1/{1 manifest present?}/{NO\_PROVENANCE},2/{2 fields and format ok?}/{MALFORMED},3/{3 sha256 + ed25519 only?}/{WEAK\_ALGORITHM},4/{4 key trusted?}/{UNKNOWN / REVOKED\_KEY},5/{5 signature valid?}/{BAD\_SIGNATURE}}{
+    \node[v] (a\i) at ({(\i-1)*3.2},0) {\t};
+    \node[f] (b\i) at ({(\i-1)*3.2},-1.7) {\u};
+    \draw[arr] (a\i)--node[right,lbl]{no}(b\i);
+  }
+  \foreach \i/\t/\u in {6/{6 steps signed and linked?}/{CHAIN\_BROKEN},7/{7 pixels = last digest?}/{PIXELS\_ALTERED},8/{8 date possible?}/{TIME\_IMPLAUSIBLE},9/{9 new product, seq increasing?}/{REPLAY}}{
+    \node[v] (c\i) at ({(\i-6)*3.2},-4.4) {\t};
+    \node[f] (d\i) at ({(\i-6)*3.2},-6.1) {\u};
+    \draw[arr] (c\i)--node[right,lbl]{no}(d\i);
+  }
+  \node[bt,text width=25mm,font=\tiny] (ok) at (12.8,-4.4) {\textbf{VERIFIED}};
+  \draw[arr] (c6)--(c7); \draw[arr] (c7)--(c8); \draw[arr] (c8)--(c9); \draw[arr] (c9)--(ok);
+  \draw[arr] (a1)--(a2); \draw[arr] (a2)--(a3); \draw[arr] (a3)--(a4); \draw[arr] (a4)--(a5);
+  \draw[arr] (a5.east) -- ++(0.45,0) |- (0,-3.0) -- (c6.north);
+\end{tikzpicture}
+\end{adjustbox}
+\caption{\texttt{Verifier.verify()}: the checks run in this order and the first failure decides the status. Live downlinks also record the product and its sequence number; analyst uploads only inspect.}
+\end{figure}
+
+The order matters: algorithms are pinned \textbf{before} any digest is compared (a downgraded md5 claim never reaches the comparison), the claim signature is checked before the processing chain, and the pixels are compared with the \textbf{last} signed digest. Live downlinks (\cd{/ingest}) also record the product and the source's sequence number, so a second delivery is a \cd{REPLAY}; this memory is \textbf{rebuilt from the audit log when the ground station restarts} (tested), so a reboot does not reopen the replay window. Analyst uploads (\cd{/analyse}) only inspect.
+
+\subsection{Two axes, one verdict}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{3.6cm}|Y|Y|}
+\hline
+ & \textbf{content: no traces found} & \textbf{content: manipulation found}\\
+\hline
+\textbf{integrity VERIFIED} & \cd{VERIFIED} & \cd{SIGNED_BUT_SUSPICIOUS} (\emph{faked before signing?})\\
+\hline
+\textbf{integrity FAILED} & \cd{ALTERED_AFTER_CAPTURE} & \cd{ALTERED_AFTER_CAPTURE} (+ type, heatmap)\\
+\hline
+\textbf{no provenance} & \cd{UNVERIFIED_NO_TRACES} & \cd{SUSPICIOUS} (+ type, heatmap)\\
+\hline
+\end{tabularx}
+\caption{The two-axis verdict table.}
+\end{table}
+\begin{lstlisting}[style=py]
+def combine(integrity, content):
+    manipulated = bool(content and content.get("manipulated"))
+    if integrity.status == "VERIFIED":
+        verdict = "SIGNED_BUT_SUSPICIOUS" if manipulated else "VERIFIED"
+    elif integrity.status == "NO_PROVENANCE":
+        verdict = "SUSPICIOUS" if manipulated else "UNVERIFIED_NO_TRACES"
+    else:
+        verdict = "ALTERED_AFTER_CAPTURE"
+    action = "RELEASE" if verdict in {"VERIFIED", "UNVERIFIED_NO_TRACES"} else "QUARANTINE"
+\end{lstlisting}
+
+\textbf{What a signature proves, and what it does not.} \emph{Provenance}: who signed this claim, and when (the key is in our registry). \emph{Integrity}: are these exactly the pixels that were signed. \emph{Visual authenticity}: does the picture show what really happened. A signature answers the first two and says nothing about the third, because a compromised payload can sign a fake. In our campaign, of {{c:/n_products|int}} fakes signed before capture the content detector flagged {{c:/two_axis_verdicts/signed_fake_before_capture/SIGNED_BUT_SUSPICIOUS|int}} and {{c:/two_axis_verdicts/signed_fake_before_capture/VERIFIED|int}} passed as \cd{VERIFIED}. The cost on the other side: of {{c:/n_products|int}} genuine signed products, {{c:/two_axis_verdicts/signed_genuine/SIGNED_BUT_SUSPICIOUS|int}} were flagged by the content detector and quarantined for review although their integrity was proven. That is why the two axes are reported separately and read together.
+
+\subsection{Audit log}
+Every decision is appended to a JSON-lines file in which each entry carries the hash of the previous one (\cd{ledger.py}). The dashboard re-verifies the whole chain on every refresh; editing or deleting any past line turns the badge to ``BROKEN'' and names the first bad entry (tested). The log is \emph{tamper-evident, not tamper-proof}: a writer who rewrites every line consistently could rebuild a valid chain, because nothing outside anchors it (Section~\ref{sec:limits}).
+\begin{lstlisting}[style=py]
+def append(self, event):
+    prev = self._head()
+    body = {"time": now_utc_iso(), "prev": prev, **event}
+    entry = {**body, "hash": sha256_hex(canonical(body))}
+    self.path.open("a").write(json.dumps(entry, sort_keys=True) + "\n")
+\end{lstlisting}
+\textbf{Measured overhead} ({{c:/n_products|int}} products, one CPU core): signing takes {{c:/overhead/sign_ms_p50|f2}}~ms and verification {{c:/overhead/verify_ms_p50|f2}}~ms (median). The signed manifest with one processing record averages {{c:/overhead/manifest_bytes_mean|f0}} bytes, which is {{c:/overhead/overhead_percent_of_png|f1}}\% of the size of the 64$\times$64 PNG it protects (the overhead is fixed, so it shrinks for larger images).

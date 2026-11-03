@@ -1,0 +1,52 @@
+# Software-only attack simulation (no hardware), three isolated machines:
+#
+#   satellite ──(spacelink)──> attacker ──(groundnet)──> ground  (dashboard: http://localhost:8000)
+#
+# The satellite cannot reach the ground station directly: every message crosses the attacker,
+# like a compromised relay. Private keys stay in the satellite's own volume; the ground station
+# only receives the PUBLIC registry.
+#
+# Prerequisites: data/eurosat (python scripts/download_eurosat.py) and models/ (python scripts/train.py)
+# Run:     docker compose up --build
+# Attacks: ATTACK_MODE=date_replace docker compose up    (default: random, 60% of messages)
+
+services:
+  ground:
+    build: .
+    environment:
+      PIXELPROOF_MODEL: /app/models/detector.joblib
+      PIXELPROOF_REGISTRY: /shared/registry.json
+      PIXELPROOF_LEDGER: /app/runtime/ledger.jsonl
+    volumes:
+      - ./models:/app/models:ro
+      - registry:/shared:ro
+    ports: ["8000:8000"]
+    networks: [groundnet]
+
+  attacker:
+    build: .
+    command: python simulation/attacker.py --listen 0.0.0.0:8081 --ground http://ground:8000
+             --mode ${ATTACK_MODE:-random} --rate ${ATTACK_RATE:-0.6} --log /app/runtime/attacker_log.jsonl
+    volumes:
+      - ./runtime:/app/runtime
+    networks: [spacelink, groundnet]
+    depends_on: [ground]
+
+  satellite:
+    build: .
+    command: python simulation/satellite_node.py --data-dir /data --target http://attacker:8081
+             --keys /home/app/keys --registry /shared/registry.json --n ${N_PRODUCTS:-40}
+    volumes:
+      - ./data/eurosat:/data:ro
+      - satkeys:/home/app/keys
+      - registry:/shared
+    networks: [spacelink]
+    depends_on: [attacker]
+
+volumes:
+  registry:
+  satkeys:
+
+networks:
+  spacelink:
+  groundnet:

@@ -1,0 +1,73 @@
+{
+  "model_sha256": "1462a1551a36af71ddfd6505612028cf912205959a6b35221e97f6f59af0707f",
+  "heldout_v2_sha256": "f29c4beec8b08f6708abcd08b13d8b594c5af7d6498b3ecf698f5d0a4e5e945b",
+  "n": 6612,
+  "models": {
+    "features (GBM)": {
+      "auc_roc": 0.6909314271765319,
+      "detection_rate": 0.20961887477313976,
+      "false_alarm_rate": 0.04597701149425287,
+      "type_accuracy_on_detected": 0.6955266955266955,
+      "detection_by_family": {
+        "resample": 0.5773584905660377,
+        "splice": 0.04316546762589928,
+        "copy_move": 0.04481546572934974,
+        "inpaint": 0.28835489833641403
+      },
+      "detection_by_method": {
+        "exemplar_fill_noise": 0.28835489833641403,
+        "mirrored_horizontal": 0.04452054794520548,
+        "mirrored_vertical": 0.04512635379061372,
+        "perspective_order2": 0.18796992481203006,
+        "poisson_mixed": 0.042105263157894736,
+        "poisson_normal": 0.04428044280442804,
+        "rescale_order2": 0.9696969696969697
+      },
+      "false_alarm_by_landcover": {
+        "AnnualCrop": 0.05070422535211268,
+        "Forest": 0.029023746701846966,
+        "HerbaceousVegetation": 0.014577259475218658,
+        "Highway": 0.033003300330033,
+        "Industrial": 0.06688963210702341,
+        "Pasture": 0.037037037037037035,
+        "PermanentCrop": 0.028037383177570093,
+        "Residential": 0.07161803713527852,
+        "River": 0.050955414012738856,
+        "SeaLake": 0.07258064516129033
+      }
+    },
+    "fused": {
+      "auc_roc": 0.7554031991550314,
+      "detection_rate": 0.3200241984271022,
+      "false_alarm_rate": 0.04204476709013914,
+      "type_accuracy_on_detected": 0.556710775047259,
+      "detection_by_family": {
+        "resample": 0.5962264150943396,
+        "splice": 0.1420863309352518,
+        "copy_move": 0.0984182776801406,
+        "inpaint": 0.5092421441774492
+      },
+      "detection_by_method": {
+        "exemplar_fill_noise": 0.5092421441774492,
+        "mirrored_horizontal": 0.0958904109589041,
+        "mirrored_vertical": 0.10108303249097472,
+        "perspective_order2": 0.19924812030075187,
+        "poisson_mixed": 0.11228070175438597,
+        "poisson_normal": 0.17343173431734318,
+        "rescale_order2": 0.9962121212121212
+      },
+      "false_alarm_by_landcover": {
+        "AnnualCrop": 0.04507042253521127,
+        "Forest": 0.052770448548812667,
+        "HerbaceousVegetation": 0.023323615160349854,
+        "Highway": 0.026402640264026403,
+        "Industrial": 0.07692307692307693,
+        "Pasture": 0.03292181069958848,
+        "PermanentCrop": 0.03426791277258567,
+        "Residential": 0.05570291777188329,
+        "River": 0.025477707006369428,
+        "SeaLake": 0.043010752688172046
+      }
+    }
+  }
+}

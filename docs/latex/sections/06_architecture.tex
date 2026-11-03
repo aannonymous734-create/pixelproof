@@ -1,0 +1,162 @@
+\section{System architecture}\label{sec:arch}
+\rubric{architecture \& trust mechanism (15)}{This chapter shows how the parts fit; Section~\ref{sec:trust} details the trust mechanism. Evidence: the repository layout (Appendix~\ref{app:repo}).}
+
+\subsection{Roles and deployment}
+PixelProof reproduces the three roles of the challenge as separate programs that talk over HTTP, so they can run on one laptop, in three containers, or on separate (virtual) machines without code changes.
+
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\scriptsize]
+  % satellite
+  \node[bt,text width=30mm] (sat) at (0,3.3) {\textbf{satellite\_node.py}\\loads a EuroSAT patch\\signs claim, adds a signed step\\POST /api/v1/ingest};
+  \node[bt,text width=30mm] (keys) at (0,1.2) {\textbf{private keys (0600)}\\sat-01, proc-01\\only the PUBLIC registry leaves};
+  % channel
+  \node[br,text width=30mm] (att) at (4.6,3.3) {\textbf{attacker.py (relay)}\\11 integrity attacks\\logs its own ground truth};
+  % ground
+  \node[bg,text width=28mm] (api) at (9.0,3.9) {\textbf{api.py}\\/ingest /analyse /ledger\\/station /results /lab};
+  \node[bg,text width=31mm] (svc) at (9.0,2.2) {\textbf{service.py}\\GroundStation.process()};
+  \node[bt,text width=28mm] (prov) at (9.0,0.4) {\textbf{provenance.py}\\verifier, registry, replay memory};
+  \node[bo,text width=28mm] (det) at (12.9,2.2) {\textbf{detector.py}\\48 features (features.py)\\PixelNet (cnn.py)\\calibration.py};
+  \node[bg,text width=28mm] (led) at (12.9,3.9) {\textbf{ledger.py}\\hash-chained audit log};
+  \node[bn,text width=28mm] (ver) at (12.9,0.4) {\textbf{verdict.py}\\two-axis verdict\\release / quarantine};
+  % operator
+  \node[bg,text width=30mm] (br) at (4.6,0.4) {\textbf{browser}\\dashboard on :8000};
+  \node[bg,text width=30mm] (auth) at (4.6,-1.4) {\textbf{sign-in server (optional)}\\Laravel :8001, JWT cookies};
+  \draw[arr] (sat)--(att); \draw[arr] (att)--(api); \draw[arr] (api)--(svc);
+  \draw[arr] (svc)--(prov); \draw[arr] (svc)--(det); \draw[arr] (svc.north east)--(led.south west);
+  \draw[arr] (prov)--(ver); \draw[arr] (det)--(ver);
+  \draw[darr] (br.east)--(prov.west) node[midway,above,lbl]{/api};
+  \draw[darr] (br)--(auth);
+  \begin{scope}[on background layer]
+    \node[grp,fit=(sat)(keys),label={[font=\tiny,text=pxnavy!70]above:SATELLITE (source)}] {};
+    \node[grp,fit=(att),label={[font=\tiny,text=pxnavy!70]above:UNTRUSTED CHANNEL}] {};
+    \node[grp,fit=(api)(led)(ver)(prov),label={[font=\tiny,text=pxnavy!70]above:GROUND STATION (FastAPI)}] {};
+    \node[grp,fit=(br)(auth),label={[font=\tiny,text=pxnavy!70]below:OPERATOR}] {};
+  \end{scope}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Deployment view: the satellite signs, the untrusted channel may attack, the ground station verifies, analyses, decides and logs; the operator uses the dashboard, optionally behind a sign-in server.}
+\end{figure}
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{2.4cm}|L{5.4cm}|Y|}
+\hline
+\textbf{Role} & \textbf{Program} & \textbf{What it does}\\
+\hline
+Satellite (source) & \cd{simulation/satellite_node.py} & loads a EuroSAT patch, signs a capture claim, adds a signed processing step, posts it\\
+\hline
+Untrusted channel & \cd{simulation/attacker.py} & an HTTP relay that applies one of 11 integrity attacks at a chosen rate and logs what it did\\
+\hline
+Ground station & \cd{pixelproof/}, served by \cd{uvicorn pixelproof.api:app} & verifies, runs the content detector, decides, logs, serves the API and the dashboard\\
+\hline
+Scoring & \cd{simulation/score_demo.py} & compares the attacker's own log (ground truth) with the ground station's answers\\
+\hline
+Operator & browser + \cd{pixelproof/static/app} & the dashboard; an optional Laravel sign-in server (\cd{backend/})\\
+\hline
+\end{tabularx}
+\caption{The roles and the programs that play them.}
+\end{table}
+
+\subsection{One downlink, end to end}
+The message is a JSON object with an \texttt{image\_png\_b64} field and a \texttt{manifest} field, posted to \cd{POST /api/v1/ingest}. The PNG is lossless, so the pixels the ground station decodes are exactly the pixels the satellite hashed unless someone changed them. The ground station decodes with a 2~MB limit and a decode guard, then calls \cd{GroundStation.process(img, manifest, live=True)}, which verifies, analyses, combines and appends to the audit log, and returns the verdict. The audit-log entry is written before the answer leaves the ground station.
+
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[font=\scriptsize]
+  \foreach \x/\n in {0/satellite,3.4/attacker,6.8/ground API,10.2/verifier + detector,13.6/audit log}{
+    \node[draw=pxblue!70,fill=pxbluebg,rounded corners=2pt,inner sep=3pt] at (\x,0) {\n};
+    \draw[dashed,pxline] (\x,-0.4)--(\x,-8.4);
+  }
+  \draw[arr] (0,-1.1)--node[above,lbl]{POST /api/v1/ingest}(3.4,-1.1);
+  \node[lbl,draw=pxline,fill=white,inner sep=2pt] at (3.4,-2.0) {apply \texttt{-{}-mode} (e.g. date\_replace)};
+  \draw[arr] (3.4,-3.0)--node[above,lbl]{forward}(6.8,-3.0);
+  \draw[arr] (6.8,-4.0)--node[above,lbl]{decode (2 MB), process}(10.2,-4.0);
+  \node[lbl,draw=pxline,fill=white,inner sep=2pt] at (10.2,-4.8) {verify, analyse, combine};
+  \draw[arr] (10.2,-5.6)--node[above,lbl]{append verdict}(13.6,-5.6);
+  \draw[arr] (6.8,-6.6)--node[above,lbl]{JSON verdict}(3.4,-6.6);
+  \draw[arr] (3.4,-7.6)--node[above,lbl]{verdict + relay log line}(0,-7.6);
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Sequence of one downlink through the relay.}
+\end{figure}
+
+\subsection{The ground station's code, module by module}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{3.5cm}|Y|Y|}
+\hline
+\textbf{Module (\texttt{pixelproof/})} & \textbf{Responsibility} & \textbf{Key entry points}\\
+\hline
+\cd{provenance.py} & the trust layer: digest, keystore, registry, signers, verifier & \cd{pixel_digest}, \cd{SourceSigner.capture}, \cd{ProcessorSigner.record}, \cd{Verifier.verify}\\
+\hline
+\cd{service.py} & orchestration of one decision; replay memory rebuilt at start & \cd{GroundStation.process}, \cd{summarize}, \cd{event_severity}\\
+\hline
+\cd{verdict.py} & the two-axis decision and the response & \cd{combine}\\
+\hline
+\cd{ledger.py} & append-only, hash-chained audit log & \cd{Ledger.append}, \cd{Ledger.verify}\\
+\hline
+\cd{features.py} & 48 forensic features and the evidence heatmap & \cd{extract}, \cd{heatmap}\\
+\hline
+\cd{cnn.py} & PixelNet, training, test-time averaging, loading & \cd{PixelNet}, \cd{train}, \cd{predict_proba}\\
+\hline
+\cd{detector.py} & fusion, calibrated decision, explanation, persistence & \cd{Detector.analyse}, \cd{Detector.load}\\
+\hline
+\cd{calibration.py} & the re-encoding gate and condition-aware threshold & \cd{train_gate}, \cd{adaptive}\\
+\hline
+\cd{inputs.py} & any format and size; tiling without resizing & \cd{load_any}, \cd{analyse_any}\\
+\hline
+\cd{manipulations.py}, \cd{dataset.py} & deterministic manipulation generators and evaluation sets & \cd{make}, \cd{launder}, \cd{jobs_for_split}\\
+\hline
+\cd{heldout_v2.py}, \cd{heldout_v3.py} & frozen held-out sets (never imported by training) & \cd{make}\\
+\hline
+\cd{integrity_attacks.py}, \cd{lab.py} & the 11 network attacks; scenarios A--F & \cd{ATTACKS}, \cd{SCENARIOS}\\
+\hline
+\cd{api.py} & FastAPI endpoints, limits, lab switch & Appendix~\ref{app:api}\\
+\hline
+\cd{cli.py} & command line: \cd{detect}, \cd{analyse}, \cd{sign}, \cd{verify}, \cd{keys-init}, \cd{fingerprints} & \cd{main}\\
+\hline
+\end{tabularx}
+\caption{The ground station's modules.}
+\end{table}
+
+The orchestration is deliberately short; this is the whole decision path (\cd{service.py}, abridged):
+\begin{lstlisting}[style=py]
+def process(self, img, manifest, live, source="upload"):
+    with self._lock:
+        if live:
+            self.reload_registry()
+        integrity = self.verifier.verify(img, manifest, record=live)  # proof
+        content = self.detector.analyse(img)                          # evidence
+        result = combine(integrity, content)                          # two-axis verdict
+        result["pixel_digest"] = pixel_digest(img)
+        entry = self.ledger.append({"channel": source, "verdict": result["verdict"],
+                                    "integrity": integrity.status, ...})  # hash chain
+        result["ledger_hash"] = entry["hash"]
+        return result
+\end{lstlisting}
+
+\subsection{Technology choices}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{2.6cm}|L{6cm}|Y|}
+\hline
+\textbf{Layer} & \textbf{Technology} & \textbf{Why}\\
+\hline
+Ground station & Python 3.12, FastAPI, uvicorn & small, typed API; runs anywhere Python runs\\
+\hline
+Cryptography & \cd{cryptography} (Ed25519 \cite{rfc8032}, SHA-256 \cite{fips180}) & standard, fast, deterministic signatures\\
+\hline
+Detection & scikit-learn, PyTorch (CPU), OpenCV, scikit-image & CPU-only, no GPU or cloud\\
+\hline
+Dashboard & React 18, TypeScript, Vite, Tailwind CSS, Three.js, Motion & offline build, no CDN, strict Content-Security-Policy\\
+\hline
+Optional sign-in & Laravel 12, JWT in \texttt{HttpOnly} cookies, MySQL & an access screen for a shared ground station; absent $\to$ open access\\
+\hline
+Labs & Docker Compose, VirtualBox (Kali), iptables, tcpdump & isolated, reproducible attack environments\\
+\hline
+\end{tabularx}
+\caption{Technology choices.}
+\end{table}

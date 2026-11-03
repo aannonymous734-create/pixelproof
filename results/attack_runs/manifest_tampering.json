@@ -1,0 +1,1335 @@
+{
+  "scenario": "manifest_tampering",
+  "id": "B1",
+  "kind": "integrity",
+  "title": "Manifest tampering (capture date changed)",
+  "attacker_action": "Changes the capture date inside the manifest and keeps the original signature.",
+  "why_it_fails": "The Ed25519 signature covers the whole claim, so changing any field invalidates it.",
+  "expected": "BAD_SIGNATURE",
+  "n": 20,
+  "matches_expected": 20,
+  "rate": 1.0,
+  "control": {
+    "n": 20,
+    "verified": 20
+  },
+  "audit_log": {
+    "entries": 40,
+    "chain_valid": true,
+    "first_bad_entry": null
+  },
+  "trials": [
+    {
+      "trial": 1,
+      "sample": "Industrial_1846.jpg",
+      "matches_expected": true,
+      "signed_digest": "27f8b124170a37c6\u2026",
+      "received_digest": "27f8b124170a37c6\u2026",
+      "product_id": "LAB-B1-001",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2161,
+        "threshold": 0.4409,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "706b7f62b3f6430ada04f8fa3ca7c584e92fd1ff03bcb5c3928360139f69ef3d",
+      "timeline": [
+        {
+          "t_ms": 1.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-001-ctl",
+          "pixel_digest": "a73bbecf32b60fba\u2026",
+          "seq": 1
+        },
+        {
+          "t_ms": 40.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "1441768ec48b445e\u2026"
+        },
+        {
+          "t_ms": 40.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-001",
+          "pixel_digest": "27f8b124170a37c6\u2026",
+          "seq": 2
+        },
+        {
+          "t_ms": 40.5,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 98.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "706b7f62b3f6430a\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 2,
+      "sample": "Industrial_767.jpg",
+      "matches_expected": true,
+      "signed_digest": "a73bbecf32b60fba\u2026",
+      "received_digest": "a73bbecf32b60fba\u2026",
+      "product_id": "LAB-B1-002",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2931,
+        "threshold": 0.447,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "4251ddb85d3aaef74055b4808cf3626af86207a1ed10af5c4a7f601939bf1f38",
+      "timeline": [
+        {
+          "t_ms": 100.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-002-ctl",
+          "pixel_digest": "be2cee9c36ac3ff5\u2026",
+          "seq": 3
+        },
+        {
+          "t_ms": 138.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "acaca0dc64792453\u2026"
+        },
+        {
+          "t_ms": 138.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-002",
+          "pixel_digest": "a73bbecf32b60fba\u2026",
+          "seq": 4
+        },
+        {
+          "t_ms": 138.8,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 190.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "4251ddb85d3aaef7\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 3,
+      "sample": "Forest_2520.jpg",
+      "matches_expected": true,
+      "signed_digest": "be2cee9c36ac3ff5\u2026",
+      "received_digest": "be2cee9c36ac3ff5\u2026",
+      "product_id": "LAB-B1-003",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2386,
+        "threshold": 0.436,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "574d865554cd0b31d46173bc928b3240565f84609288b81129318d2117dd380d",
+      "timeline": [
+        {
+          "t_ms": 191.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-003-ctl",
+          "pixel_digest": "f57ab96ccc96c577\u2026",
+          "seq": 5
+        },
+        {
+          "t_ms": 226.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "6221e046330b2f36\u2026"
+        },
+        {
+          "t_ms": 226.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-003",
+          "pixel_digest": "be2cee9c36ac3ff5\u2026",
+          "seq": 6
+        },
+        {
+          "t_ms": 226.8,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 259.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "574d865554cd0b31\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 4,
+      "sample": "SeaLake_2373.jpg",
+      "matches_expected": true,
+      "signed_digest": "f57ab96ccc96c577\u2026",
+      "received_digest": "f57ab96ccc96c577\u2026",
+      "product_id": "LAB-B1-004",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.3233,
+        "threshold": 0.4361,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "952b48659bfa30ad3f34ba2810de6d93bff40d21e62cdf05f5c81a07242bf7b4",
+      "timeline": [
+        {
+          "t_ms": 261.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-004-ctl",
+          "pixel_digest": "f4d0cf0f41976a3e\u2026",
+          "seq": 7
+        },
+        {
+          "t_ms": 312.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "f4f81513ed8e2493\u2026"
+        },
+        {
+          "t_ms": 312.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-004",
+          "pixel_digest": "f57ab96ccc96c577\u2026",
+          "seq": 8
+        },
+        {
+          "t_ms": 312.7,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 353.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "952b48659bfa30ad\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 5,
+      "sample": "Residential_1482.jpg",
+      "matches_expected": true,
+      "signed_digest": "f4d0cf0f41976a3e\u2026",
+      "received_digest": "f4d0cf0f41976a3e\u2026",
+      "product_id": "LAB-B1-005",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1152,
+        "threshold": 0.4413,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "752763d4ae444a2b632ba04809403a301ae5ac13c78da5d0cba99cc3fe51b507",
+      "timeline": [
+        {
+          "t_ms": 354.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-005-ctl",
+          "pixel_digest": "4636100aef81a006\u2026",
+          "seq": 9
+        },
+        {
+          "t_ms": 398.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "1bbc2685be762249\u2026"
+        },
+        {
+          "t_ms": 398.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-005",
+          "pixel_digest": "f4d0cf0f41976a3e\u2026",
+          "seq": 10
+        },
+        {
+          "t_ms": 398.4,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 450.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "752763d4ae444a2b\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 6,
+      "sample": "River_1196.jpg",
+      "matches_expected": true,
+      "signed_digest": "4636100aef81a006\u2026",
+      "received_digest": "4636100aef81a006\u2026",
+      "product_id": "LAB-B1-006",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1934,
+        "threshold": 0.4517,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "bc7446568a9d50aaeb3f6e97d8814cc92c1b8626f36017ab2a34dee9e114f476",
+      "timeline": [
+        {
+          "t_ms": 452.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-006-ctl",
+          "pixel_digest": "168a0b1e0cff167f\u2026",
+          "seq": 11
+        },
+        {
+          "t_ms": 495.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "b6bd2d613d5a96a7\u2026"
+        },
+        {
+          "t_ms": 496.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-006",
+          "pixel_digest": "4636100aef81a006\u2026",
+          "seq": 12
+        },
+        {
+          "t_ms": 496.2,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 541.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "bc7446568a9d50aa\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 7,
+      "sample": "Pasture_964.jpg",
+      "matches_expected": true,
+      "signed_digest": "168a0b1e0cff167f\u2026",
+      "received_digest": "168a0b1e0cff167f\u2026",
+      "product_id": "LAB-B1-007",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1602,
+        "threshold": 0.4367,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "86c578d9bec13a88956edbac1eb30d55ddaf3183a4caba3b60587a3e8d15fa8a",
+      "timeline": [
+        {
+          "t_ms": 542.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-007-ctl",
+          "pixel_digest": "5ed60e9df13a4ede\u2026",
+          "seq": 13
+        },
+        {
+          "t_ms": 585.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "880e8fb7d9448be0\u2026"
+        },
+        {
+          "t_ms": 585.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-007",
+          "pixel_digest": "168a0b1e0cff167f\u2026",
+          "seq": 14
+        },
+        {
+          "t_ms": 585.9,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 633.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "86c578d9bec13a88\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 8,
+      "sample": "Forest_1655.jpg",
+      "matches_expected": true,
+      "signed_digest": "5ed60e9df13a4ede\u2026",
+      "received_digest": "5ed60e9df13a4ede\u2026",
+      "product_id": "LAB-B1-008",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1944,
+        "threshold": 0.4365,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "0b2c41c3993cc9495983c838d4e78d301635dc79d3ba567dac22c8250394ba5d",
+      "timeline": [
+        {
+          "t_ms": 634.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-008-ctl",
+          "pixel_digest": "890aff0aa5cad38e\u2026",
+          "seq": 15
+        },
+        {
+          "t_ms": 675.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "9d74ad5eebd9e5f2\u2026"
+        },
+        {
+          "t_ms": 675.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-008",
+          "pixel_digest": "5ed60e9df13a4ede\u2026",
+          "seq": 16
+        },
+        {
+          "t_ms": 675.8,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 720.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "0b2c41c3993cc949\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 9,
+      "sample": "SeaLake_1314.jpg",
+      "matches_expected": true,
+      "signed_digest": "890aff0aa5cad38e\u2026",
+      "received_digest": "890aff0aa5cad38e\u2026",
+      "product_id": "LAB-B1-009",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2509,
+        "threshold": 0.4372,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "5e0d4e6337b602a6272da1ae47a3ec8713d9cebf76c7ad9308598cdf80bb0bd7",
+      "timeline": [
+        {
+          "t_ms": 721.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-009-ctl",
+          "pixel_digest": "ce626a1403dd439e\u2026",
+          "seq": 17
+        },
+        {
+          "t_ms": 770.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "cf1f5bd44b8df7f3\u2026"
+        },
+        {
+          "t_ms": 771.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-009",
+          "pixel_digest": "890aff0aa5cad38e\u2026",
+          "seq": 18
+        },
+        {
+          "t_ms": 771.4,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 923.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "5e0d4e6337b602a6\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 10,
+      "sample": "PermanentCrop_1803.jpg",
+      "matches_expected": true,
+      "signed_digest": "ce626a1403dd439e\u2026",
+      "received_digest": "ce626a1403dd439e\u2026",
+      "product_id": "LAB-B1-010",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1347,
+        "threshold": 0.4504,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "399cc6b9c78f8aced219875206d05bf3ed05e3a5e11b62885cfdb9a6db6f17be",
+      "timeline": [
+        {
+          "t_ms": 928.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-010-ctl",
+          "pixel_digest": "6412f9511d03544e\u2026",
+          "seq": 19
+        },
+        {
+          "t_ms": 1030.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "5f2af9ebd7e245b3\u2026"
+        },
+        {
+          "t_ms": 1031.1,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-010",
+          "pixel_digest": "ce626a1403dd439e\u2026",
+          "seq": 20
+        },
+        {
+          "t_ms": 1031.2,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 1082.7,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "399cc6b9c78f8ace\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 11,
+      "sample": "PermanentCrop_1083.jpg",
+      "matches_expected": true,
+      "signed_digest": "6412f9511d03544e\u2026",
+      "received_digest": "6412f9511d03544e\u2026",
+      "product_id": "LAB-B1-011",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.142,
+        "threshold": 0.4368,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "2436b90bda5216ea38d2f81176e31efe32ebab36d9a3f4f81b3444ce8a84faf6",
+      "timeline": [
+        {
+          "t_ms": 1084.0,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-011-ctl",
+          "pixel_digest": "163cfed3a86deb98\u2026",
+          "seq": 21
+        },
+        {
+          "t_ms": 1141.1,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "aca79bb26aa2d1df\u2026"
+        },
+        {
+          "t_ms": 1141.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-011",
+          "pixel_digest": "6412f9511d03544e\u2026",
+          "seq": 22
+        },
+        {
+          "t_ms": 1141.4,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 1190.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "2436b90bda5216ea\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 12,
+      "sample": "Industrial_2267.jpg",
+      "matches_expected": true,
+      "signed_digest": "163cfed3a86deb98\u2026",
+      "received_digest": "163cfed3a86deb98\u2026",
+      "product_id": "LAB-B1-012",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4491,
+        "threshold": 0.5493,
+        "evidence": [
+          "patch appears re-encoded after capture (p=0.56); threshold raised to 0.55 to avoid accusing benign re-compression"
+        ]
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing",
+        "patch appears re-encoded after capture (p=0.56); threshold raised to 0.55 to avoid accusing benign re-compression"
+      ],
+      "ledger_hash": "ece36578c679f846779baddd511ab3edb0e344bb6e6aa0ecdd17bfe35527843f",
+      "timeline": [
+        {
+          "t_ms": 1191.3,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-012-ctl",
+          "pixel_digest": "419dcacfd3ee65a4\u2026",
+          "seq": 23
+        },
+        {
+          "t_ms": 1239.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "cad55311f9026529\u2026"
+        },
+        {
+          "t_ms": 1239.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-012",
+          "pixel_digest": "163cfed3a86deb98\u2026",
+          "seq": 24
+        },
+        {
+          "t_ms": 1239.4,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 1285.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "ece36578c679f846\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 13,
+      "sample": "AnnualCrop_1226.jpg",
+      "matches_expected": true,
+      "signed_digest": "419dcacfd3ee65a4\u2026",
+      "received_digest": "419dcacfd3ee65a4\u2026",
+      "product_id": "LAB-B1-013",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.149,
+        "threshold": 0.4362,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "dbb13b9ae323c3337ca922c22efd357fc86c4057b46269bdf43c8f1f0cc9c184",
+      "timeline": [
+        {
+          "t_ms": 1286.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-013-ctl",
+          "pixel_digest": "8895d1e45e246cda\u2026",
+          "seq": 25
+        },
+        {
+          "t_ms": 1328.8,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "f187bca8fa49a27b\u2026"
+        },
+        {
+          "t_ms": 1329.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-013",
+          "pixel_digest": "419dcacfd3ee65a4\u2026",
+          "seq": 26
+        },
+        {
+          "t_ms": 1329.2,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 1370.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "dbb13b9ae323c333\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 14,
+      "sample": "River_1268.jpg",
+      "matches_expected": true,
+      "signed_digest": "8895d1e45e246cda\u2026",
+      "received_digest": "8895d1e45e246cda\u2026",
+      "product_id": "LAB-B1-014",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.4255,
+        "threshold": 0.4438,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "294ec5e15351cd60cc66df5e7b3163251c578d3ff5b599924fcbf6ff8d40d5e7",
+      "timeline": [
+        {
+          "t_ms": 1371.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-014-ctl",
+          "pixel_digest": "77bd7698faf4f6db\u2026",
+          "seq": 27
+        },
+        {
+          "t_ms": 1415.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "e86ebb212929a45a\u2026"
+        },
+        {
+          "t_ms": 1415.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-014",
+          "pixel_digest": "8895d1e45e246cda\u2026",
+          "seq": 28
+        },
+        {
+          "t_ms": 1415.9,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 1463.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "294ec5e15351cd60\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 15,
+      "sample": "Residential_2181.jpg",
+      "matches_expected": true,
+      "signed_digest": "77bd7698faf4f6db\u2026",
+      "received_digest": "77bd7698faf4f6db\u2026",
+      "product_id": "LAB-B1-015",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1631,
+        "threshold": 0.44,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "55c07f0e71520a2ed7e054f11dccc9352835c7a1d4a46081c48a4e6d2f57de32",
+      "timeline": [
+        {
+          "t_ms": 1464.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-015-ctl",
+          "pixel_digest": "a030d0ead7009e0c\u2026",
+          "seq": 29
+        },
+        {
+          "t_ms": 1510.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "06c08b3cdec99cb0\u2026"
+        },
+        {
+          "t_ms": 1510.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-015",
+          "pixel_digest": "77bd7698faf4f6db\u2026",
+          "seq": 30
+        },
+        {
+          "t_ms": 1510.8,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 1560.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "55c07f0e71520a2e\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 16,
+      "sample": "Highway_2453.jpg",
+      "matches_expected": true,
+      "signed_digest": "a030d0ead7009e0c\u2026",
+      "received_digest": "a030d0ead7009e0c\u2026",
+      "product_id": "LAB-B1-016",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2541,
+        "threshold": 0.4504,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "af1d29e11eaee10cf760593cb1dacd5c9d0f5b1d92e60445fec8799fd46a906f",
+      "timeline": [
+        {
+          "t_ms": 1561.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-016-ctl",
+          "pixel_digest": "113c5c08a8433f94\u2026",
+          "seq": 31
+        },
+        {
+          "t_ms": 1608.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "b4a90b76fb074591\u2026"
+        },
+        {
+          "t_ms": 1608.8,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-016",
+          "pixel_digest": "a030d0ead7009e0c\u2026",
+          "seq": 32
+        },
+        {
+          "t_ms": 1608.8,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 1655.6,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "af1d29e11eaee10c\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 17,
+      "sample": "HerbaceousVegetation_278.jpg",
+      "matches_expected": true,
+      "signed_digest": "113c5c08a8433f94\u2026",
+      "received_digest": "113c5c08a8433f94\u2026",
+      "product_id": "LAB-B1-017",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.1523,
+        "threshold": 0.4366,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "0baebf93d5465d1fe523e56bd922b7060bd19d0dd1d9b7e44b0de2aaf85906f4",
+      "timeline": [
+        {
+          "t_ms": 1656.9,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-017-ctl",
+          "pixel_digest": "679273182252c336\u2026",
+          "seq": 33
+        },
+        {
+          "t_ms": 1701.9,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "fd720c5d2149c3ca\u2026"
+        },
+        {
+          "t_ms": 1702.2,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-017",
+          "pixel_digest": "113c5c08a8433f94\u2026",
+          "seq": 34
+        },
+        {
+          "t_ms": 1702.3,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 1749.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "0baebf93d5465d1f\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 18,
+      "sample": "HerbaceousVegetation_1941.jpg",
+      "matches_expected": true,
+      "signed_digest": "679273182252c336\u2026",
+      "received_digest": "679273182252c336\u2026",
+      "product_id": "LAB-B1-018",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2884,
+        "threshold": 0.4362,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "50a437fc1ae5f33d575b1e957d8fe4f5c8f9bff52fd4f65035f851cca13b8159",
+      "timeline": [
+        {
+          "t_ms": 1750.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-018-ctl",
+          "pixel_digest": "fd91be430f3ad4e5\u2026",
+          "seq": 35
+        },
+        {
+          "t_ms": 1798.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "394c69c8206ba889\u2026"
+        },
+        {
+          "t_ms": 1798.5,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-018",
+          "pixel_digest": "679273182252c336\u2026",
+          "seq": 36
+        },
+        {
+          "t_ms": 1798.6,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 1855.5,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "50a437fc1ae5f33d\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 19,
+      "sample": "AnnualCrop_2314.jpg",
+      "matches_expected": true,
+      "signed_digest": "fd91be430f3ad4e5\u2026",
+      "received_digest": "fd91be430f3ad4e5\u2026",
+      "product_id": "LAB-B1-019",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.0717,
+        "threshold": 0.4367,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "d5760cc22a1bb1b789aaecc38412f387e0e08c8ee61326ab3f5983a207121313",
+      "timeline": [
+        {
+          "t_ms": 1858.7,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-019-ctl",
+          "pixel_digest": "e0ef9d3a609526a9\u2026",
+          "seq": 37
+        },
+        {
+          "t_ms": 2002.4,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "228d57a223fbd36c\u2026"
+        },
+        {
+          "t_ms": 2004.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-019",
+          "pixel_digest": "fd91be430f3ad4e5\u2026",
+          "seq": 38
+        },
+        {
+          "t_ms": 2004.5,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 2062.0,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "d5760cc22a1bb1b7\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    },
+    {
+      "trial": 20,
+      "sample": "Pasture_1471.jpg",
+      "matches_expected": true,
+      "signed_digest": "e0ef9d3a609526a9\u2026",
+      "received_digest": "e0ef9d3a609526a9\u2026",
+      "product_id": "LAB-B1-020",
+      "integrity_status": "BAD_SIGNATURE",
+      "verdict": "ALTERED_AFTER_CAPTURE",
+      "action": "QUARANTINE",
+      "content": {
+        "flagged": false,
+        "type": "authentic",
+        "score": 0.2713,
+        "threshold": 0.4361,
+        "evidence": []
+      },
+      "reasons": [
+        "claim (date, source, digest...) was modified after signing"
+      ],
+      "ledger_hash": "49c819aa14834afc9deeca07c0a6237818a7875198c69e325db108ce875afe6b",
+      "timeline": [
+        {
+          "t_ms": 2063.4,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-020-ctl",
+          "pixel_digest": "980c6c0ec6e89e8c\u2026",
+          "seq": 39
+        },
+        {
+          "t_ms": 2113.3,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "VERIFIED",
+          "verdict": "VERIFIED",
+          "action": "RELEASE",
+          "ledger_hash": "73b807feda9caf38\u2026"
+        },
+        {
+          "t_ms": 2113.6,
+          "actor": "satellite",
+          "event": "signed product",
+          "product_id": "LAB-B1-020",
+          "pixel_digest": "e0ef9d3a609526a9\u2026",
+          "seq": 40
+        },
+        {
+          "t_ms": 2113.7,
+          "actor": "attacker",
+          "event": "intercepted the message and modified it",
+          "action": "Manifest tampering (capture date changed)"
+        },
+        {
+          "t_ms": 2150.2,
+          "actor": "ground",
+          "event": "verdict",
+          "integrity": "BAD_SIGNATURE",
+          "verdict": "ALTERED_AFTER_CAPTURE",
+          "action": "QUARANTINE",
+          "ledger_hash": "49c819aa14834afc\u2026"
+        }
+      ],
+      "control_status": "VERIFIED"
+    }
+  ],
+  "environment": {
+    "python": "3.12.2",
+    "platform": "Windows",
+    "cpu_threads": 8,
+    "model_mode": "features+cnn",
+    "seed": 7,
+    "samples": "samples/authentic (official EuroSAT RGB patches, unmodified)"
+  },
+  "duration_s": 2.29
+}

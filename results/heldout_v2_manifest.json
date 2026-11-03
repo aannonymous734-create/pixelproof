@@ -1,0 +1,13 @@
+{
+  "description": "held-out v2: methods absent from training and from held-out v1 (see pixelproof/heldout_v2.py)",
+  "n_patches": 6612,
+  "sha256": "f29c4beec8b08f6708abcd08b13d8b594c5af7d6498b3ecf698f5d0a4e5e945b",
+  "counts": {
+    "authentic": 3306,
+    "resample": 530,
+    "splice": 556,
+    "copy_move": 1138,
+    "inpaint": 1082
+  },
+  "frozen_before_detector_changes": true
+}

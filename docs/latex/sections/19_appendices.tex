@@ -1,0 +1,129 @@
+\appendix
+\section{How to run it}\label{app:run}
+\begin{lstlisting}[style=sh]
+pip install -r requirements.txt            # CPU only
+pip install -r requirements-cnn.txt --index-url https://download.pytorch.org/whl/cpu   # the CNN
+python -m pytest -q                        # automated tests
+python scripts/quick_demo.py               # ground + attacker + satellite; dashboard at :8000
+python -m pixelproof.cli detect --input <jury_dir> --output predictions.csv   # held-out patches
+python scripts/download_eurosat.py && make reproduce TRAIN_FLAGS=--overwrite  # every number
+python scripts/render_latex.py             # this report (needs pdflatex)
+\end{lstlisting}
+
+\section{Integrity statuses and verdicts}\label{app:status}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{4.6cm}|Y|}
+\hline
+\textbf{Integrity status} & \textbf{Meaning}\\
+\hline
+\cd{VERIFIED} & signed by a trusted source, chain intact, pixels match, date plausible, not a replay\\
+\hline
+\cd{NO_PROVENANCE} & no manifest: the content detector decides\\
+\hline
+\cd{MALFORMED} & missing or invalid manifest fields\\
+\hline
+\cd{WEAK_ALGORITHM} & an algorithm other than sha256 + ed25519 is claimed\\
+\hline
+\cd{UNKNOWN_KEY} / \cd{REVOKED_KEY} & the signer is not trusted / was revoked\\
+\hline
+\cd{BAD_SIGNATURE} & the claim was modified after signing\\
+\hline
+\cd{CHAIN_BROKEN} & a processing step is unsigned, unlinked or inconsistent\\
+\hline
+\cd{PIXELS_ALTERED} & the pixels differ from the last signed digest\\
+\hline
+\cd{TIME_IMPLAUSIBLE} & capture time in the future or before the sensor existed\\
+\hline
+\cd{REPLAY} & product already received, or sequence number not increasing\\
+\hline
+\end{tabularx}
+\caption{Integrity statuses.}
+\end{table}
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{7.2cm}|Y|}
+\hline
+\textbf{Verdict} & \textbf{Action}\\
+\hline
+\cd{VERIFIED}, \cd{UNVERIFIED_NO_TRACES} & release\\
+\hline
+\cd{SIGNED_BUT_SUSPICIOUS}, \cd{ALTERED_AFTER_CAPTURE}, \cd{SUSPICIOUS} & quarantine (kept, withheld, released only by a logged analyst decision)\\
+\hline
+\end{tabularx}
+\caption{Verdicts and the response to each.}
+\end{table}
+
+\section{API reference}\label{app:api}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{6.4cm}|Y|}
+\hline
+\textbf{Method and path} & \textbf{Purpose}\\
+\hline
+\cd{GET /api/v1/health} & status, model version, detector mode (\texttt{features+cnn} or \texttt{features}), number of trusted keys\\
+\hline
+\cd{POST /api/v1/ingest} & a live downlink (\texttt{image\_png\_b64}, \texttt{manifest}): verify (and record), analyse, decide, log\\
+\hline
+\cd{POST /api/v1/analyse} & an analyst upload (multipart image + optional manifest): inspect only, no replay record\\
+\hline
+\cd{GET /api/v1/ledger?limit=} & recent audit-log entries, chain validity and first bad entry\\
+\hline
+\cd{GET /api/v1/stats} & counters computed from the audit log only\\
+\hline
+\cd{GET /api/v1/station} & trusted public keys and fingerprints, trust policy, replay memory, detector mode and model hash\\
+\hline
+\cd{GET /api/v1/registry} & the public-key registry\\
+\hline
+\cd{GET /api/v1/results} & the measured result files (for the dashboard)\\
+\hline
+\cd{GET /api/v1/lab/scenarios}, \cd{POST /api/v1/lab/run}, \cd{GET /api/v1/lab/runs} & attack scenarios (only with \cd{PIXELPROOF_LAB_MODE=1})\\
+\hline
+\end{tabularx}
+\caption{Ground-station API. Limits: 2~MB per image, decode guard, per-client rate limit on the analysis endpoints (\texttt{PIXELPROOF\_RATE\_PER\_MIN}, default 120 per minute), no stack traces or key material in responses (tested).}
+\end{table}
+
+The optional sign-in server exposes \cd{POST /api/auth/login}, \cd{/register}, \cd{/refresh}, \cd{/logout} and \cd{GET /api/me} (Section~\ref{sec:auth}).
+
+\section{Repository map}\label{app:repo}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{|L{5.6cm}|Y|}
+\hline
+\textbf{Path} & \textbf{Role}\\
+\hline
+\cd{pixelproof/} & ground station: trust layer, detector, API, attack engine, CLI (Section~\ref{sec:arch})\\
+\hline
+\cd{pixelproof/static/app/} & built dashboard served by the ground station\\
+\hline
+\cd{frontend/} & dashboard source (React, TypeScript); \cd{npm run build}\\
+\hline
+\cd{backend/} & optional Laravel sign-in server (source only; \cd{composer install})\\
+\hline
+\cd{simulation/} & \cd{satellite_node.py}, \cd{attacker.py}, \cd{score_demo.py}, \cd{run_attack.py}\\
+\hline
+\cd{scripts/} & data, training, evaluation, held-out sets, campaign, demo, report, delivery, anonymity\\
+\hline
+\cd{models/}, \cd{models_v1/} & shipped detector (+ model card) and the v1 model behind the before/after evidence\\
+\hline
+\cd{models_candidate_w16/}, \cd{results/candidate/} & the not-shipped candidate detector and its logs (Section~\ref{sec:phase2})\\
+\hline
+\cd{results/} & every measured number and the lab evidence (\cd{attack_runs/}, \cd{docker_lab/}, \cd{docker_mitm/}, \cd{lab/})\\
+\hline
+\cd{docker-compose.yml}, \cd{docker-compose.mitm.yml}, \cd{Dockerfile} & Docker labs D1 and D2\\
+\hline
+\cd{lab/}, \cd{vm/} & VirtualBox lab (Vagrantfile, provisioning) and the lab runbook\\
+\hline
+\cd{samples/} & 30 unmodified EuroSAT patches (labs and tests run without the dataset)\\
+\hline
+\cd{tests/}, \cd{frontend/tests/} & automated tests\\
+\hline
+\cd{docs/} & report sources (Markdown and LaTeX), threat model, security analysis, attack scenarios, data card, guides\\
+\hline
+\end{tabularx}
+\caption{Repository map.}
+\end{table}
+
+\section{Data card (summary)}\label{app:data}
+EuroSAT RGB (Sentinel-2, 27,000 patches, 64$\times$64, 10 land-cover classes), MIT-licensed, obtained through the official release. Splits by SHA-256 of the patch id with donor and manipulation co-assignment (no leakage). {{m:/models/fused (w=0.4)/test_dev/n|int}} seen-test and {{m:/models/fused (w=0.4)/test_heldout/n|int}} held-out-test patches; held-out v3 holds {{v3:/n_patches|int}} patches. Full details, manipulation parameters and the content fingerprint: \cd{docs/DATASET_CARD.md}.

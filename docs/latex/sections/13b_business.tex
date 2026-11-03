@@ -1,0 +1,68 @@
+\section{Business model and potential partners}\label{sec:biz}
+\begin{keybox}
+\textbf{In one sentence.} PixelProof is an open, laptop-sized verification layer that sits between a source of Earth-observation imagery and the people who act on it; the people who need it first are the operators who deliver imagery and the analysts who cannot afford to act on a fake. Everything in this section is a \textbf{hypothesis to validate with partners}: no agreement, pilot or customer exists yet, and no price or market size is claimed.
+\end{keybox}
+
+\subsection{Why the need is real in Tunisia}
+Tunisia is building up its own Earth-observation capacity: its first governmental satellite, described by the national mapping and remote-sensing centre (CNCT) as a 6U CubeSat designed for Earth observation, is reported to be in development \cite{tnsat}, and a space association and regional remote-sensing bodies are already active around it \cite{tunsa}. Every new source of imagery is also a new place where provenance can be lost. Adding signed origin to a new ground segment from day one costs far less than retrofitting it after products are already in circulation, and the downstream decisions named by the challenge (agriculture and insurance, water management, disaster response) are exactly the ones where a silently altered patch does harm.
+
+\subsection{Business Model Canvas}
+\newcommand{\bmc}[7]{\node[anchor=north west,draw=pxline,fill=#5,rounded corners=2pt,inner sep=3pt,text width=#3cm-6pt,minimum width=#3cm,minimum height=#4cm,align=left,font=\fontsize{7.2}{8.4}\selectfont] at (#1,#2) {{\bfseries\color{pxnavy}#6}\\[1pt]#7};}
+\begin{figure}[H]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}
+  \bmc{0}{0}{3.2}{8.3}{pxgrey}{Key partners}{$\bullet$ TUNSA: space community, events, student and educational EO projects\\$\bullet$ CRTEAN, CNCT: remote-sensing expertise and validation on real imagery\\$\bullet$ universities and IEEE chapters (GRSS, SPS, CIS)\\$\bullet$ CubeSat and ground-station operators}
+  \bmc{3.2}{0}{3.2}{4.15}{pxgrey}{Key activities}{$\bullet$ maintain the verifier and the detector\\$\bullet$ extend to new sensors and bands\\$\bullet$ red-team and frozen-set evaluation\\$\bullet$ run pilots and training}
+  \bmc{3.2}{-4.15}{3.2}{4.15}{pxgrey}{Key resources}{$\bullet$ open code and models (MIT)\\$\bullet$ evaluation sets with recorded hashes\\$\bullet$ attack labs (Docker, VM)\\$\bullet$ a team spanning remote sensing, signal processing and computational intelligence}
+  \bmc{6.4}{0}{3.4}{8.3}{pxgreenbg}{Value propositions}{$\bullet$ prove the origin and integrity of every patch: signed claim, signed processing chain\\$\bullet$ flag post-capture manipulation with its type and a heatmap\\$\bullet$ two answers kept apart: ``was it signed'' and ``does it look manipulated''\\$\bullet$ quarantine instead of silent release\\$\bullet$ runs on a laptop CPU, no hardware to buy\\$\bullet$ auditable log and honest limits}
+  \bmc{9.8}{0}{3.2}{4.15}{pxgrey}{Customer relationships}{$\bullet$ open-source community\\$\bullet$ pilots with early adopters\\$\bullet$ support agreements (to validate)\\$\bullet$ training and workshops}
+  \bmc{9.8}{-4.15}{3.2}{4.15}{pxgrey}{Channels}{$\bullet$ public repository\\$\bullet$ dashboard, command line and API\\$\bullet$ events and workshops with partners\\$\bullet$ integration guides}
+  \bmc{13}{0}{3.2}{8.3}{pxorangebg}{Customer segments}{$\bullet$ operators of EO ground segments and data distribution, including CubeSat programmes\\$\bullet$ analysts and decision makers using EO in agricultural insurance, water management and disaster response\\$\bullet$ auditors and verification desks that receive third-party imagery}
+  \bmc{0}{-8.3}{8.1}{2.9}{pxgrey}{Cost structure}{$\bullet$ engineering time\\$\bullet$ security review and key management\\$\bullet$ test-data curation and frozen evaluation sets\\$\bullet$ CPU-only infrastructure: no GPU, no cloud\\$\bullet$ training and pilot support}
+  \bmc{8.1}{-8.3}{8.1}{2.9}{pxgrey}{Revenue streams (hypotheses to validate)}{$\bullet$ integration and deployment services\\$\bullet$ support and maintenance subscriptions\\$\bullet$ training and workshops\\$\bullet$ funded pilots and grants\\The code is MIT-licensed, so no licence revenue is assumed.}
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Business Model Canvas of PixelProof. All entries are hypotheses to validate with partners.}
+\end{figure}
+
+\textbf{Why this model fits the technology.} The cost structure is small because the system is CPU-only and open (Section~\ref{sec:feas}); the value proposition is the one thing a signature alone cannot give (Section~\ref{sec:trust}), a verdict that keeps proof and content assessment separate; and the revenue hypotheses rest on services around an open core, which matches how a verification layer is adopted: it has to be inspectable before anyone trusts it.
+
+\subsection{Potential partners}
+None of the organisations below has agreed to anything; the table says what each could bring, what PixelProof would bring in return, and what we would ask for first.
+{\small
+\begin{longtable}{|L{2.9cm}|L{3.9cm}|L{3.9cm}|L{3.9cm}|}
+\caption{Potential partners. Status of every row: not yet approached.}\\
+\hline
+\textbf{Potential partner} & \textbf{What they could bring} & \textbf{What PixelProof brings} & \textbf{First step}\\
+\hline
+\endfirsthead
+\hline
+\textbf{Potential partner} & \textbf{What they could bring} & \textbf{What PixelProof brings} & \textbf{First step}\\
+\hline
+\endhead
+\textbf{TUNSA}, Tunisian Space Association & a non-profit association for space technology in Tunisia; community, events, student and educational EO projects, and an existing cooperation agreement with CRTEAN \cite{tunsa} & a verification layer for the products of educational and student missions; training for their members & present the prototype; offer a pilot on the products of one of their projects\\
+\hline
+\textbf{CRTEAN}, Regional Center for Remote Sensing of North African States & remote-sensing expertise; access to real satellite imagery for validation \cite{tunsa} & a provenance and integrity check for imagery it distributes or trains on & request a small set of real products to test the detector beyond EuroSAT\\
+\hline
+\textbf{CNCT}, national mapping and remote-sensing centre & national centre for mapping and remote sensing, technical secretariat of the National Commission of Outer Space Affairs, with remote-sensing studies on water and disaster management \cite{tnsat} & signing at the source and a ground-side verifier designed into national EO products from the start & discuss where a signing point and a registry would sit in a ground segment\\
+\hline
+Agricultural insurers and agri-risk agencies & the decision context where a doctored patch has a financial cost & flagging and quarantine before imagery enters a claim & ask what false-alarm rate an analyst desk can tolerate\\
+\hline
+Water-resource and agriculture authorities & operational use of EO for monitoring & provenance and an audit trail & pilot on one monitoring product\\
+\hline
+Civil-protection and disaster-response agencies & time-critical use of EO where a fake is dangerous & fast, local verification with no cloud dependency & test on a rehearsal scenario\\
+\hline
+Universities and IEEE chapters (GRSS, SPS, CIS) & independent evaluation, new datasets, student contributors & a documented, reproducible testbed and frozen held-out sets & share the evaluation protocol for independent scoring\\
+\hline
+CubeSat and ground-station operators & the places where signing keys and processing steps actually live & a software trust anchor with an upgrade path to SoftHSM2 or a TPM & agree a key-handling and registry procedure\\
+\hline
+\end{longtable}}
+
+\subsection{Partnership roadmap}
+\begin{enumerate}
+  \item \textbf{Pilot on a small, friendly source.} Sign the products of one educational or student mission and run the ground-side verifier and dashboard on them (the labs of Section~\ref{sec:labs} are the rehearsal).
+  \item \textbf{Validate on real imagery.} With a remote-sensing body, score the detector on real Sentinel-2 or CubeSat products and re-measure the false-alarm budget, because EuroSAT is single-JPEG and 8-bit (Section~\ref{sec:limits}).
+  \item \textbf{Move toward users.} Take the quarantine and audit workflow to an insurer, a water authority or a disaster-response desk, and let their tolerance for false alarms set the threshold.
+\end{enumerate}
+\textbf{What we would need from a partner:} a handful of real signed or signable products, a place to host a registry of public keys, and honest feedback on how many false alarms a human reviewer will accept.

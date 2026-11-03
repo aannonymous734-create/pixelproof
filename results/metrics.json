@@ -1,0 +1,1062 @@
+{
+  "target_fpr": 0.05,
+  "models": {
+    "features (GBM)": {
+      "threshold_clean": 0.5494717004780667,
+      "threshold_reencoded": 0.6778577220510045,
+      "test_dev": {
+        "n": 6680,
+        "auc_roc": 0.84366856108143,
+        "auc_pr": 0.8835179850967758,
+        "false_alarm_rate": 0.0407185628742515,
+        "detection_rate": 0.608682634730539,
+        "binary_f1": 0.7380649845707025,
+        "macro_f1_4class": 0.7049875551568924,
+        "type_accuracy_on_detected": 0.9626168224299065,
+        "confusion": [
+          [
+            3204,
+            59,
+            23,
+            54
+          ],
+          [
+            266,
+            807,
+            6,
+            19
+          ],
+          [
+            184,
+            6,
+            933,
+            3
+          ],
+          [
+            857,
+            37,
+            5,
+            217
+          ]
+        ],
+        "detection_by_family": {
+          "copy_move": 0.8365896980461812,
+          "inpaint": 0.23207885304659498,
+          "resample": 0.9619377162629758,
+          "splice": 0.5307692307692308
+        }
+      },
+      "test_heldout": {
+        "n": 6612,
+        "auc_roc": 0.6873754990559613,
+        "auc_pr": 0.7358676119995868,
+        "false_alarm_rate": 0.04748941318814277,
+        "detection_rate": 0.29522081064730793,
+        "binary_f1": 0.4397386798828565,
+        "macro_f1_4class": 0.3981565213084848,
+        "type_accuracy_on_detected": 0.7377049180327869,
+        "confusion": [
+          [
+            3149,
+            85,
+            15,
+            57
+          ],
+          [
+            595,
+            462,
+            2,
+            45
+          ],
+          [
+            913,
+            27,
+            22,
+            130
+          ],
+          [
+            822,
+            39,
+            13,
+            236
+          ]
+        ],
+        "detection_by_family": {
+          "copy_move": 0.16391941391941392,
+          "inpaint": 0.2594594594594595,
+          "resample": 0.8473282442748091,
+          "splice": 0.11206896551724138
+        }
+      },
+      "test_dev_laundered": {
+        "n": 6680,
+        "auc_roc": 0.6570064362293377,
+        "auc_pr": 0.6637965102193818,
+        "false_alarm_rate": 0.47664670658682634,
+        "detection_rate": 0.6874251497005988,
+        "binary_f1": 0.6353071389042612,
+        "macro_f1_4class": 0.36839452626526603,
+        "type_accuracy_on_detected": 0.5291811846689896,
+        "confusion": [
+          [
+            1748,
+            1528,
+            13,
+            51
+          ],
+          [
+            244,
+            843,
+            3,
+            8
+          ],
+          [
+            291,
+            525,
+            297,
+            13
+          ],
+          [
+            509,
+            529,
+            3,
+            75
+          ]
+        ],
+        "detection_by_family": {
+          "copy_move": 0.7415630550621669,
+          "inpaint": 0.5439068100358423,
+          "resample": 0.9083044982698962,
+          "splice": 0.6326923076923077
+        }
+      },
+      "test_heldout_laundered": {
+        "n": 6612,
+        "auc_roc": 0.5805064322361696,
+        "auc_pr": 0.5715907242758911,
+        "false_alarm_rate": 0.4866908650937689,
+        "detection_rate": 0.6010284331518452,
+        "binary_f1": 0.5757751376412634,
+        "macro_f1_4class": 0.2501883983890881,
+        "type_accuracy_on_detected": 0.41620533467539006,
+        "confusion": [
+          [
+            1697,
+            1540,
+            13,
+            56
+          ],
+          [
+            342,
+            741,
+            2,
+            19
+          ],
+          [
+            500,
+            525,
+            6,
+            61
+          ],
+          [
+            477,
+            547,
+            6,
+            80
+          ]
+        ],
+        "detection_by_family": {
+          "copy_move": 0.5421245421245421,
+          "inpaint": 0.5702702702702702,
+          "resample": 0.851145038167939,
+          "splice": 0.5448275862068965
+        }
+      }
+    },
+    "pixel CNN": {
+      "threshold_clean": 0.4815113601214795,
+      "threshold_reencoded": 0.7309047632801492,
+      "test_dev": {
+        "n": 6680,
+        "auc_roc": 0.9588888092079315,
+        "auc_pr": 0.9687960311297605,
+        "false_alarm_rate": 0.04101796407185629,
+        "detection_rate": 0.8494011976047904,
+        "binary_f1": 0.8986379474184352,
+        "macro_f1_4class": 0.8516785319150746,
+        "type_accuracy_on_detected": 0.925978145928798,
+        "confusion": [
+          [
+            3203,
+            16,
+            92,
+            29
+          ],
+          [
+            90,
+            868,
+            132,
+            8
+          ],
+          [
+            285,
+            53,
+            783,
+            5
+          ],
+          [
+            128,
+            4,
+            8,
+            976
+          ]
+        ],
+        "detection_by_family": {
+          "copy_move": 0.7468916518650088,
+          "inpaint": 0.8853046594982079,
+          "resample": 0.9982698961937716,
+          "splice": 0.8288461538461539
+        }
+      },
+      "test_heldout": {
+        "n": 6612,
+        "auc_roc": 0.7801861379464056,
+        "auc_pr": 0.8275880740657823,
+        "false_alarm_rate": 0.03901996370235935,
+        "detection_rate": 0.46098003629764067,
+        "binary_f1": 0.6146400483968542,
+        "macro_f1_4class": 0.522093392177053,
+        "type_accuracy_on_detected": 0.7782152230971129,
+        "confusion": [
+          [
+            3177,
+            18,
+            86,
+            25
+          ],
+          [
+            504,
+            524,
+            58,
+            18
+          ],
+          [
+            834,
+            24,
+            44,
+            190
+          ],
+          [
+            444,
+            14,
+            34,
+            618
+          ]
+        ],
+        "detection_by_family": {
+          "copy_move": 0.23626373626373626,
+          "inpaint": 0.6,
+          "resample": 0.9656488549618321,
+          "splice": 0.16206896551724137
+        }
+      },
+      "test_dev_laundered": {
+        "n": 6680,
+        "auc_roc": 0.7385558374269425,
+        "auc_pr": 0.7527516866132387,
+        "false_alarm_rate": 0.5467065868263473,
+        "detection_rate": 0.8532934131736527,
+        "binary_f1": 0.7110778443113772,
+        "macro_f1_4class": 0.4288679896992106,
+        "type_accuracy_on_detected": 0.5350877192982456,
+        "confusion": [
+          [
+            1514,
+            1739,
+            57,
+            30
+          ],
+          [
+            94,
+            952,
+            44,
+            8
+          ],
+          [
+            204,
+            651,
+            265,
+            6
+          ],
+          [
+            192,
+            600,
+            16,
+            308
+          ]
+        ],
+        "detection_by_family": {
+          "copy_move": 0.8188277087033747,
+          "inpaint": 0.8279569892473119,
+          "resample": 0.9013840830449827,
+          "splice": 0.9288461538461539
+        }
+      },
+      "test_heldout_laundered": {
+        "n": 6612,
+        "auc_roc": 0.606538772196988,
+        "auc_pr": 0.6139435600425963,
+        "false_alarm_rate": 0.559286146400484,
+        "detection_rate": 0.7044767090139141,
+        "binary_f1": 0.622394441475147,
+        "macro_f1_4class": 0.2872048616545039,
+        "type_accuracy_on_detected": 0.43108630313439245,
+        "confusion": [
+          [
+            1457,
+            1772,
+            52,
+            25
+          ],
+          [
+            287,
+            783,
+            29,
+            5
+          ],
+          [
+            405,
+            608,
+            19,
+            60
+          ],
+          [
+            285,
+            601,
+            22,
+            202
+          ]
+        ],
+        "detection_by_family": {
+          "copy_move": 0.6291208791208791,
+          "inpaint": 0.7432432432432432,
+          "resample": 0.8778625954198473,
+          "splice": 0.6155172413793103
+        }
+      }
+    },
+    "fused (w=0.4)": {
+      "threshold_clean": 0.4359905056114559,
+      "threshold_reencoded": 0.637525170015019,
+      "test_dev": {
+        "n": 6680,
+        "auc_roc": 0.9723392735487109,
+        "auc_pr": 0.979288186562845,
+        "false_alarm_rate": 0.03562874251497006,
+        "detection_rate": 0.9026946107784432,
+        "binary_f1": 0.9314179796107507,
+        "macro_f1_4class": 0.9028396963479,
+        "type_accuracy_on_detected": 0.9572139303482587,
+        "confusion": [
+          [
+            3221,
+            23,
+            61,
+            35
+          ],
+          [
+            74,
+            918,
+            98,
+            8
+          ],
+          [
+            103,
+            14,
+            1008,
+            1
+          ],
+          [
+            148,
+            5,
+            3,
+            960
+          ]
+        ],
+        "detection_rate_ci95": [
+          0.8932836088855542,
+          0.910865034755606
+        ],
+        "false_alarm_rate_ci95": [
+          0.02864854529274895,
+          0.041424767751813044
+        ],
+        "detection_by_family": {
+          "copy_move": 0.9085257548845471,
+          "inpaint": 0.8673835125448028,
+          "resample": 0.9982698961937716,
+          "splice": 0.8596153846153847
+        }
+      },
+      "test_heldout": {
+        "n": 6612,
+        "auc_roc": 0.7932187311635996,
+        "auc_pr": 0.8381787759442211,
+        "false_alarm_rate": 0.043859649122807015,
+        "detection_rate": 0.4824561403508772,
+        "binary_f1": 0.632183908045977,
+        "macro_f1_4class": 0.5281198315133292,
+        "type_accuracy_on_detected": 0.7761755485893417,
+        "confusion": [
+          [
+            3161,
+            38,
+            72,
+            35
+          ],
+          [
+            493,
+            531,
+            50,
+            30
+          ],
+          [
+            816,
+            36,
+            48,
+            192
+          ],
+          [
+            402,
+            19,
+            30,
+            659
+          ]
+        ],
+        "detection_rate_ci95": [
+          0.4670134165502925,
+          0.4990269208969836
+        ],
+        "false_alarm_rate_ci95": [
+          0.03744560721382232,
+          0.05215651602015237
+        ],
+        "detection_by_family": {
+          "copy_move": 0.25274725274725274,
+          "inpaint": 0.6378378378378379,
+          "resample": 0.9656488549618321,
+          "splice": 0.1810344827586207
+        }
+      },
+      "test_dev_laundered": {
+        "n": 6680,
+        "auc_roc": 0.697187062999749,
+        "auc_pr": 0.6815310522311827,
+        "false_alarm_rate": 0.5970059880239521,
+        "detection_rate": 0.9122754491017964,
+        "binary_f1": 0.7271208686314282,
+        "macro_f1_4class": 0.4450663709306951,
+        "type_accuracy_on_detected": 0.5467673121102724,
+        "confusion": [
+          [
+            1346,
+            1907,
+            49,
+            38
+          ],
+          [
+            51,
+            1015,
+            26,
+            6
+          ],
+          [
+            98,
+            687,
+            337,
+            4
+          ],
+          [
+            144,
+            649,
+            9,
+            314
+          ]
+        ],
+        "detection_rate_ci95": [
+          0.90269398952401,
+          0.9203384701236264
+        ],
+        "false_alarm_rate_ci95": [
+          0.5824826451576121,
+          0.6155272844867261
+        ],
+        "detection_by_family": {
+          "copy_move": 0.9129662522202486,
+          "inpaint": 0.8709677419354839,
+          "resample": 0.9619377162629758,
+          "splice": 0.9442307692307692
+        }
+      },
+      "test_heldout_laundered": {
+        "n": 6612,
+        "auc_roc": 0.5954459050603332,
+        "auc_pr": 0.5874721825375294,
+        "false_alarm_rate": 0.6046581972171808,
+        "detection_rate": 0.7616454930429523,
+        "binary_f1": 0.6437428096638118,
+        "macro_f1_4class": 0.2827620331123247,
+        "type_accuracy_on_detected": 0.42692613185067513,
+        "confusion": [
+          [
+            1307,
+            1925,
+            41,
+            33
+          ],
+          [
+            223,
+            848,
+            23,
+            10
+          ],
+          [
+            355,
+            657,
+            14,
+            66
+          ],
+          [
+            210,
+            668,
+            19,
+            213
+          ]
+        ],
+        "detection_rate_ci95": [
+          0.7470986125817772,
+          0.7753463707791881
+        ],
+        "false_alarm_rate_ci95": [
+          0.5883793866736433,
+          0.621922467796113
+        ],
+        "detection_by_family": {
+          "copy_move": 0.674908424908425,
+          "inpaint": 0.8108108108108109,
+          "resample": 0.9389312977099237,
+          "splice": 0.6706896551724137
+        }
+      }
+    }
+  },
+  "card": {
+    "sha256": "927f0930a148c56281c27362f6922797a6586b4ef848a51078f020f115e1e198",
+    "w_gbm": 0.4,
+    "threshold_gbm": 0.5494717004780667,
+    "threshold_fused": 0.4359905056114559,
+    "threshold_proc_gbm": 0.6778577220510045,
+    "threshold_proc_fused": 0.637525170015019
+  },
+  "gate_val_accuracy": 0.9682756904702662,
+  "false_alarm_by_landcover": {
+    "test_dev": {
+      "AnnualCrop": 0.0319,
+      "Forest": 0.0408,
+      "HerbaceousVegetation": 0.0131,
+      "Highway": 0.0252,
+      "Industrial": 0.0798,
+      "Pasture": 0.0127,
+      "PermanentCrop": 0.0379,
+      "Residential": 0.047,
+      "River": 0.023,
+      "SeaLake": 0.04
+    },
+    "test_heldout": {
+      "AnnualCrop": 0.0479,
+      "Forest": 0.0317,
+      "HerbaceousVegetation": 0.0175,
+      "Highway": 0.0429,
+      "Industrial": 0.0836,
+      "Pasture": 0.0494,
+      "PermanentCrop": 0.0218,
+      "Residential": 0.0584,
+      "River": 0.035,
+      "SeaLake": 0.0538
+    },
+    "test_heldout_laundered": {
+      "AnnualCrop": 0.6282,
+      "Forest": 0.5383,
+      "HerbaceousVegetation": 0.688,
+      "Highway": 0.6337,
+      "Industrial": 0.6555,
+      "Pasture": 0.6255,
+      "PermanentCrop": 0.6293,
+      "Residential": 0.6472,
+      "River": 0.621,
+      "SeaLake": 0.4167
+    }
+  },
+  "heldout_by_method": [
+    {
+      "family": "copy_move",
+      "method": "poly",
+      "mean": 0.2527,
+      "size": 1092
+    },
+    {
+      "family": "inpaint",
+      "method": "biharmonic",
+      "mean": 0.596,
+      "size": 354
+    },
+    {
+      "family": "inpaint",
+      "method": "navier_stokes",
+      "mean": 0.5886,
+      "size": 350
+    },
+    {
+      "family": "inpaint",
+      "method": "texture_synth",
+      "mean": 0.7167,
+      "size": 406
+    },
+    {
+      "family": "resample",
+      "method": "bicubic",
+      "mean": 0.9724,
+      "size": 254
+    },
+    {
+      "family": "resample",
+      "method": "lanczos",
+      "mean": 0.9593,
+      "size": 270
+    },
+    {
+      "family": "splice",
+      "method": "poly",
+      "mean": 0.181,
+      "size": 580
+    }
+  ],
+  "ablation_feature_model": {
+    "all features": {
+      "test_dev": {
+        "auc_roc": 0.84366856108143,
+        "detection_rate": 0.6089820359281437,
+        "false_alarm_rate": 0.03952095808383234
+      },
+      "test_heldout": {
+        "auc_roc": 0.6873754990559613,
+        "detection_rate": 0.3000604960677556,
+        "false_alarm_rate": 0.04748941318814277
+      },
+      "test_heldout_laundered": {
+        "auc_roc": 0.5805064322361696,
+        "detection_rate": 0.6833030852994555,
+        "false_alarm_rate": 0.574107683000605
+      }
+    },
+    "without rs_*": {
+      "test_dev": {
+        "auc_roc": 0.8403121302305568,
+        "detection_rate": 0.5937125748502994,
+        "false_alarm_rate": 0.03952095808383234
+      },
+      "test_heldout": {
+        "auc_roc": 0.6870954348342433,
+        "detection_rate": 0.29945553539019965,
+        "false_alarm_rate": 0.04506957047791894
+      },
+      "test_heldout_laundered": {
+        "auc_roc": 0.5803728504773626,
+        "detection_rate": 0.6972171808832426,
+        "false_alarm_rate": 0.5913490623109497
+      }
+    },
+    "without fq_*": {
+      "test_dev": {
+        "auc_roc": 0.8321818638172757,
+        "detection_rate": 0.5868263473053892,
+        "false_alarm_rate": 0.03802395209580838
+      },
+      "test_heldout": {
+        "auc_roc": 0.6923978987040375,
+        "detection_rate": 0.2909860859044162,
+        "false_alarm_rate": 0.04476709013914096
+      },
+      "test_heldout_laundered": {
+        "auc_roc": 0.5826712801780407,
+        "detection_rate": 0.5611010284331518,
+        "false_alarm_rate": 0.4476709013914096
+      }
+    },
+    "without nz_*": {
+      "test_dev": {
+        "auc_roc": 0.8405739718168452,
+        "detection_rate": 0.6047904191616766,
+        "false_alarm_rate": 0.048203592814371254
+      },
+      "test_heldout": {
+        "auc_roc": 0.6788201363705068,
+        "detection_rate": 0.28009679370840895,
+        "false_alarm_rate": 0.049606775559588624
+      },
+      "test_heldout_laundered": {
+        "auc_roc": 0.5655615612450405,
+        "detection_rate": 0.7038717483363581,
+        "false_alarm_rate": 0.5998185117967332
+      }
+    },
+    "without cc_*": {
+      "test_dev": {
+        "auc_roc": 0.825685037111406,
+        "detection_rate": 0.5817365269461078,
+        "false_alarm_rate": 0.04281437125748503
+      },
+      "test_heldout": {
+        "auc_roc": 0.6524906227435205,
+        "detection_rate": 0.27283726557773746,
+        "false_alarm_rate": 0.054748941318814276
+      },
+      "test_heldout_laundered": {
+        "auc_roc": 0.5748046869996403,
+        "detection_rate": 0.5986085904416213,
+        "false_alarm_rate": 0.4927404718693285
+      }
+    },
+    "without cm_*": {
+      "test_dev": {
+        "auc_roc": 0.7505505754957151,
+        "detection_rate": 0.40479041916167663,
+        "false_alarm_rate": 0.05149700598802395
+      },
+      "test_heldout": {
+        "auc_roc": 0.6826645461934873,
+        "detection_rate": 0.29310344827586204,
+        "false_alarm_rate": 0.05747126436781609
+      },
+      "test_heldout_laundered": {
+        "auc_roc": 0.5835086365181786,
+        "detection_rate": 0.572897761645493,
+        "false_alarm_rate": 0.4612825166364186
+      }
+    },
+    "without cs_*": {
+      "test_dev": {
+        "auc_roc": 0.8356294596435871,
+        "detection_rate": 0.5922155688622754,
+        "false_alarm_rate": 0.03832335329341317
+      },
+      "test_heldout": {
+        "auc_roc": 0.6801933751499134,
+        "detection_rate": 0.27253478523895946,
+        "false_alarm_rate": 0.04204476709013914
+      },
+      "test_heldout_laundered": {
+        "auc_roc": 0.573805202661827,
+        "detection_rate": 0.6923774954627949,
+        "false_alarm_rate": 0.5970961887477314
+      }
+    },
+    "no laundering augmentation": {
+      "test_dev": {
+        "auc_roc": 0.8451111549356378,
+        "detection_rate": 0.6137724550898204,
+        "false_alarm_rate": 0.04431137724550898
+      },
+      "test_heldout": {
+        "auc_roc": 0.6879631673003566,
+        "detection_rate": 0.30520266182698125,
+        "false_alarm_rate": 0.041439806412583186
+      },
+      "test_heldout_laundered": {
+        "auc_roc": 0.5509814782486809,
+        "detection_rate": 0.8027828191167574,
+        "false_alarm_rate": 0.7065940713853599
+      }
+    }
+  },
+  "localisation_iou_mean": {
+    "inpaint": 0.022673163338279692,
+    "splice": 0.11357545057165688,
+    "copy_move": 0.3127835482309115
+  },
+  "efficiency": {
+    "feature_ms_p50": 21.42524749990571,
+    "feature_ms_p95": 29.772461599975475,
+    "model_used": "features+cnn",
+    "analyse_ms_p50_with_heatmap": 41.54240000025311,
+    "analyse_ms_p95_with_heatmap": 61.54662660037502,
+    "analyse_ms_p50": 36.68279400017127,
+    "throughput_patches_per_s_1core": 27.26073700916378,
+    "model_load_s": 0.09870983899963903,
+    "peak_rss_mb": 704.9375,
+    "model_sizes_kb": {
+      "pixelnet.pt": 304.3,
+      "detector.joblib": 3600.7
+    }
+  },
+  "integrity_campaign": {
+    "n_products": 200,
+    "attacks": [
+      {
+        "attack": "genuine",
+        "description": "untouched signed product",
+        "expected": "VERIFIED",
+        "caught_as_expected": 1.0,
+        "observed": {
+          "VERIFIED": 200
+        }
+      },
+      {
+        "attack": "pixel_inpaint",
+        "description": "region erased and filled after capture",
+        "expected": "PIXELS_ALTERED",
+        "caught_as_expected": 1.0,
+        "observed": {
+          "PIXELS_ALTERED": 200
+        }
+      },
+      {
+        "attack": "pixel_copy_move",
+        "description": "region duplicated after capture",
+        "expected": "PIXELS_ALTERED",
+        "caught_as_expected": 1.0,
+        "observed": {
+          "PIXELS_ALTERED": 200
+        }
+      },
+      {
+        "attack": "pixel_resample",
+        "description": "patch rescaled/rotated after capture",
+        "expected": "PIXELS_ALTERED",
+        "caught_as_expected": 1.0,
+        "observed": {
+          "PIXELS_ALTERED": 200
+        }
+      },
+      {
+        "attack": "lsb_embed",
+        "description": "invisible bit-level embedding (no visual trace)",
+        "expected": "PIXELS_ALTERED",
+        "caught_as_expected": 1.0,
+        "observed": {
+          "PIXELS_ALTERED": 200
+        }
+      },
+      {
+        "attack": "date_replace",
+        "description": "capture date changed, signature kept",
+        "expected": "BAD_SIGNATURE",
+        "caught_as_expected": 1.0,
+        "observed": {
+          "BAD_SIGNATURE": 200
+        }
+      },
+      {
+        "attack": "date_replace_resign",
+        "description": "date changed and re-signed with attacker key",
+        "expected": "UNKNOWN_KEY",
+        "caught_as_expected": 1.0,
+        "observed": {
+          "UNKNOWN_KEY": 200
+        }
+      },
+      {
+        "attack": "algorithm_downgrade",
+        "description": "claims md5 to forge a matching digest",
+        "expected": "WEAK_ALGORITHM",
+        "caught_as_expected": 1.0,
+        "observed": {
+          "WEAK_ALGORITHM": 200
+        }
+      },
+      {
+        "attack": "forged_processing",
+        "description": "fake processing step hides an edit",
+        "expected": "CHAIN_BROKEN",
+        "caught_as_expected": 1.0,
+        "observed": {
+          "CHAIN_BROKEN": 200
+        }
+      },
+      {
+        "attack": "manifest_swap",
+        "description": "valid manifest attached to another image",
+        "expected": "PIXELS_ALTERED",
+        "caught_as_expected": 1.0,
+        "observed": {
+          "PIXELS_ALTERED": 200
+        }
+      },
+      {
+        "attack": "replay",
+        "description": "already-delivered product sent again",
+        "expected": "REPLAY",
+        "caught_as_expected": 1.0,
+        "observed": {
+          "REPLAY": 200
+        }
+      },
+      {
+        "attack": "strip_manifest",
+        "description": "edit + provenance removed: content analysis must decide",
+        "expected": "NO_PROVENANCE",
+        "caught_as_expected": 1.0,
+        "observed": {
+          "NO_PROVENANCE": 200
+        }
+      }
+    ],
+    "two_axis_verdicts": {
+      "pixel_inpaint": {
+        "ALTERED_AFTER_CAPTURE": 200
+      },
+      "lsb_embed": {
+        "ALTERED_AFTER_CAPTURE": 200
+      },
+      "strip_manifest": {
+        "SUSPICIOUS": 138,
+        "UNVERIFIED_NO_TRACES": 62
+      },
+      "signed_fake_before_capture": {
+        "VERIFIED": 32,
+        "SIGNED_BUT_SUSPICIOUS": 168
+      },
+      "signed_genuine": {
+        "VERIFIED": 191,
+        "SIGNED_BUT_SUSPICIOUS": 9
+      }
+    },
+    "overhead": {
+      "sign_ms_p50": 0.24754550008765364,
+      "sign_ms_p95": 0.3483853502075362,
+      "verify_ms_p50": 0.38274949997685326,
+      "verify_ms_p95": 0.4556227498596854,
+      "manifest_bytes_mean": 1090.59,
+      "png_bytes_mean": 6348.71,
+      "overhead_percent_of_png": 17.17813540073495
+    }
+  },
+  "robustness": {
+    "model": "features+cnn",
+    "n_sources": 600,
+    "rows": [
+      {
+        "condition": "none",
+        "seen_in_training": true,
+        "false_alarm_rate": 0.035,
+        "detection_rate": 0.88,
+        "false_alarm_rate_features_only": 0.021666666666666667,
+        "detection_rate_features_only": 0.555
+      },
+      {
+        "condition": "JPEG q90",
+        "seen_in_training": true,
+        "false_alarm_rate": 0.055,
+        "detection_rate": 0.4633333333333333,
+        "false_alarm_rate_features_only": 0.043333333333333335,
+        "detection_rate_features_only": 0.43166666666666664
+      },
+      {
+        "condition": "JPEG q70",
+        "seen_in_training": true,
+        "false_alarm_rate": 0.03833333333333333,
+        "detection_rate": 0.31666666666666665,
+        "false_alarm_rate_features_only": 0.07166666666666667,
+        "detection_rate_features_only": 0.29333333333333333
+      },
+      {
+        "condition": "JPEG q45",
+        "seen_in_training": true,
+        "false_alarm_rate": 0.043333333333333335,
+        "detection_rate": 0.25166666666666665,
+        "false_alarm_rate_features_only": 0.08166666666666667,
+        "detection_rate_features_only": 0.23833333333333334
+      },
+      {
+        "condition": "JPEG q25",
+        "seen_in_training": false,
+        "false_alarm_rate": 0.12166666666666667,
+        "detection_rate": 0.23,
+        "false_alarm_rate_features_only": 0.19833333333333333,
+        "detection_rate_features_only": 0.25333333333333335
+      },
+      {
+        "condition": "WebP q60",
+        "seen_in_training": true,
+        "false_alarm_rate": 0.07166666666666667,
+        "detection_rate": 0.3433333333333333,
+        "false_alarm_rate_features_only": 0.06,
+        "detection_rate_features_only": 0.245
+      },
+      {
+        "condition": "blur 0.6",
+        "seen_in_training": false,
+        "false_alarm_rate": 1.0,
+        "detection_rate": 1.0,
+        "false_alarm_rate_features_only": 0.9483333333333334,
+        "detection_rate_features_only": 0.9766666666666667
+      },
+      {
+        "condition": "blur 1.2",
+        "seen_in_training": false,
+        "false_alarm_rate": 1.0,
+        "detection_rate": 1.0,
+        "false_alarm_rate_features_only": 1.0,
+        "detection_rate_features_only": 1.0
+      },
+      {
+        "condition": "noise 3",
+        "seen_in_training": true,
+        "false_alarm_rate": 0.005,
+        "detection_rate": 0.30666666666666664,
+        "false_alarm_rate_features_only": 0.025,
+        "detection_rate_features_only": 0.32
+      },
+      {
+        "condition": "noise 6",
+        "seen_in_training": false,
+        "false_alarm_rate": 0.011666666666666667,
+        "detection_rate": 0.2,
+        "false_alarm_rate_features_only": 0.13166666666666665,
+        "detection_rate_features_only": 0.255
+      },
+      {
+        "condition": "JPEG2000 r10",
+        "seen_in_training": false,
+        "false_alarm_rate": 0.6933333333333334,
+        "detection_rate": 0.885,
+        "false_alarm_rate_features_only": 0.61,
+        "detection_rate_features_only": 0.7116666666666667
+      },
+      {
+        "condition": "JPEG2000 r30",
+        "seen_in_training": false,
+        "false_alarm_rate": 0.8733333333333333,
+        "detection_rate": 0.8783333333333333,
+        "false_alarm_rate_features_only": 0.8683333333333333,
+        "detection_rate_features_only": 0.8783333333333333
+      },
+      {
+        "condition": "gamma 0.8",
+        "seen_in_training": false,
+        "false_alarm_rate": 0.07833333333333334,
+        "detection_rate": 0.8783333333333333,
+        "false_alarm_rate_features_only": 0.03666666666666667,
+        "detection_rate_features_only": 0.5783333333333334
+      },
+      {
+        "condition": "gamma 1.3",
+        "seen_in_training": false,
+        "false_alarm_rate": 0.03333333333333333,
+        "detection_rate": 0.8516666666666667,
+        "false_alarm_rate_features_only": 0.06666666666666667,
+        "detection_rate_features_only": 0.5716666666666667
+      }
+    ]
+  }
+}

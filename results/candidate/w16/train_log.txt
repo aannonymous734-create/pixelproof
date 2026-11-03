@@ -1,0 +1,48 @@
+feature model: 257 trees, 6.9s, threshold 0.5601
+rendered 67292 patches in 46s (train variants: ['dev', 'dev_plus'])
+CNN: width 16, dropout 0.1, label smoothing 0.05, select recall, patience 8, max epochs 24, tta True
+epoch 1/24 loss 1.2882 val_acc 0.5053 val_recall@5% 0.2376
+epoch 2/24 loss 1.2426 val_acc 0.5230 val_recall@5% 0.3267
+epoch 3/24 loss 1.1825 val_acc 0.5697 val_recall@5% 0.5658
+epoch 4/24 loss 1.0902 val_acc 0.5983 val_recall@5% 0.6263
+epoch 5/24 loss 1.0341 val_acc 0.4322 val_recall@5% 0.4143
+epoch 6/24 loss 0.9705 val_acc 0.6673 val_recall@5% 0.7502
+epoch 7/24 loss 0.9278 val_acc 0.6879 val_recall@5% 0.6128
+epoch 8/24 loss 0.8909 val_acc 0.4385 val_recall@5% 0.5029
+epoch 9/24 loss 0.8661 val_acc 0.6874 val_recall@5% 0.9154
+epoch 10/24 loss 0.8482 val_acc 0.6714 val_recall@5% 0.6947
+epoch 11/24 loss 0.8361 val_acc 0.6731 val_recall@5% 0.5337
+epoch 12/24 loss 0.8202 val_acc 0.7004 val_recall@5% 0.7410
+epoch 13/24 loss 0.8102 val_acc 0.7302 val_recall@5% 0.9622
+epoch 14/24 loss 0.8018 val_acc 0.7224 val_recall@5% 0.9229
+epoch 15/24 loss 0.7910 val_acc 0.7265 val_recall@5% 0.6382
+epoch 16/24 loss 0.7816 val_acc 0.7328 val_recall@5% 0.9654
+epoch 17/24 loss 0.7746 val_acc 0.7401 val_recall@5% 0.8813
+epoch 18/24 loss 0.7614 val_acc 0.7440 val_recall@5% 0.9351
+epoch 19/24 loss 0.7513 val_acc 0.7399 val_recall@5% 0.7154
+epoch 20/24 loss 0.7451 val_acc 0.7519 val_recall@5% 0.9652
+epoch 21/24 loss 0.7426 val_acc 0.7528 val_recall@5% 0.9510
+epoch 22/24 loss 0.7339 val_acc 0.7548 val_recall@5% 0.9338
+epoch 23/24 loss 0.7330 val_acc 0.7549 val_recall@5% 0.9594
+epoch 24/24 loss 0.7299 val_acc 0.7543 val_recall@5% 0.9639
+early stop: no improvement for 8 epochs (best epoch 16)
+CNN trained in 38.9 min (74,116 parameters)
+CNN inference on 67292 patches: 8.95 ms/patch
+  fusion w_features=0.0: val recall at 5% FPR = 0.9871
+  fusion w_features=0.1: val recall at 5% FPR = 0.9893
+  fusion w_features=0.2: val recall at 5% FPR = 0.9883
+  fusion w_features=0.3: val recall at 5% FPR = 0.9818
+  fusion w_features=0.4: val recall at 5% FPR = 0.9734
+  fusion w_features=0.5: val recall at 5% FPR = 0.9507
+  fusion w_features=0.6: val recall at 5% FPR = 0.9022
+  fusion w_features=0.7: val recall at 5% FPR = 0.8084
+  fusion w_features=0.8: val recall at 5% FPR = 0.6902
+  fusion w_features=0.9: val recall at 5% FPR = 0.5969
+  fusion w_features=1.0: val recall at 5% FPR = 0.5290
+chosen fusion weight w_features=0.1, threshold 0.2070
+without test-time averaging: best val recall at 5% FPR = 0.9706 (w_features=0.2); with it: 0.9893
+re-encoding gate: validation accuracy 0.957
+gbm: threshold clean 0.5580, re-encoded 0.7008
+fused: threshold clean 0.1894, re-encoded 0.6342
+saved models_candidate_w16\detector.joblib sha256=96c269f1f1c1b61b6482bf496b9699d3fbba8257567dc3dd89b2e1766f70829f
+wrote results\candidate\w16\predictions.csv.gz

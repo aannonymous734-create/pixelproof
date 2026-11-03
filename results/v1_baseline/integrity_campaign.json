@@ -1,0 +1,142 @@
+{
+  "n_products": 200,
+  "attacks": [
+    {
+      "attack": "genuine",
+      "description": "untouched signed product",
+      "expected": "VERIFIED",
+      "caught_as_expected": 1.0,
+      "observed": {
+        "VERIFIED": 200
+      }
+    },
+    {
+      "attack": "pixel_inpaint",
+      "description": "region erased and filled after capture",
+      "expected": "PIXELS_ALTERED",
+      "caught_as_expected": 1.0,
+      "observed": {
+        "PIXELS_ALTERED": 200
+      }
+    },
+    {
+      "attack": "pixel_copy_move",
+      "description": "region duplicated after capture",
+      "expected": "PIXELS_ALTERED",
+      "caught_as_expected": 1.0,
+      "observed": {
+        "PIXELS_ALTERED": 200
+      }
+    },
+    {
+      "attack": "pixel_resample",
+      "description": "patch rescaled/rotated after capture",
+      "expected": "PIXELS_ALTERED",
+      "caught_as_expected": 1.0,
+      "observed": {
+        "PIXELS_ALTERED": 200
+      }
+    },
+    {
+      "attack": "lsb_embed",
+      "description": "invisible bit-level embedding (no visual trace)",
+      "expected": "PIXELS_ALTERED",
+      "caught_as_expected": 1.0,
+      "observed": {
+        "PIXELS_ALTERED": 200
+      }
+    },
+    {
+      "attack": "date_replace",
+      "description": "capture date changed, signature kept",
+      "expected": "BAD_SIGNATURE",
+      "caught_as_expected": 1.0,
+      "observed": {
+        "BAD_SIGNATURE": 200
+      }
+    },
+    {
+      "attack": "date_replace_resign",
+      "description": "date changed and re-signed with attacker key",
+      "expected": "UNKNOWN_KEY",
+      "caught_as_expected": 1.0,
+      "observed": {
+        "UNKNOWN_KEY": 200
+      }
+    },
+    {
+      "attack": "algorithm_downgrade",
+      "description": "claims md5 to forge a matching digest",
+      "expected": "WEAK_ALGORITHM",
+      "caught_as_expected": 1.0,
+      "observed": {
+        "WEAK_ALGORITHM": 200
+      }
+    },
+    {
+      "attack": "forged_processing",
+      "description": "fake processing step hides an edit",
+      "expected": "CHAIN_BROKEN",
+      "caught_as_expected": 1.0,
+      "observed": {
+        "CHAIN_BROKEN": 200
+      }
+    },
+    {
+      "attack": "manifest_swap",
+      "description": "valid manifest attached to another image",
+      "expected": "PIXELS_ALTERED",
+      "caught_as_expected": 1.0,
+      "observed": {
+        "PIXELS_ALTERED": 200
+      }
+    },
+    {
+      "attack": "replay",
+      "description": "already-delivered product sent again",
+      "expected": "REPLAY",
+      "caught_as_expected": 1.0,
+      "observed": {
+        "REPLAY": 200
+      }
+    },
+    {
+      "attack": "strip_manifest",
+      "description": "edit + provenance removed: content analysis must decide",
+      "expected": "NO_PROVENANCE",
+      "caught_as_expected": 1.0,
+      "observed": {
+        "NO_PROVENANCE": 200
+      }
+    }
+  ],
+  "two_axis_verdicts": {
+    "pixel_inpaint": {
+      "ALTERED_AFTER_CAPTURE": 200
+    },
+    "lsb_embed": {
+      "ALTERED_AFTER_CAPTURE": 200
+    },
+    "strip_manifest": {
+      "SUSPICIOUS": 139,
+      "UNVERIFIED_NO_TRACES": 61
+    },
+    "signed_fake_before_capture": {
+      "VERIFIED": 31,
+      "SIGNED_BUT_SUSPICIOUS": 169
+    },
+    "signed_genuine": {
+      "VERIFIED": 189,
+      "SIGNED_BUT_SUSPICIOUS": 11
+    }
+  },
+  "overhead": {
+    "sign_ms_p50": 0.2935754996542528,
+    "sign_ms_p95": 0.4473302997666906,
+    "verify_ms_p50": 0.4260825003257196,
+    "verify_ms_p95": 0.6887760500376316,
+    "manifest_bytes_mean": 1090.59,
+    "png_bytes_mean": 6348.71,
+    "overhead_percent_of_png": 17.17813540073495
+  }
+}

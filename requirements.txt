@@ -1,0 +1,20 @@
+# Exact versions used to produce every number in results/ (Python 3.13, Linux, CPU only).
+# Pinned so the jury gets the same behaviour; the saved model is a pickled scikit-learn object.
+scikit-learn==1.9.1
+numpy==2.5.3
+scipy==1.18.1
+pandas==3.0.5
+pillow==12.3.0
+opencv-python-headless==5.0.0.93
+scikit-image==0.26.0
+matplotlib==3.11.2
+joblib==1.6.0
+tifffile==2026.9.15
+cryptography==50.0.1
+fastapi==0.143.0
+starlette==1.6.0
+pydantic==2.13.5
+uvicorn==0.53.0
+python-multipart==0.0.32
+pytest==9.1.1
+httpx==0.28.1
